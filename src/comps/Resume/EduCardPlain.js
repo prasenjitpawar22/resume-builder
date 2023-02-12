@@ -7,7 +7,7 @@ const EduCardPlain = (props) => {
     const [hoverCardState, setHoverCardState] = useState('none')
     const handleHover = () => {
         // console.log("Asdasd");
-        setHoverCardState(hoverCardState == 'none' ? 'flex' : 'none')
+        setHoverCardState(hoverCardState === 'none' ? 'flex' : 'none')
     }
 
     const handleDelete = (i) => {
@@ -16,16 +16,13 @@ const EduCardPlain = (props) => {
 
     return (
         <Draggable bounds="parent">
-            <div onMouseLeave={handleHover} onMouseEnter={handleHover} className='flex flex-col p-4 bg-slate-200 cursor-default'>
-                {/* <div className={hoverCardState + " gap-2 absolute -mt-10"}> */}
-                <EditBar className="z-10" display={hoverCardState}>
-                    <button className="">edit</button>
+            <div onMouseLeave={handleHover} onMouseEnter={handleHover} className='flex flex-col p-4 cursor-default'>
+                <EditBar className="z-50" display={hoverCardState}>
+                    <button className="editBarBtn">edit</button>
                     <button onClick={() => handleDelete(data.id)}>delete</button>
                 </EditBar>
-                {/* </div> */}
                 <div className='w-full flex rounded-md  justify-between'>
                     <p>{data?.university} </p>
-                    {/* <p>{data?.company} </p> */}
                     <div className='flex gap-2'>
                         <p>{data?.start}</p>-
                         <p>{data?.end}</p>
@@ -46,12 +43,16 @@ const EduCardPlain = (props) => {
 export default EduCardPlain;
 
 const EditBar = styled.div`
+    display: flex;
 	gap: 0.5rem;
 	position: absolute;
-	right: 0px;
-	margin-top: -2.5rem;
+	right: -6rem;
 	background-color: burlywood;
 	padding-left: 12px;
 	padding-right: 12px;
 	display: ${(props) => props.display};
+    > .editBarBtn{
+        position: relative;
+        display: flex;
+    }
 `
