@@ -1,18 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
-import Draggable from 'react-draggable';
 import styled from 'styled-components';
 import data from './data';
-import ExpCardPlain from './comps/Resume/ExpCardPlain';
-import EduCardPlain from './comps/Resume/EduCardPlain';
+import { PDFViewer } from '@react-pdf/renderer'
 import DropDownList from './comps/DropDownList';
 import FeatureEduCardPlain from './comps/FeatureEduCardPlain';
 import FeatureExpCardPlain from './comps/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
-import { IoIosResize } from 'react-icons/io'
-import {BiChevronsRight, BiChevronsLeft} from 'react-icons/bi'
-import HeaderCardPlain from './comps/Resume/HeaderCardPlain';
+import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
+import Resume from './comps/Resume/Resume';
 
 function App() {
 
@@ -30,8 +26,7 @@ function App() {
   const [expBlockState, setExpBlockState] = useState(false)
 
   const [resumeColor, setResumeColor] = useState('#E7E9EC');
-  const [headerSize, setheaderSize] = useState({ x: 550, y: 100 });
-  const [EduSize, setEduSize] = useState({ x: 550, y: 200 });
+
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === leftBlockWidth ? 0 : leftBlockWidth)
@@ -39,76 +34,9 @@ function App() {
     console.log(leftBlockMargin);
   }
 
-  useEffect(() => {
-    console.log(headerSize)
-  }, [headerSize])
-
-
   const handleResumeColor = (color) => {
     setResumeColor(color)
   }
-  const handleHeaderResize = (mouseDownEvent) => {
-    console.log(mouseDownEvent);
-    const startSize = headerSize;
-    const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
-
-    function onMouseMove(mouseMoveEvent) {
-      let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
-      let newY = startSize.y - startPosition.y + mouseMoveEvent.pageY
-      if(newX >= resumeBlockHolderWidth){
-        console.log('innnnnn');
-        return
-      }
-      if(newY>= 200){
-        console.log('innnnnn');
-        return
-      }
-      setheaderSize(currentSize => ({
-        x: newX,
-        y: newY
-      }));
-    }
-    function onMouseUp() {
-      document.body.removeEventListener("mousemove", onMouseMove);
-      // uncomment the following line if not using `{ once: true }`
-      // document.body.removeEventListener("mouseup", onMouseUp);
-    }
-
-    document.body.addEventListener("mousemove", onMouseMove);
-    document.body.addEventListener("mouseup", onMouseUp, { once: true });
-  };
-  const handleEduResize = (mouseDownEvent) => {
-    
-    const startSize = EduSize;
-    const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
-
-    function onMouseMove(mouseMoveEvent) {
-      let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
-      let newY = startSize.y - startPosition.y + mouseMoveEvent.pageY
-
-      if(newX >= resumeBlockHolderWidth){
-        console.log('innnnnn');
-        return
-      }
-      if(newY>= 200){
-        console.log('innnnnn');
-        return
-      }
-
-      setEduSize(currentSize => ({
-        x: newX,
-        y: newY
-      }));
-    }
-    function onMouseUp() {
-      document.body.removeEventListener("mousemove", onMouseMove);
-      // uncomment the following line if not using `{ once: true }`
-      // document.body.removeEventListener("mouseup", onMouseUp);
-    }
-
-    document.body.addEventListener("mousemove", onMouseMove);
-    document.body.addEventListener("mouseup", onMouseUp, { once: true });
-  };
 
   useEffect(() => {
     console.log(resumeExpData);
@@ -123,15 +51,15 @@ function App() {
       <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100 ' width={leftBlockWidth} marginLeft={leftBlockMargin}>
         <h1 className='text-3xl font-semibold text-center'>Features</h1>
         <span onClick={handleLeftBlock}>
-          {leftBlockMargin === 0? <BiChevronsLeft size={40} />: <BiChevronsRight size={40}/>}
+          {leftBlockMargin === 0 ? <BiChevronsLeft size={40} /> : <BiChevronsRight size={40} />}
         </span>
         <Feature>
           <DropDownList setBlockState={setHeaderBlockState} blockState={headerBlockState} title={'Header Block'} />
           {
-            <FeatureHeaderCardPlain 
+            <FeatureHeaderCardPlain
               headerBlockState={headerBlockState}
               resumeHeaderData={resumeHeaderData} setResumeHeaderData={setResumeHeaderData}
-              data={data.header} 
+              data={data.header}
             />
           }
           <DropDownList setBlockState={setEduBlockState} blockState={eduBlockState} title={'Education Block'} />
@@ -166,31 +94,12 @@ function App() {
             <span onClick={() => handleResumeColor('white')} className='bg-white'> </span>
           </Colors>
         </ColorBlock>
-        <Resume className='shadow-2xl' resumeColor={resumeColor}>
-          {/* header  */}
-          <Header maxWidth={resumeBlockHolderWidth} height={headerSize.y} width={headerSize.x} bgColor={resumeColor} className='border-dashed hover:border border-slate-500'>
-            <span className='shadow-md p-2'>Header</span>
-            {resumeHeaderData.length > 0 && resumeHeaderData?.map(data =>
-              <HeaderCardPlain data={data} setData={setResumeHeaderData} />
-            )}
-            <button className='reSizeBtn' onMouseDown={handleHeaderResize}><IoIosResize /></button>
-          </Header>
-          {/* edu  */}
-          <Education height={EduSize.y} width={EduSize.x} bgColor={resumeColor} className='border-dashed hover:border border-slate-500'>
-            <span className='shadow-md p-2'>Education</span>
-            {resumeEduData.length > 0 && resumeEduData?.map(data =>
-              <EduCardPlain data={data} setData={setResumeEduData} />
-            )}
-            <button className='reSizeBtn' onMouseDown={handleEduResize}><IoIosResize /></button>
-          </Education>
-          {/* exp  */}
-          {resumeExpData.length > 0 && resumeExpData?.map(data =>
-            <ExpCardPlain data={data} setData={setResumeExpData} />
-          )}
-
-        </Resume>
+        <Resume
+          resumeBlockHolderWidth={resumeBlockHolderWidth} setResumeEduData={setResumeEduData}
+          resumeHeaderData={resumeHeaderData} resumeEduData={resumeEduData}
+          resumeExpData={resumeExpData} resumeColor={resumeColor} setResumeExpData={setResumeExpData} />
       </ResumeBlockHolder>
-    </div>
+    </div >
   );
 }
 
@@ -240,7 +149,6 @@ const Colors = styled.div`
     cursor: pointer;
   }
 `
-
 const ResumeBlockHolder = styled.div`
   /* border-width: 5px; */
   position: absolute;
@@ -252,50 +160,4 @@ const ResumeBlockHolder = styled.div`
   transition-duration: 1s;
   background-color: greenyellow;
   left:${(props) => props.marginLeft - props.resumeBlockPosition + 2}%;
-`
-
-const Resume = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: ${(props) => props.resumeColor};
-  transition: all;
-  transition-duration: 1s;
-`
-const Header = styled.div`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  margin-bottom: 12px;
-  /* max-width: ${(props) => props.maxWidth}px;
-  max-height: 200px; */
-  position: relative;
-  & span{
-     position: absolute;
-     right: -5rem;
-     background-color: ${(props) => props.bgColor};
-  }
-  .reSizeBtn{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    transform: translate(50%, 50%);
-  }
-`
-
-const Education = styled.div`
-  width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
-    /* max-width: 100%; calulate resume h-w
-    max-height: 100px; */
-    position: relative;
-    & span{
-      position: absolute;
-      right: -5rem;
-      background-color: ${(props) => props.bgColor};
-    }
-    .reSizeBtn{
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      transform: translate(50%, 50%);
-    }
 `

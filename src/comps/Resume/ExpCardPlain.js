@@ -16,7 +16,8 @@ const ExpCardPlain = (props) => {
 
 	return (
 		<Draggable key={data.id} bounds="parent">
-			<div onMouseLeave={handleHover} onMouseEnter={handleHover} className='flex flex-col p-4 bg-slate-200 cursor-default'>
+			<div onMouseLeave={handleHover} onMouseEnter={handleHover}
+				className='flex flex-col p-4 cursor-default'>
 				{/* <div className={hoverCardState + " gap-2 absolute -mt-10"}> */}
 				<EditBar className="z-10" display={hoverCardState}>
 					<button className="">edit</button>
