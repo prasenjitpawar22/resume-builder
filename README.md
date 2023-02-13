@@ -1,7 +1,7 @@
 # Resume Builder
 ## Create your resume
 
-<![alt](https://github.com/prasenjitpawar22/resume-builder//tree/main/public/readmeImage.png?raw=true)>
+<![alt](https://github.com/prasenjitpawar22/resume-builder/tree/main/public/readmeImage.png?raw=true)>
 
 # Getting Started with Create React App
 
