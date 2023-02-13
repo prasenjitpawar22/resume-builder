@@ -1,7 +1,10 @@
 # Resume Builder
 ## Create your resume
 
-<![alt](https://github.com/prasenjitpawar22/resume-builder//tree/main/public/readmeImage.png?raw=true)>
+<!-- ![Alt text](https://github.com/prasenjitpawar22/resume-builder/blob/main/public/readmeImage.png "Index") -->
+<img src="https://github.com/prasenjitpawar22/resume-builder/blob/main/public/readmeImage.png"
+     alt="Alt text" title="Index">
+
 
 # Getting Started with Create React App
 
