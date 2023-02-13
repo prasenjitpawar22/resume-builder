@@ -12,7 +12,7 @@ export default function Resume(props) {
 	const {
 		resumeColor, resumeBlockHolderWidth,
 		resumeHeaderData, setResumeHeaderData, resumeEduData, setResumeEduData,
-		resumeExpData, setResumeExpData } = props
+		resumeExpData, setResumeExpData, } = props
 
 	const printRef = React.useRef();
 

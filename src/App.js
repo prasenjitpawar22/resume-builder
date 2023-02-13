@@ -95,9 +95,12 @@ function App() {
           </Colors>
         </ColorBlock>
         <Resume
-          resumeBlockHolderWidth={resumeBlockHolderWidth} setResumeEduData={setResumeEduData}
+          resumeBlockHolderWidth={resumeBlockHolderWidth}
           resumeHeaderData={resumeHeaderData} resumeEduData={resumeEduData}
-          resumeExpData={resumeExpData} resumeColor={resumeColor} setResumeExpData={setResumeExpData} />
+          resumeExpData={resumeExpData} resumeColor={resumeColor}
+          setResumeExpData={setResumeExpData}
+          setResumeEduData={setResumeEduData}
+          setResumeHeaderData={setResumeHeaderData} />
       </ResumeBlockHolder>
     </div >
   );
