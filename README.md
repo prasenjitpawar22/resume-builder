@@ -2,7 +2,7 @@
 ## Create your resume
 
 <![alt](https://github.com/prasenjitpawar22/resume-builder/tree/main/public/readmeImage.png?raw=true)>
-
+<img width="155" height="400" scr="https://github.com/prasenjitpawar22/resume-builder//tree/main/public/readmeImage.png" />
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
