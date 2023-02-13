@@ -9,6 +9,7 @@ import FeatureExpCardPlain from './comps/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
 import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
 import Resume from './comps/Resume/Resume';
+import ModalCreateHeaderData from './comps/Models/ModalCreateHeaderData';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
 
   const [resumeColor, setResumeColor] = useState('#E7E9EC');
 
+  const [headerBlockModalState, setHeaderBlockModalState] = useState(false)
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === leftBlockWidth ? 0 : leftBlockWidth)
@@ -54,7 +56,9 @@ function App() {
           {leftBlockMargin === 0 ? <BiChevronsLeft size={40} /> : <BiChevronsRight size={40} />}
         </span>
         <Feature>
-          <DropDownList setBlockState={setHeaderBlockState} blockState={headerBlockState} title={'Header Block'} />
+          <DropDownList
+            setHeaderBlockModalState={setHeaderBlockModalState}
+            setBlockState={setHeaderBlockState} blockState={headerBlockState} title={'Header Block'} />
           {
             <FeatureHeaderCardPlain
               headerBlockState={headerBlockState}
@@ -102,6 +106,11 @@ function App() {
           setResumeEduData={setResumeEduData}
           setResumeHeaderData={setResumeHeaderData} />
       </ResumeBlockHolder>
+
+      {/* modals  */}
+      <ModalCreateHeaderData
+        setHeaderBlockModalState={setHeaderBlockModalState}
+        headerBlockModalState={headerBlockModalState} />
     </div >
   );
 }
