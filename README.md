@@ -1,7 +1,7 @@
 # Resume Builder
 ## Create your resume
 
-![Alt text](https://github.com/prasenjitpawar22/resume-builder/blob/main/public/readmeImage.png "Index")
+<!-- ![Alt text](https://github.com/prasenjitpawar22/resume-builder/blob/main/public/readmeImage.png "Index") -->
 <img src="https://github.com/prasenjitpawar22/resume-builder/blob/main/public/readmeImage.png"
      alt="Alt text" title="Index">
 
