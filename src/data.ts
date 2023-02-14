@@ -4,7 +4,7 @@ const data: Data = {
     'header': [{
         'id': '1',
         'fullName': 'Prasenjit Pawar',
-        'contact': 123123123,
+        'contact': '123123123',
         'linkedIn': '',
         'github': '',
         'websit': '',

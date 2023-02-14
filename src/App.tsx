@@ -29,7 +29,7 @@ const App: React.FC = () => {
 
   const [resumeColor, setResumeColor] = useState('#E7E9EC');
 
-  const [headerBlockModalState, setHeaderBlockModalState] = useState(false)
+  const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(false)
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === leftBlockWidth ? 0 : leftBlockWidth)

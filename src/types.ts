@@ -1,24 +1,24 @@
 export type Header = {
-    'id': string,
-    'fullName': string,
-    'contact': number,
-    'linkedIn': string,
-    'github': string,
-    'websit': string,
+    'id': string | undefined,
+    'fullName': string | undefined,
+    'contact': string | undefined,
+    'linkedIn': string | undefined,
+    'github': string | undefined,
+    'websit': string | undefined,
 } | undefined
 
 export type Education = {
-    'id': string,
-    'university': string,
-    'start': string,
-    'end': string
+    'id': string | undefined,
+    'university': string | undefined,
+    'start': string | undefined,
+    'end': string | undefined
 }
 export type Experience = {
-    'id': string,
-    'position': string,
-    'company': string,
-    'start': string,
-    'end': string,
+    'id': string | undefined,
+    'position': string | undefined,
+    'company': string | undefined,
+    'start': string | undefined,
+    'end': string | undefined,
     "desc": string[] | null
 }
 
