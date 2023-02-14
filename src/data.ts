@@ -1,7 +1,13 @@
-const data = {
-    'header':[{
-        'id':'1',
-        'name':'Prasenjit Pawar',
+import { Data } from "./types";
+
+const data: Data = {
+    'header': [{
+        'id': '1',
+        'fullName': 'Prasenjit Pawar',
+        'contact': 123123123,
+        'linkedIn': '',
+        'github': '',
+        'websit': '',
     }],
     'education': [{
         'id': '1',
@@ -35,7 +41,8 @@ const data = {
         'position': 'Mern Stack',
         'company': 'ATG',
         'start': '02/2022',
-        'end': '02/2022'
+        'end': '02/2022',
+        'desc': []
     }]
 }
 

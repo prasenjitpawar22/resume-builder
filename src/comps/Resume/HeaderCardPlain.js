@@ -23,7 +23,7 @@ const HeaderCardPlain = (props) => {
 					<button onClick={() => handleDelete(data.id)}>delete</button>
 				</EditBar>
 				<div className='w-full flex rounded-md justify-center'>
-					<p>{data?.name} </p>
+					<p>{data?.fullName} </p>
 				</div>
 			</div>
 		</Draggable>

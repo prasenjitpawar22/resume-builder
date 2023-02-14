@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
+import data from '../../data.ts'
+import { v4 as uuidv4 } from 'uuid';
 
-export default function ModalCreateHeaderData(props) {
+export default function ModalCreateHeaderheaderData(props) {
 
 	const { headerBlockModalState, setHeaderBlockModalState } = props
+
+	const [headerData, setHeaderData] = useState({
+		'fullname': '',
+		'contact': '',
+		'linkedin': '',
+		'github': '',
+		'websit': ''
+	})
+
+	const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
+	const handleSubmit = (e) => {
+		console.log(headerData);
+		data.header.push({
+			id: uuidv4(),
+			fullName: headerData.fullname,
+			github: headerData.github,
+			websit: headerData.websit,
+			linkedIn: headerData.linkedin
+		})
+		console.log(data);
+		e.preventDefault()
+	}
 
 	return headerBlockModalState &&
 		<>
@@ -10,7 +34,7 @@ export default function ModalCreateHeaderData(props) {
 				className="justify-center items-center flex overflow-x-hidden 
 				overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
 			>
-				<div className="relative w-auto my-6 mx-auto max-w-3xl">
+				<div className="relative w-auto my-2 mx-auto max-w-3xl">
 					{/*content*/}
 					<div className="border-0 rounded-lg shadow-lg relative flex
 					 flex-col w-full bg-white outline-none focus:outline-none">
@@ -22,47 +46,84 @@ export default function ModalCreateHeaderData(props) {
 							</h3>
 							<button
 								className="p-1 ml-auto bg-transparent border-0 text-black 
-								opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+								opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
 								onClick={() => setHeaderBlockModalState(false)}
 							>
-								<span className="bg-transparent text-black
-								h-6 w-6 text-2xl block outline-none focus:outline-none">
+								<span className="text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
 									×
 								</span>
 							</button>
 						</div>
 						{/*body*/}
-						<div className="relative p-6 flex-auto">
-							<p className="my-4 text-slate-500 text-lg leading-relaxed">
-								I always felt like I could do anything. That’s the main
-								thing people are controlled by! Thoughts- their perception
-								of themselves! They're slowed down by their perception of
-								themselves. If you're taught you can’t do anything, you
-								won’t do anything. I was taught I could do everything.
-							</p>
-						</div>
-						{/*footer*/}
-						<div className="flex items-center justify-end p-6 border-t 
+						<form onSubmit={handleSubmit} className='bg-white shadow-md rounded px-8 pt-6 pb-2 mb-4'>
+							<div className="relative p-6 flex-auto w-full">
+								<div className='mb-4 flex gap-4 justify-between'>
+									<div className=''>
+										<label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
+											Full Name
+										</label>
+										<input value={headerData.fullname} onChange={(e) => setHeaderData({ ...headerData, fullname: e.target.value })}
+											className={inputStyle}
+											type={'text'} placeholder={'Full Name'} />
+									</div>
+									<div>
+										<label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
+											Contact Number
+										</label>
+										<input value={headerData.contact} onChange={(e) => setHeaderData({ ...headerData, contact: e.target.value })}
+											className={inputStyle}
+											type={'tel'} placeholder={'Contact Number'} />
+									</div>
+								</div>
+								<div className='mb-4'>
+									<label className='block text-gray-700 text-sm font-bold mb-2'>
+										LinkedIn Profile
+									</label>
+									<input value={headerData.linkedin} onChange={(e) => setHeaderData({ ...headerData, linkedin: e.target.value })}
+										className={inputStyle}
+										type={'text'} placeholder={'Full Name'} />
+								</div>
+								<div className='mb-4'>
+									<label className='block text-gray-700 text-sm font-bold mb-2'>
+										Github Profile
+									</label>
+									<input value={headerData.github} onChange={(e) => setHeaderData({ ...headerData, github: e.target.value })}
+										className={inputStyle}
+										type={'text'} placeholder={'Full Name'} />
+								</div>
+								<div className='mb-4'>
+									<label className='block text-gray-700 text-sm font-bold mb-2'>
+										Website Link
+									</label>
+									<input value={headerData.websit} onChange={(e) => setHeaderData({ ...headerData, websit: e.target.value })}
+										className={inputStyle}
+										type={'text'} placeholder={'Full Name'} />
+								</div>
+
+							</div>
+							{/*footer*/}
+							<div className="flex items-center justify-end p-2 border-t 
 							border-solid border-slate-200 rounded-b">
-							<button
-								className="text-red-500 background-transparent font-bold
+								<button
+									className="text-red-500 background-transparent font-bold
 								 uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1
 								  ease-linear transition-all duration-150"
-								type="button"
-								onClick={() => setHeaderBlockModalState(false)}
-							>
-								Close
-							</button>
-							<button
-								className="bg-emerald-500 text-white active:bg-emerald-600 
-								font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg
+									type="button"
+									onClick={() => setHeaderBlockModalState(false)}
+								>
+									Close
+								</button>
+								<button
+									className="bg-emerald-500 text-white active:bg-emerald-600 
+								font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg
 								 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-								type="button"
-								onClick={() => setHeaderBlockModalState(false)}
-							>
-								Save Changes
-							</button>
-						</div>
+									type="submit"
+								// onClick={() => setHeaderBlockModalState(false)}
+								>
+									Save Changes
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>

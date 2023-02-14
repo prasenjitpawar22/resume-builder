@@ -2,7 +2,6 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import data from './data';
-import { PDFViewer } from '@react-pdf/renderer'
 import DropDownList from './comps/DropDownList';
 import FeatureEduCardPlain from './comps/FeatureEduCardPlain';
 import FeatureExpCardPlain from './comps/FeatureExpCardPlain';
@@ -10,17 +9,19 @@ import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
 import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
 import Resume from './comps/Resume/Resume';
 import ModalCreateHeaderData from './comps/Models/ModalCreateHeaderData';
+import { Education, Experience, Header } from './types'
+import React from 'react';
 
-function App() {
+const App: React.FC = () => {
 
   const [leftBlockWidth, setLeftBlockWidth] = useState(30)
   const [leftBlockMargin, setLeftBlockMargin] = useState(0)
   const [resumeBlockPosition, setResumeBlockPosition] = useState(0)
-  const [resumeExpData, setResumeExpData] = useState([])
-  const [resumeEduData, setResumeEduData] = useState([])
-  const [resumeHeaderData, setResumeHeaderData] = useState([])
+  const [resumeExpData, setResumeExpData] = useState<Experience[]>([])
+  const [resumeEduData, setResumeEduData] = useState<Education[]>([])
+  const [resumeHeaderData, setResumeHeaderData] = useState<Header[] | undefined>([])
 
-  const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState(550)
+  const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
 
   const [headerBlockState, setHeaderBlockState] = useState(false)
   const [eduBlockState, setEduBlockState] = useState(false)
@@ -36,7 +37,7 @@ function App() {
     console.log(leftBlockMargin);
   }
 
-  const handleResumeColor = (color) => {
+  const handleResumeColor = (color: string) => {
     setResumeColor(color)
   }
 
@@ -50,7 +51,8 @@ function App() {
 
   return (
     <div className="App">
-      <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100 ' width={leftBlockWidth} marginLeft={leftBlockMargin}>
+      <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100'
+        width={leftBlockWidth} marginLeft={leftBlockMargin}>
         <h1 className='text-3xl font-semibold text-center'>Features</h1>
         <span onClick={handleLeftBlock}>
           {leftBlockMargin === 0 ? <BiChevronsLeft size={40} /> : <BiChevronsRight size={40} />}
@@ -62,7 +64,8 @@ function App() {
           {
             <FeatureHeaderCardPlain
               headerBlockState={headerBlockState}
-              resumeHeaderData={resumeHeaderData} setResumeHeaderData={setResumeHeaderData}
+              resumeHeaderData={resumeHeaderData}
+              setResumeHeaderData={setResumeHeaderData}
               data={data.header}
             />
           }
@@ -117,7 +120,18 @@ function App() {
 
 export default App;
 
-const FeatureBlock = styled.div`
+export interface FeatureBlockProps {
+  width: number,
+  marginLeft: number,
+}
+
+export interface ResumeBlockHolder {
+  width: number,
+  marginLeft: number,
+  resumeBlockPosition: number
+}
+
+const FeatureBlock = styled.div<FeatureBlockProps>`
   position: absolute;
   width: ${(props) => props.width}%;
   height: fit-content;
@@ -161,7 +175,7 @@ const Colors = styled.div`
     cursor: pointer;
   }
 `
-const ResumeBlockHolder = styled.div`
+const ResumeBlockHolder = styled.div<ResumeBlockHolder>`
   /* border-width: 5px; */
   position: absolute;
   display: flex;
