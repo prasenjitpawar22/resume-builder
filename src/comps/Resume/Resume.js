@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { Page, Text, View, Document, StyleSheet, MyDocument, PDFViewer } from '@react-pdf/renderer';
 import ExpCardPlain from './ExpCardPlain'
 import EduCardPlain from './EduCardPlain';
-import Draggable from 'react-draggable';
 import { IoIosResize } from 'react-icons/io'
 import HeaderCardPlain from './HeaderCardPlain';
 import html2canvas from 'html2canvas';
