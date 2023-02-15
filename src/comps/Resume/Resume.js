@@ -144,7 +144,8 @@ export default function Resume(props) {
 				<Header
 					onMouseLeave={() => setHeaderResizeState(false)}
 					onMouseEnter={() => setHeaderResizeState(true)}
-					maxWidth={resumeBlockHolderWidth} height={headerSize.y} width={headerSize.x} bgColor={resumeColor} className='border-dashed hover:border border-slate-500'>
+					maxWidth={resumeBlockHolderWidth} height={headerSize.y} width={headerSize.x} bgColor={resumeColor}
+					className='border-b-2 font-serif border-slate-300 hover:border-dashed hover:border'>
 					<span className='shadow-md p-2'>Header</span>
 					{resumeHeaderData.length > 0 && resumeHeaderData?.map(data =>
 						<HeaderCardPlain data={data} setData={setResumeHeaderData} />
@@ -158,8 +159,9 @@ export default function Resume(props) {
 				<Education
 					onMouseLeave={() => setEduResizeState(false)}
 					onMouseEnter={() => setEduResizeState(true)}
-					height={EduSize.y} width={EduSize.x} bgColor={resumeColor} className='border-dashed hover:border border-slate-500'>
-					<span className='shadow-md p-2'>Education</span>
+					height={EduSize.y} width={EduSize.x} bgColor={resumeColor}
+					className='font-serif border-b-2 hover:border-dashed hover:border border-slate-300'>
+					<span className='uppercase font-medium p-2'>Education</span>
 					{resumeEduData.length > 0 && resumeEduData?.map(data =>
 						<EduCardPlain data={data} setData={setResumeEduData} />
 					)}
@@ -171,8 +173,9 @@ export default function Resume(props) {
 				<Experience
 					onMouseLeave={() => setExpResizeState(false)}
 					onMouseEnter={() => setExpResizeState(true)}
-					height={expSize.y} width={expSize.x} bgColor={resumeColor} className='border-dashed hover:border border-slate-500'>
-					<span className='shadow-md p-2'>Experience</span>
+					height={expSize.y} width={expSize.x} bgColor={resumeColor}
+					className='font-serif border-b-2 hover:border-dashed hover:border border-slate-300'>
+					<span className='uppercase p-2 font-normal'>Experience</span>
 					{resumeExpData.length > 0 && resumeExpData?.map(data =>
 						<ExpCardPlain data={data} setData={setResumeExpData} />
 					)}
@@ -219,11 +222,11 @@ const Education = styled.div`
     height: ${(props) => props.height}px;
     margin-bottom: 12px;
     position: relative;
-    & span{
+    /* & span{
       position: absolute;
       right: -6.5rem;
       background-color: ${(props) => props.bgColor};
-    }
+    } */
     .reSizeBtn{
       position: absolute;
       bottom: 0;
@@ -237,11 +240,11 @@ const Experience = styled.div`
     height: ${(props) => props.height}px;
     margin-bottom: 12px;
     position: relative;
-    & span{
+    /* & span{
       position: absolute;
       right: -6.5rem;
       background-color: ${(props) => props.bgColor};
-    }
+    } */
     .reSizeBtn{
       position: absolute;
       bottom: 0;

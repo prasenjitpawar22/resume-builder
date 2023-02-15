@@ -28,12 +28,30 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 				<button onClick={() => handleDelete(data?.id)}>delete</button>
 			</EditBar>
 			<div className='w-full flex flex-col items-center rounded-md justify-center'>
-				<p>{data?.fullName} </p>
-				<div className="flex justify-between gap-2 w-full">
-					<p>Contact: {data?.contact} </p>
-					<p>LinkedIn: {data?.linkedIn} </p>
-					<p>Github: {data?.github} </p>
-					<p>Website: {data?.websit} </p>
+				<h1 className="font-normal font-serif text-2xl underline underline-offset-2">
+					{data?.fullName}
+				</h1>
+				<div className="flex justify-between gap-2 w-full flex-wrap">
+					{data?.contact &&
+						<p className="flex gap-2 font-semibold text-sm">Contact:
+							<p className="font-normal">{data?.contact}</p>
+						</p>
+					}
+					{data?.linkedIn &&
+						<p className="flex gap-2 font-semibold text-sm">LinkedIn:
+							<p className="font-normal">{data?.linkedIn}</p>
+						</p>
+					}
+					{data?.github &&
+						<p className="flex gap-2 font-semibold text-sm">Github:
+							<p className="font-normal">{data?.github}</p>
+						</p>
+					}
+					{data?.websit &&
+						<p className="flex gap-2 font-semibold text-sm">Website:
+							<p className="font-normal">{data?.websit}</p>
+						</p>
+					}
 				</div>
 			</div>
 		</div>
