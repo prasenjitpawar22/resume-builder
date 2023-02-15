@@ -5,7 +5,7 @@ import { Header } from "../../types";
 
 interface Props {
 	data: Header,
-	setData: React.Dispatch<React.SetStateAction<Header[]>>,
+	setData: React.Dispatch<React.SetStateAction<Header[] | undefined>>,
 }
 
 const HeaderCardPlain: React.FC<Props> = (props: Props) => {
@@ -17,7 +17,7 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 	}
 
 	const handleDelete = (i?: string) => {
-		setData(currentData => currentData.filter(data => data?.id !== i))
+		setData(currentData => currentData?.filter(data => data?.id !== i))
 	}
 
 	return <Draggable bounds="parent">

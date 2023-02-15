@@ -51,6 +51,10 @@ const data: Data = {
         'start': '02/2022',
         'end': '02/2022',
         'desc': []
+    }],
+    'skill': [{
+        'id': '1',
+        'data': ['.NET Core', 'C#', 'Python', 'React', 'Docker', 'Jira']
     }]
 }
 

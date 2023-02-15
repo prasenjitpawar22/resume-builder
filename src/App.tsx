@@ -7,10 +7,12 @@ import FeatureEduCardPlain from './comps/FeatureEduCardPlain';
 import FeatureExpCardPlain from './comps/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
 import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
-import Resume from './comps/Resume/Resume';
 import ModalCreateHeaderData from './comps/Models/ModalCreateHeaderData';
-import { Education, Experience, Header } from './types'
+import { Education, Experience, Header, Skill } from './types'
 import React from 'react';
+import html2canvas from 'html2canvas';
+import FeatureSkillCardPlain from './comps/FeatureSkillCardPlain';
+import { Resume } from './comps/Resume/Resume';
 
 const App: React.FC = () => {
 
@@ -20,16 +22,20 @@ const App: React.FC = () => {
   const [resumeExpData, setResumeExpData] = useState<Experience[]>([])
   const [resumeEduData, setResumeEduData] = useState<Education[]>([])
   const [resumeHeaderData, setResumeHeaderData] = useState<Header[] | undefined>([])
+  const [resumeSkillData, setResumeSkillData] = useState<Skill[] | undefined>([])
 
   const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
 
   const [headerBlockState, setHeaderBlockState] = useState(false)
   const [eduBlockState, setEduBlockState] = useState(false)
-  const [expBlockState, setExpBlockState] = useState(false)
+  const [expBlockState, setExpBlockState] = useState<boolean>(false)
+  const [skillBlockState, setSkillBlockState] = useState(false)
 
-  const [resumeColor, setResumeColor] = useState('#E7E9EC');
+  const [resumeColor, setResumeColor] = useState<string>('#E7E9EC');
 
   const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(false)
+
+  const printRef = React.useRef<HTMLElement>();
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === leftBlockWidth ? 0 : leftBlockWidth)
@@ -49,8 +55,30 @@ const App: React.FC = () => {
     console.log(resumeExpData);
   }, [resumeExpData])
 
+  const handleDownloadImage = async () => {
+    const element = printRef.current;
+    const canvas = await html2canvas(element!);
+
+    const data = canvas.toDataURL('image/jpg');
+    const link = document.createElement('a');
+
+    if (typeof link.download === 'string') {
+      link.href = data;
+      link.download = 'image.jpg';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(data);
+    }
+  };
   return (
     <div className="App">
+      {/* <NavBar className='bg-slate-100'>
+
+      </NavBar> */}
+
       <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100'
         width={leftBlockWidth} marginLeft={leftBlockMargin}>
         <h1 className='text-3xl font-semibold text-center'>Features</h1>
@@ -85,7 +113,11 @@ const App: React.FC = () => {
               resumeExpData={resumeExpData} setResumeExpData={setResumeExpData}
               data={data.experience} />
           }
-          <DropDownList title={'Skills Block'} />
+          <DropDownList setBlockState={setSkillBlockState} blockState={skillBlockState} title={'Skills Block'} />
+          <FeatureSkillCardPlain
+            skillBlockState={skillBlockState}
+            resumeSkillData={resumeSkillData} setResumeSkillData={setResumeSkillData}
+            data={data.skill} />
           <DropDownList title={'Other Block'} />
         </Feature>
       </FeatureBlock>
@@ -96,18 +128,27 @@ const App: React.FC = () => {
         resumeBlockPosition={resumeBlockPosition}>
         <ColorBlock>
           <Colors>
+            <p className='font-semibold'>Colors:</p>
             <span onClick={() => handleResumeColor('#E7E9EC')} className='bg-slate-200'> </span>
             <span onClick={() => handleResumeColor('#ECEDF0')} className='bg-slate-100'> </span>
             <span onClick={() => handleResumeColor('white')} className='bg-white'> </span>
           </Colors>
+          <button type="button"
+            className='bg-blue-400 text-white px-2 rounded hover:bg-blue-600 transition-all duration-200'
+            onClick={() => handleDownloadImage()}>
+            Download as Image
+          </button>
         </ColorBlock>
         <Resume
+          printRef={printRef}
           resumeBlockHolderWidth={resumeBlockHolderWidth}
           resumeHeaderData={resumeHeaderData} resumeEduData={resumeEduData}
           resumeExpData={resumeExpData} resumeColor={resumeColor}
           setResumeExpData={setResumeExpData}
           setResumeEduData={setResumeEduData}
-          setResumeHeaderData={setResumeHeaderData} />
+          setResumeHeaderData={setResumeHeaderData}
+          resumeSkillData={resumeSkillData}
+          setResumeSkillData={setResumeSkillData} />
       </ResumeBlockHolder>
 
       {/* modals  */}
@@ -130,6 +171,12 @@ export interface ResumeBlockHolder {
   marginLeft: number,
   resumeBlockPosition: number
 }
+
+const NavBar = styled.div`
+  width: 100%;
+  height: 4rem;
+`
+
 
 const FeatureBlock = styled.div<FeatureBlockProps>`
   position: absolute;
@@ -160,12 +207,13 @@ const ColorBlock = styled.div`
   background-color: white;
   width: 100%;
   height: fit-content;
-  justify-content: center;
+  justify-content: space-between;
   padding: .3rem;
 `
 const Colors = styled.div`
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
   & span{
     height: 2rem;
     width: 2rem;
@@ -181,9 +229,10 @@ const ResumeBlockHolder = styled.div<ResumeBlockHolder>`
   display: flex;
   flex-direction: column;
   width: ${(props) => props.width}px;
-  height: 99vh;
+  height: auto;
+  padding-bottom: 2rem;
   transition: all;
   transition-duration: 1s;
-  background-color: greenyellow;
+  /* background-color: greenyellow; */
   left:${(props) => props.marginLeft - props.resumeBlockPosition + 2}%;
 `
