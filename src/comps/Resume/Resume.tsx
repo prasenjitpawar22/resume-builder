@@ -6,6 +6,7 @@ import { IoIosResize } from 'react-icons/io'
 import HeaderCardPlain from './HeaderCardPlain';
 import { Header, Education, Experience, Skill } from '../../types'
 import SkillCardPlain from './SkillCardPlain';
+import { Reorder } from 'framer-motion';
 
 interface Props {
   resumeColor: string,
@@ -183,9 +184,13 @@ export const Resume: React.FC<Props> = (props: Props) => {
           bgColor={resumeColor}
           className='border-b-2 font-serif border-slate-300 hover:border-dashed hover:border'>
           <span className='shadow-md p-2'>Header</span>
-          {resumeHeaderData?.length! > 0 && resumeHeaderData?.map(data =>
-            <HeaderCardPlain data={data} setData={setResumeHeaderData} />
-          )}
+          <Reorder.Group axis='y' values={resumeHeaderData!} onReorder={setResumeHeaderData}>
+            {resumeHeaderData?.length! > 0 && resumeHeaderData?.map(data =>
+              <Reorder.Item key={data?.id} value={data}>
+                <HeaderCardPlain data={data} setData={setResumeHeaderData} />
+              </Reorder.Item>
+            )}
+          </Reorder.Group>
           {headerResizeState &&
             <button className='reSizeBtn'
               onMouseDown={(e) => handleHeaderResize(e)}>
@@ -199,9 +204,13 @@ export const Resume: React.FC<Props> = (props: Props) => {
           height={EduSize.y} width={EduSize.x} bgColor={resumeColor}
           className='font-serif border-b-2 hover:border-dashed hover:border border-slate-300'>
           <span className='uppercase font-medium p-2'>Education</span>
-          {resumeEduData.length > 0 && resumeEduData?.map(data =>
-            <EduCardPlain data={data} setData={setResumeEduData} />
-          )}
+          <Reorder.Group axis="y" values={resumeEduData} onReorder={setResumeEduData}>
+            {resumeEduData.length > 0 && resumeEduData?.map(data =>
+              <Reorder.Item key={data.id} value={data}>
+                <EduCardPlain data={data} setData={setResumeEduData} />
+              </Reorder.Item>
+            )}
+          </Reorder.Group>
           {eduResizeState &&
             <button className='reSizeBtn' onMouseDown={handleEduResize}><IoIosResize /></button>
           }
@@ -213,9 +222,13 @@ export const Resume: React.FC<Props> = (props: Props) => {
           height={expSize.y} width={expSize.x} bgColor={resumeColor}
           className='font-serif border-b-2 hover:border-dashed hover:border border-slate-300'>
           <span className='uppercase p-2 font-normal'>Experience</span>
-          {resumeExpData.length > 0 && resumeExpData?.map(data =>
-            <ExpCardPlain data={data} setData={setResumeExpData} />
-          )}
+          <Reorder.Group axis='y' values={resumeExpData} onReorder={setResumeExpData}>
+            {resumeExpData.length > 0 && resumeExpData?.map(data =>
+              <Reorder.Item key={data.id} value={data}>
+                <ExpCardPlain data={data} setData={setResumeExpData} />
+              </Reorder.Item>
+            )}
+          </Reorder.Group>
           {expResizeState &&
             <button className='reSizeBtn' onMouseDown={handleExpResize}><IoIosResize /></button>
           }

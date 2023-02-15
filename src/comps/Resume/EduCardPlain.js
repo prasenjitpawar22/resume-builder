@@ -15,28 +15,27 @@ const EduCardPlain = (props) => {
     }
 
     return (
-        <Draggable bounds="parent">
-            <div onMouseLeave={handleHover} onMouseEnter={handleHover} className='flex flex-col p-4 cursor-default'>
-                <EditBar className="z-50" display={hoverCardState}>
-                    <button className="editBarBtn">edit</button>
-                    <button onClick={() => handleDelete(data.id)}>delete</button>
-                </EditBar>
-                <div className='w-full flex rounded-md  justify-between'>
-                    <p>{data?.university} </p>
-                    <div className='flex gap-2'>
-                        <p>{data?.start}</p>-
-                        <p>{data?.end}</p>
-                    </div>
+        <div onMouseLeave={handleHover} onMouseEnter={handleHover}
+            className='flex flex-col p-4 cursor-default '>
+            <EditBar className="z-50" display={hoverCardState}>
+                <button className="editBarBtn">edit</button>
+                <button onClick={() => handleDelete(data.id)}>delete</button>
+            </EditBar>
+            <div className='w-full flex rounded-md justify-between'>
+                <p>{data?.university} </p>
+                <div className='flex gap-2'>
+                    <p>{data?.start}</p>-
+                    <p>{data?.end}</p>
                 </div>
-                <ul className='list-disc px-4 mt-2'>
-                    {data?.desc?.map(d =>
-                        <li>
-                            {d}
-                        </li>
-                    )}
-                </ul>
             </div>
-        </Draggable>
+            <ul className='list-disc px-4 mt-2'>
+                {data?.desc?.map(d =>
+                    <li>
+                        {d}
+                    </li>
+                )}
+            </ul>
+        </div>
     );
 }
 
