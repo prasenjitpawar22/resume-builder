@@ -1,6 +1,9 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 import data from './data';
 import DropDownList from './comps/DropDownList';
 import FeatureEduCardPlain from './comps/FeatureEduCardPlain';
@@ -9,69 +12,68 @@ import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
 import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
 import ModalCreateHeaderData from './comps/Models/ModalCreateHeaderData';
 import { Education, Experience, Header, Skill } from './types'
-import React from 'react';
-import html2canvas from 'html2canvas';
 import FeatureSkillCardPlain from './comps/FeatureSkillCardPlain';
 import { Resume } from './comps/Resume/Resume';
+import { ResumeContext } from './context/ResumeContext';
+import { resumeClient } from './api/axiosClient';
 
 const App: React.FC = () => {
 
-  const [leftBlockWidth, setLeftBlockWidth] = useState(30)
+  const { resumeBlockHolderWidth, resumeHeaderData, setResumeHeaderData,
+    resumeExpData, setResumeExpData, setResumeColor, resumeEduData, setResumeEduData,
+    resumeSkillData, setResumeSkillData } = useContext(ResumeContext)
+  const navigate = useNavigate();
+
+  const [leftBlockWidth, setLeftBlockWidth] = useState<number>(30)
   const [leftBlockMargin, setLeftBlockMargin] = useState(0)
   const [resumeBlockPosition, setResumeBlockPosition] = useState(0)
-  const [resumeExpData, setResumeExpData] = useState<Experience[]>([])
-  const [resumeEduData, setResumeEduData] = useState<Education[]>([])
-  const [resumeHeaderData, setResumeHeaderData] = useState<Header[] | undefined>([])
-  const [resumeSkillData, setResumeSkillData] = useState<Skill[] | undefined>([])
-
-  const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
-
   const [headerBlockState, setHeaderBlockState] = useState(false)
   const [eduBlockState, setEduBlockState] = useState(false)
   const [expBlockState, setExpBlockState] = useState<boolean>(false)
   const [skillBlockState, setSkillBlockState] = useState(false)
-
-  const [resumeColor, setResumeColor] = useState<string>('#E7E9EC');
-
   const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(false)
 
-  const printRef = React.useRef<HTMLElement>();
-
   const handleLeftBlock = () => {
-    setLeftBlockMargin(leftBlockMargin === leftBlockWidth ? 0 : leftBlockWidth)
+    setLeftBlockMargin(leftBlockMargin === 0 ? 30 : 0)
     setResumeBlockPosition(resumeBlockPosition === 0 ? 10 : 0)
     console.log(leftBlockMargin);
   }
 
   const handleResumeColor = (color: string) => {
-    setResumeColor(color)
+    setResumeColor!(color)
   }
 
   useEffect(() => {
-    console.log(resumeExpData);
-  }, [resumeExpData])
+    console.log('teadasda ', leftBlockWidth);
+  }, [leftBlockWidth])
 
   useEffect(() => {
     console.log(resumeExpData);
   }, [resumeExpData])
 
   const handleDownloadImage = async () => {
-    const element = printRef.current;
-    const canvas = await html2canvas(element!);
+    // const element = printRef.current;
+    // const canvas = await html2canvas(element!);
 
-    const data = canvas.toDataURL('image/jpg');
-    const link = document.createElement('a');
+    // const data = canvas.toDataURL('image/jpg');
+    // const link = document.createElement('a');
 
-    if (typeof link.download === 'string') {
-      link.href = data;
-      link.download = 'image.jpg';
+    // if (typeof link.download === 'string') {
+    //   link.href = data;
+    //   link.download = 'image.jpg';
 
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(data);
-    }
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    // } else {
+    //   window.open(data);
+    // }
+
+    // backedn
+    await resumeClient.get("./download-resume")
+      .then((res) => console.log(res))
+      .catch((e) => console.log(e))
+    // navigate('/download-resume')
   };
   return (
     <div className="App">
@@ -80,7 +82,7 @@ const App: React.FC = () => {
       </NavBar> */}
 
       <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100'
-        width={leftBlockWidth} marginLeft={leftBlockMargin}>
+        width={leftBlockWidth!} marginLeft={leftBlockMargin}>
         <div className='flex items-center px-8 gap-4 mt-2 bg-violet-300 rounded ml-2 py-2 mr-2'>
           <img className='w-20 h-20 rounded-full shadow-2xl shadow-neutral-900' src='./brand.png' />
           <h1 className='text-2xl font-normal'>Resume Builder</h1>
@@ -97,8 +99,8 @@ const App: React.FC = () => {
             <FeatureHeaderCardPlain
               headerBlockState={headerBlockState}
               resumeHeaderData={resumeHeaderData}
-              setResumeHeaderData={setResumeHeaderData}
-              data={data.header}
+              setResumeHeaderData={setResumeHeaderData!}
+            // data={data.header}
             />
           }
           <DropDownList setBlockState={setEduBlockState} blockState={eduBlockState} title={'Education Block'} />
@@ -120,15 +122,15 @@ const App: React.FC = () => {
           <DropDownList setBlockState={setSkillBlockState} blockState={skillBlockState} title={'Skills Block'} />
           <FeatureSkillCardPlain
             skillBlockState={skillBlockState}
-            resumeSkillData={resumeSkillData} setResumeSkillData={setResumeSkillData}
+            resumeSkillData={resumeSkillData} setResumeSkillData={setResumeSkillData!}
             data={data.skill} />
           <DropDownList title={'Other Block'} />
         </Feature>
       </FeatureBlock>
 
       <ResumeBlockHolder
-        width={resumeBlockHolderWidth}
-        marginLeft={leftBlockWidth}
+        width={resumeBlockHolderWidth!}
+        marginLeft={leftBlockWidth!}
         resumeBlockPosition={resumeBlockPosition}>
         <ColorBlock>
           <Colors>
@@ -143,16 +145,7 @@ const App: React.FC = () => {
             Download as Image
           </button>
         </ColorBlock>
-        <Resume
-          printRef={printRef}
-          resumeBlockHolderWidth={resumeBlockHolderWidth}
-          resumeHeaderData={resumeHeaderData} resumeEduData={resumeEduData}
-          resumeExpData={resumeExpData} resumeColor={resumeColor}
-          setResumeExpData={setResumeExpData}
-          setResumeEduData={setResumeEduData}
-          setResumeHeaderData={setResumeHeaderData}
-          resumeSkillData={resumeSkillData}
-          setResumeSkillData={setResumeSkillData} />
+        <Resume />
       </ResumeBlockHolder>
 
       {/* modals  */}

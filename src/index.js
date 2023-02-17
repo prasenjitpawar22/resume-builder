@@ -1,13 +1,49 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ResumeProvider from './context/ResumeContext';
+import ResumeDownload from './comps/Resume/ResumeDownload';
+import FeatureProvider from './context/FeaturesContext';
+
+// const {
+//   leftBlockWidth, printRef,
+//   resumeBlockHolderWidth, resumeColor,
+//   resumeEduData, resumeExpData,
+//   resumeHeaderData, resumeSkillData,
+//   setResumeBlockHolderWidth, setResumeColor,
+//   setResumeEduData, setResumeExpData,
+//   setResumeHeaderData, setResumeSkillData,
+//   setLeftBlockWidth,
+// } = useContext(ResumeContext)
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />
+  },
+  {
+    path: '/download-resume',
+    element: <ResumeDownload />
+  }
+])
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <FeatureProvider>
+      <ResumeProvider>
+        <RouterProvider router={router}>
+        </RouterProvider>
+      </ResumeProvider>
+    </FeatureProvider>
   </React.StrictMode>
 );
 

@@ -20,10 +20,10 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
     data.header.push({
       id: uuidv4(),
       contact: headerData?.contact,
-      fullName: headerData?.fullName,
+      fullname: headerData?.fullname,
       github: headerData?.github,
       websit: headerData?.websit,
-      linkedIn: headerData?.linkedIn
+      linkedin: headerData?.linkedin
     })
     console.log(data);
     e.preventDefault()
@@ -59,8 +59,8 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                     <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
                       Full Name
                     </label>
-                    <input required value={headerData?.fullName}
-                      onChange={(e) => setHeaderData({ ...(headerData!), fullName: e.target.value })}
+                    <input required value={headerData?.fullname}
+                      onChange={(e) => setHeaderData({ ...(headerData!), fullname: e.target.value })}
                       className={inputStyle}
                       type={'text'} placeholder={'Full Name'} />
                   </div>
@@ -76,10 +76,10 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                 </div>
                 <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>
-                    LinkedIn Profile
+                    Linkedin Profile
                   </label>
-                  <input value={headerData?.linkedIn}
-                    onChange={(e) => setHeaderData({ ...headerData!, linkedIn: e.target.value })}
+                  <input value={headerData?.linkedin}
+                    onChange={(e) => setHeaderData({ ...headerData!, linkedin: e.target.value })}
                     className={inputStyle}
                     type={'text'} placeholder={'Full Name'} />
                 </div>

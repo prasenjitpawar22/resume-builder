@@ -1,39 +1,27 @@
-import React, { useState } from 'react'
+import { Reorder } from 'framer-motion';
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components';
+
 import ExpCardPlain from './ExpCardPlain'
 import EduCardPlain from './EduCardPlain';
 import { IoIosResize } from 'react-icons/io'
 import HeaderCardPlain from './HeaderCardPlain';
-import { Header, Education, Experience, Skill } from '../../types'
 import SkillCardPlain from './SkillCardPlain';
-import { Reorder } from 'framer-motion';
+import { ResumeContext } from '../../context/ResumeContext'
 
-interface Props {
-  resumeColor: string,
-  resumeBlockHolderWidth: number,
-  resumeHeaderData: Header[] | undefined,
-  setResumeHeaderData: React.Dispatch<React.SetStateAction<Header[] | undefined>>,
-  resumeEduData: Education[],
-  setResumeEduData: React.Dispatch<React.SetStateAction<Education[]>>,
-  setResumeExpData: React.Dispatch<React.SetStateAction<Experience[]>>,
-  resumeExpData: Experience[],
-  printRef: React.MutableRefObject<HTMLElement | undefined>,
-  setResumeSkillData: React.Dispatch<React.SetStateAction<Skill[] | undefined>>,
-  resumeSkillData: Skill[] | undefined
-}
+export const Resume: React.FC = () => {
 
-
-export const Resume: React.FC<Props> = (props: Props) => {
   const {
-    resumeColor, resumeBlockHolderWidth,
-    resumeHeaderData, setResumeHeaderData, resumeEduData, setResumeEduData,
-    resumeExpData, setResumeExpData, printRef, setResumeSkillData,
-    resumeSkillData,
-  } = props
+    printRef,
+    resumeBlockHolderWidth, resumeColor,
+    resumeEduData, resumeExpData,
+    resumeHeaderData, resumeSkillData,
+    setResumeBlockHolderWidth, setResumeColor,
+    setResumeEduData, setResumeExpData,
+    setResumeHeaderData, setResumeSkillData,
+  } = useContext(ResumeContext)
 
-  // const printRef = React.useRef();
-
-  const [headerSize, setheaderSize] = useState({ x: 550, y: 100 });
+  const [headerSize, setheaderSize] = useState({ y: 100 });
   const [EduSize, setEduSize] = useState({ x: 550, y: 150 });
   const [expSize, setExpSize] = useState({ x: 550, y: 150 });
   const [skillSize, setSkillSize] = useState({ x: 550, y: 50 });
@@ -46,21 +34,20 @@ export const Resume: React.FC<Props> = (props: Props) => {
   const handleHeaderResize = (mouseDownEvent: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(mouseDownEvent);
     const startSize = headerSize;
-    const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
+    const startPosition = { y: mouseDownEvent.pageY };
 
     function onMouseMove(mouseMoveEvent: MouseEvent) {
-      let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
+      // let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
       let newY = startSize.y - startPosition.y + mouseMoveEvent.pageY
-      if (newX >= resumeBlockHolderWidth) {
-        console.log('innnnnn');
-        return
-      }
+      // if (newX >= resumeBlockHolderWidth!) {
+      //   console.log('innnnnn');
+      //   return
+      // }
       if (newY >= 200) {
         console.log('innnnnn');
         return
       }
       setheaderSize(({
-        x: newX,
         y: newY
       }));
     }
@@ -73,6 +60,7 @@ export const Resume: React.FC<Props> = (props: Props) => {
     document.body.addEventListener("mousemove", onMouseMove);
     document.body.addEventListener("mouseup", onMouseUp, { once: true });
   };
+
   const handleEduResize = (mouseDownEvent: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
     const startSize = EduSize;
@@ -82,7 +70,7 @@ export const Resume: React.FC<Props> = (props: Props) => {
       let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
       let newY = startSize.y - startPosition.y + mouseMoveEvent.pageY
 
-      if (newX >= resumeBlockHolderWidth) {
+      if (newX >= resumeBlockHolderWidth!) {
         console.log('innnnnn');
         return
       }
@@ -114,7 +102,7 @@ export const Resume: React.FC<Props> = (props: Props) => {
       let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
       let newY = startSize.y - startPosition.y + mouseMoveEvent.pageY
 
-      if (newX >= resumeBlockHolderWidth) {
+      if (newX >= resumeBlockHolderWidth!) {
         console.log('innnnnn');
         return
       }
@@ -146,7 +134,7 @@ export const Resume: React.FC<Props> = (props: Props) => {
       let newX = startSize.x - startPosition.x + mouseMoveEvent.pageX
       let newY = startSize.y - startPosition.y + mouseMoveEvent.pageY
 
-      if (newX >= resumeBlockHolderWidth) {
+      if (newX >= resumeBlockHolderWidth!) {
         console.log('innnnnn');
         return
       }
@@ -173,21 +161,21 @@ export const Resume: React.FC<Props> = (props: Props) => {
   return (
     <>
       <ResumeDiv ref={printRef} className='shadow-2xl'
-        resumeColor={resumeColor}>
+        resumeColor={resumeColor!}>
         {/* header  */}
         <HeaderDiv
           onMouseLeave={() => setHeaderResizeState(false)}
           onMouseEnter={() => setHeaderResizeState(true)}
-          maxWidth={resumeBlockHolderWidth}
+          maxWidth={resumeBlockHolderWidth!}
           height={headerSize.y}
-          width={headerSize.x}
-          bgColor={resumeColor}
+          // width={headerSize.x}
+          bgColor={resumeColor!}
           className='border-b-2 font-serif border-slate-300 hover:border-dashed hover:border'>
           <span className='shadow-md p-2'>Header</span>
-          <Reorder.Group axis='y' values={resumeHeaderData!} onReorder={setResumeHeaderData}>
+          <Reorder.Group axis='y' values={resumeHeaderData!} onReorder={setResumeHeaderData!}>
             {resumeHeaderData?.length! > 0 && resumeHeaderData?.map(data =>
               <Reorder.Item key={data?.id} value={data}>
-                <HeaderCardPlain data={data} setData={setResumeHeaderData} />
+                <HeaderCardPlain data={data} setData={setResumeHeaderData!} />
               </Reorder.Item>
             )}
           </Reorder.Group>
@@ -201,11 +189,11 @@ export const Resume: React.FC<Props> = (props: Props) => {
         <EducationDiv
           onMouseLeave={() => setEduResizeState(false)}
           onMouseEnter={() => setEduResizeState(true)}
-          height={EduSize.y} width={EduSize.x} bgColor={resumeColor}
+          height={EduSize.y} width={EduSize.x} bgColor={resumeColor!}
           className='font-serif border-b-2 hover:border-dashed hover:border border-slate-300'>
           <span className='uppercase font-medium p-2'>Education</span>
-          <Reorder.Group axis="y" values={resumeEduData} onReorder={setResumeEduData}>
-            {resumeEduData.length > 0 && resumeEduData?.map(data =>
+          <Reorder.Group axis="y" values={resumeEduData!} onReorder={setResumeEduData!}>
+            {resumeEduData!.length > 0 && resumeEduData?.map(data =>
               <Reorder.Item key={data.id} value={data}>
                 <EduCardPlain data={data} setData={setResumeEduData} />
               </Reorder.Item>
@@ -219,11 +207,11 @@ export const Resume: React.FC<Props> = (props: Props) => {
         <ExperienceDiv
           onMouseLeave={() => setExpResizeState(false)}
           onMouseEnter={() => setExpResizeState(true)}
-          height={expSize.y} width={expSize.x} bgColor={resumeColor}
+          height={expSize.y} width={expSize.x} bgColor={resumeColor!}
           className='font-serif border-b-2 hover:border-dashed hover:border border-slate-300'>
           <span className='uppercase p-2 font-normal'>Experience</span>
-          <Reorder.Group axis='y' values={resumeExpData} onReorder={setResumeExpData}>
-            {resumeExpData.length > 0 && resumeExpData?.map(data =>
+          <Reorder.Group axis='y' values={resumeExpData!} onReorder={setResumeExpData!}>
+            {resumeExpData!.length > 0 && resumeExpData?.map(data =>
               <Reorder.Item key={data.id} value={data}>
                 <ExpCardPlain data={data} setData={setResumeExpData} />
               </Reorder.Item>
@@ -236,11 +224,11 @@ export const Resume: React.FC<Props> = (props: Props) => {
         <SkillDiv
           onMouseLeave={() => setSkillResizeState(false)}
           onMouseEnter={() => setSkillResizeState(true)}
-          height={skillSize.y} width={skillSize.x} bgColor={resumeColor}
+          height={skillSize.y} width={skillSize.x} bgColor={resumeColor!}
           className='font-serif hover:border-dashed hover:border border-slate-300'>
           <span className='uppercase p-2 font-normal'>Skill</span>
           {resumeSkillData?.length! > 0 && resumeSkillData?.map(data =>
-            <SkillCardPlain data={data} setData={setResumeSkillData} />
+            <SkillCardPlain data={data} setData={setResumeSkillData!} />
           )}
           {skillResizeState &&
             <button className='reSizeBtn' onMouseDown={handleSkillResize}><IoIosResize /></button>
@@ -256,7 +244,7 @@ interface ResumeDivProps {
   ref: any
 }
 interface HeaderProps {
-  width: number
+  // width: number
   height: number
   bgColor: string
   maxWidth: number
@@ -286,8 +274,9 @@ const ResumeDiv = styled.div<ResumeDivProps>`
   transition-duration: 1s;
 `
 const HeaderDiv = styled.div<HeaderProps>`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: auto;
+  height: auto;
+  min-height: ${(props) => props.height}px;
   margin-bottom: 12px;
   position: relative;
   & span{
@@ -304,8 +293,9 @@ const HeaderDiv = styled.div<HeaderProps>`
 `
 
 const EducationDiv = styled.div<EducationProps>`
-    width: ${(props) => props.width}px;
+    width: auto;
     height: ${(props) => props.height}px;
+    min-height: ${(props) => props.height}px;
     margin-bottom: 12px;
     position: relative;
     /* & span{
@@ -322,8 +312,9 @@ const EducationDiv = styled.div<EducationProps>`
 `
 
 const ExperienceDiv = styled.div<ExperienceProps>`
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
+    width: auto;
+    height: auto;
+    min-height: ${(props) => props.height}px;
     margin-bottom: 12px;
     position: relative;
     /* & span{
@@ -340,8 +331,9 @@ const ExperienceDiv = styled.div<ExperienceProps>`
 `
 
 const SkillDiv = styled.div<SkillProps>`
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
+    width: auto;
+    height: auto;
+    min-height: ${(props) => props.height}px;
     margin-bottom: 12px;
     position: relative;
     /* & span{

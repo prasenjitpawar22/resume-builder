@@ -30,20 +30,21 @@ const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
 
     }, [resumeSkillData])
 
-    return (<CardHolder skillBlockState={skillBlockState}
-        className='overflow-y-scroll max-h'>
-        {data?.map(d =>
-            <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
-                {d?.data &&
-                    <h1 className='flex gap-1 flex-wrap font-medium'>Skills:
-                        {d?.data.map(s => <h1 className='font-normal'>{s} |</h1>)}
-                    </h1>
-                }
-                <button className='px-2 bg-blue-400 rounded text-white'
-                    onClick={() => handleAddSkill(d?.id)}>add</button>
-            </Card>
-        )}
-    </CardHolder>)
+    return (
+        <CardHolder skillBlockState={skillBlockState}
+            className='overflow-y-scroll max-h'>
+            {data?.map(d =>
+                <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+                    {d?.data &&
+                        <h1 key={d.id} className='flex gap-1 flex-wrap font-medium'>Skills:
+                            {d?.data.map(s => <p key={s} className='font-normal'>{s} |</p>)}
+                        </h1>
+                    }
+                    <button className='px-2 bg-blue-400 rounded text-white'
+                        onClick={() => handleAddSkill(d?.id)}>add</button>
+                </Card>
+            )}
+        </CardHolder>)
 }
 
 export default FeatureSkillCardPlain;

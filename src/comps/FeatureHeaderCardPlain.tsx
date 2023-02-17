@@ -1,9 +1,16 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { FeatureContext } from '../context/FeaturesContext'
+
 import { Header } from '../types'
 
+const client = axios.create({
+    baseURL: "http://localhost:8000/resume/"
+})
+
 interface Props {
-    data: Header[],
+    // data: Header[],
     headerBlockState: boolean,
     resumeHeaderData: Header[] | undefined,
     setResumeHeaderData: React.Dispatch<React.SetStateAction<Header[] | undefined>>
@@ -15,12 +22,16 @@ interface CardHolderProps {
 
 const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
 
-    const { headerBlockState, resumeHeaderData, setResumeHeaderData, data } = props
+    const { headerBlockState, resumeHeaderData, setResumeHeaderData,
+        // data
+    } = props
 
-    const handleAddExp = (id: string | undefined) => {
+    const { featureHeaderData, setFeatureHeaderData } = useContext(FeatureContext)
+
+    const handleAddExp = async (id: string | undefined) => {
         console.log(id);
         console.log("asd");
-        let d: Header | undefined = data.find(x => x?.id === id)
+        let d: Header | undefined = featureHeaderData?.find(x => x?.id === id)
         //check if already added
         var check = resumeHeaderData?.filter(d => d?.id === id)
         console.log('this check', check);
@@ -28,22 +39,39 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
             return
         }
         setResumeHeaderData([...(resumeHeaderData || []), d])
+
+        //backend req
+        await client.post("set-resume-header",
+            {
+                _id: d?.id,
+                fullname: d?.fullname,
+                contact: d?.contact,
+                github: d?.github,
+                linkedin: d?.linkedin,
+                website: d?.websit
+            })
+            .then((res) => console.log(res))
+            .catch((e) => console.log(e))
     }
 
     return (
         <CardHolder headerBlockState={headerBlockState}
             className='overflow-y-scroll max-h'>
-            {data?.map(d =>
-                <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
-                    <h1>Full Name: {d?.fullName}</h1>
-                    <h1>Contact: {d?.contact}</h1>
-                    {d?.linkedIn && <h1>LinkedIn: {d?.linkedIn}</h1>}
-                    {d?.github && <h1>Github: {d?.github}</h1>}
-                    {d?.websit && <h1>Websit: {d?.websit}</h1>}
-                    <button className='px-2 bg-blue-400 rounded text-white'
-                        onClick={() => handleAddExp(d?.id)}>add</button>
-                </Card>
-            )}
+            {featureHeaderData?.length ?
+                <Card>
+                    <h1>Empty</h1>
+                </Card> :
+                featureHeaderData?.map(d =>
+                    <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+                        {d?.fullname && <h1>Full Name: {d?.fullname}</h1>}
+                        {d?.contact && <h1>Contact: {d?.contact}</h1>}
+                        {d?.linkedin && <h1>Linkedin: {d?.linkedin}</h1>}
+                        {d?.github && <h1>Github: {d?.github}</h1>}
+                        {d?.websit && <h1>Websit: {d?.websit}</h1>}
+                        <button className='px-2 bg-blue-400 rounded text-white'
+                            onClick={() => handleAddExp(d?.id)}>add</button>
+                    </Card>
+                )}
         </CardHolder>
     )
 }

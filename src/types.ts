@@ -1,8 +1,8 @@
 export type Header = {
     id: string | undefined,
-    fullName: string | undefined,
+    fullname: string | undefined,
     contact: string | undefined,
-    linkedIn: string | undefined,
+    linkedin: string | undefined,
     github: string | undefined,
     websit: string | undefined,
 } | undefined
@@ -25,6 +25,7 @@ export type Skill = {
     id: string | undefined,
     data: string[] | undefined
 } | undefined
+
 export type Data = {
     header: Header[],
     education: Education[],

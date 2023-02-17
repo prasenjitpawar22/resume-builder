@@ -1,7 +1,9 @@
 import Draggable from "react-draggable";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Header } from "../../types";
+import axios from "axios";
+import { resumeClient } from "../../api/axiosClient";
 
 interface Props {
 	data: Header,
@@ -10,17 +12,25 @@ interface Props {
 
 const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 	const { data, setData } = props
+	const nodeRef = useRef(null)
 	const [hoverCardState, setHoverCardState] = useState<string>('none')
 	const handleHover = () => {
 		// console.log("Asdasd");
 		setHoverCardState(hoverCardState === 'none' ? 'flex' : 'none')
 	}
 
-	const handleDelete = (i?: string) => {
+	const handleDelete = async (i?: string) => {
 		setData(currentData => currentData?.filter(data => data?.id !== i))
+		resumeClient.delete('delete-resume-header', {
+			data: { id: i }
+		}).then((res) => {
+			alert(res.data)
+		}).catch((error) => {
+			console.log(error);
+		})
 	}
 
-	return <Draggable bounds="parent">
+	return <Draggable nodeRef={nodeRef} bounds="parent">
 		<div onMouseLeave={handleHover} onMouseEnter={handleHover}
 			className='flex flex-col p-4 cursor-default'>
 			<EditBar className="z-50" display={hoverCardState}>
@@ -29,27 +39,27 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 			</EditBar>
 			<div className='w-full flex flex-col items-center rounded-md justify-center'>
 				<h1 className="font-normal font-serif text-2xl underline underline-offset-2">
-					{data?.fullName}
+					{data?.fullname}
 				</h1>
-				<div className="flex justify-between gap-2 w-full flex-wrap">
+				<div className="flex justify-between gap-2 w-full flex-wrap flex-col">
 					{data?.contact &&
 						<p className="flex gap-2 font-semibold text-sm">Contact:
-							<p className="font-normal">{data?.contact}</p>
+							<HeaderTextSpan className="font-normal">{data?.contact}</HeaderTextSpan>
 						</p>
 					}
-					{data?.linkedIn &&
-						<p className="flex gap-2 font-semibold text-sm">LinkedIn:
-							<p className="font-normal">{data?.linkedIn}</p>
+					{data?.linkedin &&
+						<p className="flex gap-2 font-semibold text-sm">Linkedin:
+							<HeaderTextSpan className="font-normal">{data?.linkedin}</HeaderTextSpan>
 						</p>
 					}
 					{data?.github &&
 						<p className="flex gap-2 font-semibold text-sm">Github:
-							<p className="font-normal">{data?.github}</p>
+							<HeaderTextSpan className="font-normal">{data?.github}</HeaderTextSpan>
 						</p>
 					}
 					{data?.websit &&
 						<p className="flex gap-2 font-semibold text-sm">Website:
-							<p className="font-normal">{data?.websit}</p>
+							<HeaderTextSpan className="font-normal">{data?.websit}</HeaderTextSpan>
 						</p>
 					}
 				</div>
@@ -78,3 +88,7 @@ const EditBar = styled.div<EditBarProps>`
         display: flex;
     }
 `
+
+const HeaderTextSpan = styled.div`
+	position: relative;
+` 

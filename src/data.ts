@@ -3,17 +3,17 @@ import { Data } from "./types";
 const data: Data = {
     'header': [{
         'id': '1',
-        'fullName': 'Prasenjit Pawar',
+        'fullname': 'Prasenjit Pawar',
         'contact': '123123123',
-        'linkedIn': '',
+        'linkedin': '',
         'github': '',
         'websit': '',
     },
     {
         'id': '2',
-        'fullName': 'Prasenjit Pawar',
+        'fullname': 'Prasenjit Pawar',
         'contact': '8446697882',
-        'linkedIn': 'https://www.linkedin.com/in/prasenjit-pawar-2b378b77/',
+        'linkedin': 'https://www.linkedin.com/in/prasenjit-pawar-2b378b77/',
         'github': 'https://github.com/prasenjitpawar22',
         'websit': '',
     }],
