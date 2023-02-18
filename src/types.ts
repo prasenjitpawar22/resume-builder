@@ -10,6 +10,7 @@ export type Header = {
 export type Education = {
     _id: string | undefined,
     university: string | undefined,
+    location: string|undefined,
     start: string | undefined,
     end: string | undefined
 }

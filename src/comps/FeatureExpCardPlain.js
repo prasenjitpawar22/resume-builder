@@ -24,7 +24,8 @@ export default function FeatureExpCardPlain(props) {
                     <h1>{d.company}</h1>
                     <h1>{d.position}</h1>
                     <p>start: dd/mm/yy</p>
-                    <button className='px-2 bg-blue-400 rounded text-white' onClick={() => handleAddExp(d.id)}>add</button>
+                    <button className='px-2 bg-blue-400 rounded text-white' 
+                    onClick={() => handleAddExp(d.id)}>add</button>
                 </Card>
             )}
         </CardHolder>

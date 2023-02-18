@@ -21,13 +21,15 @@ const data: Data = {
         '_id': '1',
         'university': 'MIT',
         'start': '07/2018',
-        'end': '07/2021'
+        'end': '07/2021',
+        'location': '',
     },
     {
         '_id': '2',
         'university': 'POLY',
         'start': '07/2018',
-        'end': '07/2021'
+        'end': '07/2021',
+        'location': '',
     }],
     'experience': [{
         '_id': '1',

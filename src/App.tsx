@@ -106,10 +106,7 @@ const App: React.FC = () => {
           <DropDownList setBlockState={setEduBlockState} blockState={eduBlockState} title={'Education Block'} />
           {
             // eduBlockState &&
-            <FeatureEduCardPlain
-              eduBlockState={eduBlockState}
-              resumeEduData={resumeEduData} setResumeEduData={setResumeEduData}
-              data={data.education} />
+            <FeatureEduCardPlain eduBlockState={eduBlockState}/>
           }
           <DropDownList setBlockState={setExpBlockState} blockState={expBlockState} title={'Experience Block'} />
           {
