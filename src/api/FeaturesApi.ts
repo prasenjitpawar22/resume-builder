@@ -97,3 +97,25 @@ export const FeatureEduDeleteRequest = async (id: string) => {
 
   return response;
 }
+
+//create
+export const FeatureEduCreateRequest = async (data: Education) => {
+  let response = {
+    data: undefined,
+    status: 0,
+    error: undefined,
+  };
+
+  let { _id, end, location, start, university } = data
+
+  await featureClient.post('set-feature-education', { _id, end, location, start, university })
+    .then((res: AxiosResponse) => {
+      response.data = res.data
+      response.status = res.status
+    })
+    .catch((e: any) => {
+      response.error = e
+    })
+
+  return response;
+}

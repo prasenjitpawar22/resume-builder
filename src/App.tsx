@@ -16,6 +16,7 @@ import FeatureSkillCardPlain from './comps/FeatureSkillCardPlain';
 import { Resume } from './comps/Resume/Resume';
 import { ResumeContext } from './context/ResumeContext';
 import { resumeClient } from './api/axiosClient';
+import ModalCreateEduData from './comps/Models/ModalCreateEduData';
 
 const App: React.FC = () => {
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
   const [expBlockState, setExpBlockState] = useState<boolean>(false)
   const [skillBlockState, setSkillBlockState] = useState(false)
   const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(false)
+  const [eduBlockModalState, setEduBlockModalState] = useState<boolean>(false)
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === 0 ? 30 : 0)
@@ -103,7 +105,9 @@ const App: React.FC = () => {
             // data={data.header}
             />
           }
-          <DropDownList setBlockState={setEduBlockState} blockState={eduBlockState} title={'Education Block'} />
+          <DropDownList 
+            setEduBlockModalState={setEduBlockModalState}
+            setBlockState={setEduBlockState} blockState={eduBlockState} title={'Education Block'} />
           {
             // eduBlockState &&
             <FeatureEduCardPlain eduBlockState={eduBlockState}/>
@@ -149,6 +153,9 @@ const App: React.FC = () => {
       <ModalCreateHeaderData
         setHeaderBlockModalState={setHeaderBlockModalState}
         headerBlockModalState={headerBlockModalState} />
+      <ModalCreateEduData 
+        setEduBlockModalState={setEduBlockModalState}
+        eduBlockModalState = {eduBlockModalState}/>
     </div >
   );
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 
 export default function DropDownList(props) {
-    const { title, setBlockState, blockState, setHeaderBlockModalState } = props
+    const { title, setBlockState, blockState, setHeaderBlockModalState, setEduBlockModalState } = props
 
     const handleBlockClick = () => {
         setBlockState(!blockState)
@@ -12,6 +12,9 @@ export default function DropDownList(props) {
     const handleCreateList = (title) => {
         if (title === 'Header Block') {
             setHeaderBlockModalState(true)
+        }
+        if(title ==='Education Block'){
+            setEduBlockModalState(true)
         }
         console.log('clicked create');
     }
