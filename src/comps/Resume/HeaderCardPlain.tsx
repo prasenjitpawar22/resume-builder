@@ -1,9 +1,11 @@
 import Draggable from "react-draggable";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
 import { Header } from "../../types";
 import axios from "axios";
 import { resumeClient } from "../../api/axiosClient";
+import { ResumeHeaderDataRequest, ResumeHeaderDeleteRequest } from "../../api/ResumeApi";
+import { ResumeContext } from "../../context/ResumeContext";
 
 interface Props {
 	data: Header,
@@ -12,30 +14,39 @@ interface Props {
 
 const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 	const { data, setData } = props
-	const nodeRef = useRef(null)
+	const { setResumeHeaderData } = useContext(ResumeContext)
 	const [hoverCardState, setHoverCardState] = useState<string>('none')
+
 	const handleHover = () => {
 		// console.log("Asdasd");
 		setHoverCardState(hoverCardState === 'none' ? 'flex' : 'none')
 	}
 
-	const handleDelete = async (i?: string) => {
-		setData(currentData => currentData?.filter(data => data?.id !== i))
-		resumeClient.delete('delete-resume-header', {
-			data: { id: i }
-		}).then((res) => {
-			alert(res.data)
-		}).catch((error) => {
-			console.log(error);
-		})
+	const handleDelete = async (id?: string) => {
+		if (!id) return
+		const deleteResponse = await ResumeHeaderDeleteRequest(id)
+
+		if (deleteResponse.status === 200) {
+			// update the resume header list
+			const headerList = await ResumeHeaderDataRequest()
+			if (headerList.status === 200) {
+				setResumeHeaderData!(headerList.data)
+			}
+			if (headerList.error) {
+				console.log("error getting header list", headerList.error);
+			}
+		}
+		if (deleteResponse.error) {
+			console.log('error deleting the header', deleteResponse.error);
+		}
 	}
 
-	return <Draggable nodeRef={nodeRef} bounds="parent">
+	return (
 		<div onMouseLeave={handleHover} onMouseEnter={handleHover}
 			className='flex flex-col p-4 cursor-default'>
 			<EditBar className="z-50" display={hoverCardState}>
 				<button className="editBarBtn">edit</button>
-				<button onClick={() => handleDelete(data?.id)}>delete</button>
+				<button onClick={() => handleDelete(data?._id)}>delete</button>
 			</EditBar>
 			<div className='w-full flex flex-col items-center rounded-md justify-center'>
 				<h1 className="font-normal font-serif text-2xl underline underline-offset-2">
@@ -64,8 +75,7 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 					}
 				</div>
 			</div>
-		</div>
-	</Draggable>
+		</div>)
 }
 
 export default HeaderCardPlain;

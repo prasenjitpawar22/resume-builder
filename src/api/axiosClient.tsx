@@ -8,3 +8,4 @@ export const resumeClient = axios.create({
 export const featureClient = axios.create({
     baseURL: "http://localhost:8000/feature/"
 })
+

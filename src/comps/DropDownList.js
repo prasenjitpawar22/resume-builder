@@ -13,6 +13,7 @@ export default function DropDownList(props) {
         if (title === 'Header Block') {
             setHeaderBlockModalState(true)
         }
+        console.log('clicked create');
     }
 
     return (

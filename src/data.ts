@@ -2,7 +2,7 @@ import { Data } from "./types";
 
 const data: Data = {
     'header': [{
-        'id': '1',
+        '_id': '1',
         'fullname': 'Prasenjit Pawar',
         'contact': '123123123',
         'linkedin': '',
@@ -10,7 +10,7 @@ const data: Data = {
         'websit': '',
     },
     {
-        'id': '2',
+        '_id': '2',
         'fullname': 'Prasenjit Pawar',
         'contact': '8446697882',
         'linkedin': 'https://www.linkedin.com/in/prasenjit-pawar-2b378b77/',
@@ -18,19 +18,19 @@ const data: Data = {
         'websit': '',
     }],
     'education': [{
-        'id': '1',
+        '_id': '1',
         'university': 'MIT',
         'start': '07/2018',
         'end': '07/2021'
     },
     {
-        'id': '2',
+        '_id': '2',
         'university': 'POLY',
         'start': '07/2018',
         'end': '07/2021'
     }],
     'experience': [{
-        'id': '1',
+        '_id': '1',
         'position': 'Software Engineer',
         'company': 'Capgemini',
         'start': '02/2022',
@@ -45,7 +45,7 @@ const data: Data = {
             "Tech Stack – C#, .NET, Azure, MSSQL, Jira, Git, Docker. "]
     },
     {
-        'id': '2',
+        '_id': '2',
         'position': 'Mern Stack',
         'company': 'ATG',
         'start': '02/2022',
@@ -53,7 +53,7 @@ const data: Data = {
         'desc': []
     }],
     'skill': [{
-        'id': '1',
+        '_id': '1',
         'data': ['.NET Core', 'C#', 'Python', 'React', 'Docker', 'Jira']
     }]
 }

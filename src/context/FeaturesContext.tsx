@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import { featureClient } from '../api/axiosClient'
+import { FeatureHeaderDataRequest } from '../api/FeaturesApi'
 import { Education, Experience, Header, Skill } from '../types'
 
 interface FeatureContext {
@@ -27,14 +28,11 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
 
   useEffect(() => {
     const getFeatureHeaderData = async () => {
-      featureClient.get('get-all-header')
-        .then((res) => {
-          const data = res?.data
-          if (data) setFeatureHeaderData([data])
-        })
-        .catch((error) => {
-          alert(error)
-        })
+      const response = await FeatureHeaderDataRequest()
+      if (response.data) {
+        setFeatureHeaderData(response.data)
+      }
+      //handle error 
     }
     getFeatureHeaderData()
   }, [])

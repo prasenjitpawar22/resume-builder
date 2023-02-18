@@ -1,5 +1,5 @@
 export type Header = {
-    id: string | undefined,
+    _id: string | undefined,
     fullname: string | undefined,
     contact: string | undefined,
     linkedin: string | undefined,
@@ -8,13 +8,13 @@ export type Header = {
 } | undefined
 
 export type Education = {
-    id: string | undefined,
+    _id: string | undefined,
     university: string | undefined,
     start: string | undefined,
     end: string | undefined
 }
 export type Experience = {
-    id: string | undefined,
+    _id: string | undefined,
     position: string | undefined,
     company: string | undefined,
     start: string | undefined,
@@ -22,7 +22,7 @@ export type Experience = {
     "desc": string[] | null
 }
 export type Skill = {
-    id: string | undefined,
+    _id: string | undefined,
     data: string[] | undefined
 } | undefined
 

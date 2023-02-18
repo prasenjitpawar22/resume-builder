@@ -1,7 +1,10 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useContext, useState } from 'react'
 import data from '../../data'
 import { v4 as uuidv4 } from 'uuid';
 import { Header } from '../../types';
+import { featureClient } from '../../api/axiosClient';
+import { FeatureHeaderDataRequest } from '../../api/FeaturesApi';
+import { FeatureContext } from '../../context/FeaturesContext';
 
 interface Props {
   headerBlockModalState: boolean,
@@ -12,20 +15,47 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
 
   const { headerBlockModalState, setHeaderBlockModalState } = props
 
+  const { setFeatureHeaderData } = useContext(FeatureContext)
+
   const [headerData, setHeaderData] = useState<Header | undefined>()
 
   const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
+
   const handleSubmit = (e: FormEvent) => {
-    console.log(headerData);
-    data.header.push({
-      id: uuidv4(),
-      contact: headerData?.contact,
+    const id = uuidv4()
+    console.log({ headerData });
+
+    featureClient.post("set-feature-header", {
       fullname: headerData?.fullname,
+      _id: uuidv4(),
+      contact: headerData?.contact,
+      linkedin: headerData?.linkedin,
       github: headerData?.github,
       websit: headerData?.websit,
-      linkedin: headerData?.linkedin
     })
-    console.log(data);
+      .then(async (res) => {
+        console.log('create submit response', res);
+        // call api 
+        if (res?.data) {
+          const allHeaders = await FeatureHeaderDataRequest()
+          if (allHeaders.data) {
+            setFeatureHeaderData!(allHeaders.data)
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+    // data.header.push({
+    //   id: uuidv4(),
+    //   contact: headerData?.contact,
+    //   fullname: headerData?.fullname,
+    //   github: headerData?.github,
+    //   websit: headerData?.websit,
+    //   linkedin: headerData?.linkedin
+    // })
+    // console.log(data);
     e.preventDefault()
   }
 
