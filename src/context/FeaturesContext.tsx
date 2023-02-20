@@ -71,8 +71,9 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
   }, [])
 
   useEffect(() => {
-    console.log("this is feature header data", featureHeaderData);
-  }, [featureHeaderData])
+    // console.log("this is feature header data", featureHeaderData);
+    // console.log("this is featureExpData data", featureExpData);
+  }, [featureHeaderData, featureExpData])
 
 
   return (
