@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { featureClient } from '../api/axiosClient'
-import { FeatureEduDataRequest, FeatureHeaderDataRequest } from '../api/FeaturesApi'
+import { FeatureEduDataRequest, FeatureExpDataRequest, FeatureHeaderDataRequest } from '../api/FeaturesApi'
 import { Education, Experience, Header, Skill } from '../types'
 
 interface FeatureContext {
@@ -34,6 +35,9 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
         setFeatureHeaderData(response.data)
       }
       //handle error 
+      else{
+        toast.warning('unable to get features header data')
+      }
     }
 
     // education
@@ -44,8 +48,24 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
         setFeatureEduData(response?.data)
       }
       //handle error
+      else{
+        toast.warning('unable to get features education data')
+      }
     }
 
+    //experience
+    const getFeatureExpData =async () => {
+      const response = await FeatureExpDataRequest()
+
+      if (response.status === 200) {
+        setFeatureExpData(response.data)
+      } 
+      else{
+        toast.warning('unable to get features experience data')
+      }
+    }
+
+    getFeatureExpData()
     getFeatureEducationData()
     getFeatureHeaderData()
   }, [])

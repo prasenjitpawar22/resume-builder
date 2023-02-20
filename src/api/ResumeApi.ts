@@ -127,3 +127,5 @@ export const ResumeEduDeleteRequest = async (id: string) => {
 
     return response
 }
+
+// exp ---------------------

@@ -17,6 +17,7 @@ import { Resume } from './comps/Resume/Resume';
 import { ResumeContext } from './context/ResumeContext';
 import { resumeClient } from './api/axiosClient';
 import ModalCreateEduData from './comps/Models/ModalCreateEduData';
+import ModelCreateExpData from './comps/Models/ModelCreateExpData';
 
 const App: React.FC = () => {
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
   const [skillBlockState, setSkillBlockState] = useState(false)
   const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(false)
   const [eduBlockModalState, setEduBlockModalState] = useState<boolean>(false)
+  const [expBlockModalState, setExpBlockModalState] = useState<boolean>(false)
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === 0 ? 30 : 0)
@@ -112,13 +114,14 @@ const App: React.FC = () => {
             // eduBlockState &&
             <FeatureEduCardPlain eduBlockState={eduBlockState} />
           }
-          <DropDownList setBlockState={setExpBlockState} blockState={expBlockState} title={'Experience Block'} />
+          <DropDownList 
+            setExpBlockModalState={setExpBlockModalState}
+            setBlockState={setExpBlockState} blockState={expBlockState} title={'Experience Block'} />
           {
             // expBlockState &&
             <FeatureExpCardPlain
               expBlockState={expBlockState}
-              resumeExpData={resumeExpData} setResumeExpData={setResumeExpData}
-              data={data.experience} />
+            />
           }
           <DropDownList setBlockState={setSkillBlockState} blockState={skillBlockState} title={'Skills Block'} />
           <FeatureSkillCardPlain
@@ -153,9 +156,14 @@ const App: React.FC = () => {
       <ModalCreateHeaderData
         setHeaderBlockModalState={setHeaderBlockModalState}
         headerBlockModalState={headerBlockModalState} />
+
       <ModalCreateEduData
         setEduBlockModalState={setEduBlockModalState}
         eduBlockModalState={eduBlockModalState} />
+
+      <ModelCreateExpData 
+        expBlockModalState={expBlockModalState}
+        setExpBlockModalState={setExpBlockModalState}/>
 
       {/* notification */}
       <ToastContainer />

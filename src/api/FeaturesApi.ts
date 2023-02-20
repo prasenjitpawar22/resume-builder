@@ -1,7 +1,7 @@
 import { featureClient } from "./axiosClient"
 import { AxiosError, AxiosResponse } from "axios"
 
-import { Education, Header } from '../types'
+import { Education, Experience, Header } from '../types'
 import { v4 as uuid4 } from "uuid"
 
 //-------header------------------------------------------------------------------------------
@@ -119,4 +119,73 @@ export const FeatureEduCreateRequest = async (data: Education) => {
     })
 
   return response;
+}
+
+// exp ----------------------------------------------------------------------
+type FeatureExpDataResponse = {
+  data?: Experience[],
+  error?: AxiosError,
+  status: number
+}
+
+//create exp
+export const FeatureExpCreateRequest = async (data: Experience) => {
+  let response: FeatureEduDataResponse = {
+    data: undefined,
+    status: 0,
+    error: undefined,
+  };
+
+  let { end, company, start, desc, position } = data
+
+  await featureClient.post('set-feature-education', { _id: uuid4(),position,  end, start, company, desc })
+    .then((res: AxiosResponse) => {
+      response.data = res.data
+      response.status = res.status
+    })
+    .catch((e: any) => {
+      response.error = e
+    })
+
+  return response;
+}
+
+//delete feature exp
+export const FeatureExpDeleteRequest = async (id: string) => {
+  let response: FeatureExpDataResponse = {
+    data: undefined,
+    status: 0,
+    error: undefined,
+  };
+
+  await featureClient.post('remove-feature-education', { id: id })
+    .then((res: AxiosResponse) => {
+      response.data = res.data
+      response.status = res.status
+    })
+    .catch((e: any) => {
+      response.error = e
+    })
+
+  return response;
+}
+
+//get all feature header
+export const FeatureExpDataRequest = async () => {
+  let response: FeatureExpDataResponse = {
+    data: undefined,
+    error: undefined,
+    status: 0
+  }
+
+  await featureClient.get('get-all-feature-experience')
+    .then((res) => {
+      response.data = res?.data
+      response.status = res.status
+    })
+    .catch((error) => {
+      response.error = error
+    })
+
+  return response
 }

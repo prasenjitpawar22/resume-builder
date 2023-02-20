@@ -6,6 +6,7 @@ import axios from "axios";
 import { resumeClient } from "../../api/axiosClient";
 import { ResumeHeaderDataRequest, ResumeHeaderDeleteRequest } from "../../api/ResumeApi";
 import { ResumeContext } from "../../context/ResumeContext";
+import { toast } from "react-toastify";
 
 interface Props {
 	data: Header,
@@ -34,10 +35,13 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 			}
 			if (headerList.error) {
 				console.log("error getting header list", headerList.error);
+				toast.warning('error deleting')
+				const a='63f3202cd3356900ba07d7e1'
 			}
 		}
 		if (deleteResponse.error) {
 			console.log('error deleting the header', deleteResponse.error);
+			toast.warning('error deleting')
 		}
 	}
 

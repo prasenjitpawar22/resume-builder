@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useContext } from 'react'
+import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import { featureClient } from '../api/axiosClient'
 import { FeatureHeaderDataRequest, FeatureHeaderDeleteRequest } from '../api/FeaturesApi'
@@ -37,6 +38,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
     var check = resumeHeaderData?.filter(d => d?._id === _id)
     console.log('this check', check);
     if (check?.length !== 0) {
+      toast.warn('already added to resume')
       return
     }
     // setResumeHeaderData([...(resumeHeaderData || []), d])
