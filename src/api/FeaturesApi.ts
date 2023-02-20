@@ -2,6 +2,7 @@ import { featureClient } from "./axiosClient"
 import { AxiosError, AxiosResponse } from "axios"
 
 import { Education, Header } from '../types'
+import { v4 as uuid4 } from "uuid"
 
 //-------header------------------------------------------------------------------------------
 type FeatureHeaderDataResponse = {
@@ -80,7 +81,7 @@ export const FeatureEduDataRequest = async () => {
 
 //delete feature header
 export const FeatureEduDeleteRequest = async (id: string) => {
-  let response = {
+  let response: FeatureEduDataResponse = {
     data: undefined,
     status: 0,
     error: undefined,
@@ -100,15 +101,15 @@ export const FeatureEduDeleteRequest = async (id: string) => {
 
 //create
 export const FeatureEduCreateRequest = async (data: Education) => {
-  let response = {
+  let response: FeatureEduDataResponse = {
     data: undefined,
     status: 0,
     error: undefined,
   };
 
-  let { _id, end, location, start, university } = data
+  let { end, location, start, university } = data
 
-  await featureClient.post('set-feature-education', { _id, end, location, start, university })
+  await featureClient.post('set-feature-education', { _id: uuid4(), end, location, start, university })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status

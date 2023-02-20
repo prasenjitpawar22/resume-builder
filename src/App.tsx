@@ -1,8 +1,9 @@
 import './App.css';
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import data from './data';
 import DropDownList from './comps/DropDownList';
@@ -11,7 +12,6 @@ import FeatureExpCardPlain from './comps/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
 import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
 import ModalCreateHeaderData from './comps/Models/ModalCreateHeaderData';
-import { Education, Experience, Header, Skill } from './types'
 import FeatureSkillCardPlain from './comps/FeatureSkillCardPlain';
 import { Resume } from './comps/Resume/Resume';
 import { ResumeContext } from './context/ResumeContext';
@@ -105,12 +105,12 @@ const App: React.FC = () => {
             // data={data.header}
             />
           }
-          <DropDownList 
+          <DropDownList
             setEduBlockModalState={setEduBlockModalState}
             setBlockState={setEduBlockState} blockState={eduBlockState} title={'Education Block'} />
           {
             // eduBlockState &&
-            <FeatureEduCardPlain eduBlockState={eduBlockState}/>
+            <FeatureEduCardPlain eduBlockState={eduBlockState} />
           }
           <DropDownList setBlockState={setExpBlockState} blockState={expBlockState} title={'Experience Block'} />
           {
@@ -153,9 +153,12 @@ const App: React.FC = () => {
       <ModalCreateHeaderData
         setHeaderBlockModalState={setHeaderBlockModalState}
         headerBlockModalState={headerBlockModalState} />
-      <ModalCreateEduData 
+      <ModalCreateEduData
         setEduBlockModalState={setEduBlockModalState}
-        eduBlockModalState = {eduBlockModalState}/>
+        eduBlockModalState={eduBlockModalState} />
+
+      {/* notification */}
+      <ToastContainer />
     </div >
   );
 }

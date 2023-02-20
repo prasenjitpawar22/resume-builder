@@ -1,9 +1,11 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { toast } from 'react-toastify';
+
 import { FeatureEduDataRequest, FeatureEduDeleteRequest } from '../api/FeaturesApi';
+import { ResumeEduAddRequest, ResumeEduDataRequest } from '../api/ResumeApi';
 import { FeatureContext } from '../context/FeaturesContext';
 import { ResumeContext } from '../context/ResumeContext';
-import { Education } from '../types';
 
 
 interface Props {
@@ -14,26 +16,52 @@ export default function FeatureEduCardPlain(props: Props) {
     const { eduBlockState } = props
 
     const { featureEduData, setFeatureEduData, } = useContext(FeatureContext)
-    const { resumeEduData } = useContext(ResumeContext)
+    const { resumeEduData, setResumeEduData } = useContext(ResumeContext)
 
-    const handleAdd = (id: string) => {
-        console.log('added id', id);
+    const handleAdd = async (id: string) => {
+        // check if already in list
+        const foundInList = resumeEduData?.find(data => data._id === id)
+        if (!foundInList) {
+            //get the data by filter list
+            const eduAddRequestToResume = featureEduData?.find((data) => data._id === id)
+            if (!eduAddRequestToResume) {
+                return console.log('eduAddRequest data not found');
+            }
+            else {
+                const createRespons = await ResumeEduAddRequest(eduAddRequestToResume)
+                if (createRespons.status === 200) {
+                    //call get all resume edu list
+                    const requestEduList = await ResumeEduDataRequest()
+                    if (requestEduList.status === 200) {
+                        setResumeEduData!(requestEduList.data!)
+                    }
+                }
+                //handle error
+                else {
+                    console.log(createRespons.error);
+                }
+            }
+        }
+        else {
+            //notify already added to resume
+            toast.warn('Already added to resume',)
+        }
     }
 
     const handleDelete = async (id: string) => {
         console.log('btn clicked', id);
-    
+
         const deleteResponse = await FeatureEduDeleteRequest(id)
         // handle deleteResponse
         console.log(deleteResponse);
         if (deleteResponse.status === 200) {
-          const allEdu = await FeatureEduDataRequest()
-          setFeatureEduData!(allEdu.data)
+            const allEdu = await FeatureEduDataRequest()
+            setFeatureEduData!(allEdu.data)
         }
         if (deleteResponse.error) {
-          console.log('delete request error', deleteResponse.error);
+            console.log('delete request error', deleteResponse.error);
         }
-      }
+    }
 
     return (
         <CardHolder eduBlockState={eduBlockState} className='overflow-y-scroll'>
@@ -44,8 +72,10 @@ export default function FeatureEduCardPlain(props: Props) {
                     <Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
                         {<div>
                             <p>University: {d.university}</p>
+                            <p>Location: {d.location}</p>
                             <p>Start: {d.start}</p>
                             <p>End: {d.end}</p>
+
                             <div className='flex gap-2 align-middle mt-2'>
                                 <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
                                     onClick={() => handleAdd(d?._id!)}>Add</button>

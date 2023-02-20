@@ -1,6 +1,7 @@
 import React, { FormEvent, useContext, useState } from 'react'
+
 import { featureClient } from '../../api/axiosClient'
-import { FeatureEduCreateRequest } from '../../api/FeaturesApi'
+import { FeatureEduCreateRequest, FeatureEduDataRequest } from '../../api/FeaturesApi'
 import { FeatureContext } from '../../context/FeaturesContext'
 import { Education } from '../../types'
 
@@ -10,28 +11,33 @@ interface Props {
 }
 const ModalCreateEduData: React.FC<Props> = (props: Props) => {
   const { eduBlockModalState, setEduBlockModalState } = props
-  const {setFeatureEduData} = useContext(FeatureContext)
+  const { setFeatureEduData } = useContext(FeatureContext)
   const [eduData, seteEduData] = useState<Education>()
 
 
   const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
 
-  const handleSubmit = async(e: FormEvent) => {
-    let id = uuidv4()
-    console.log({ eduData });
-    // seteEduData(() => {...eduData, _id: id})
-    const createResponse = await FeatureEduCreateRequest(eduData!)
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
 
-    if(createResponse.status === 200){
-      setFeatureEduData!(createResponse.data)
+    const createResponse = await FeatureEduCreateRequest(eduData!)
+    //handle error 
+    if (createResponse.error) {
+      alert(createResponse.error.message)
     }
-    if(createResponse.error){
+    if (createResponse.status === 200) {
+      //get all list 
+      const allEdu = await FeatureEduDataRequest()
+      if (allEdu.status === 200) {
+        setFeatureEduData!(allEdu.data)
+      }
+    }
+    if (createResponse.error) {
       alert(createResponse.error)
     }
-     
-    e.preventDefault()
+
   }
-  
+
   return (<div>
     {eduBlockModalState &&
       <div
@@ -60,40 +66,42 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
                 <div className='mb-4 flex gap-4 justify-between'>
                   <div className=''>
                     <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
-                      Full Name
+                      University Name
                     </label>
                     <input required value={eduData?.university}
                       onChange={(e) => seteEduData({ ...(eduData!), university: e.target.value })}
                       className={inputStyle}
-                      type={'text'} placeholder={'Full Name'} />
+                      type={'text'} placeholder={'University Name'} />
                   </div>
                   <div>
                     <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
-                      Contact Number
+                      Location
                     </label>
                     <input required value={eduData?.location}
                       onChange={(e) => seteEduData({ ...eduData!, location: e.target.value })}
                       className={inputStyle}
-                      type={'tel'} placeholder={'Contact Number'} />
+                      type={'tel'} placeholder={'Location'} />
                   </div>
-                </div>
-                {/* <div className='mb-4'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2'>
-                    Linkedin Profile
-                  </label>
-                  <input value={eduData?.linkedin}
-                    onChange={(e) => seteEduData({ ...eduData!, linkedin: e.target.value })}
-                    className={inputStyle}
-                    type={'text'} placeholder={'Full Name'} />
                 </div>
                 <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>
-                    Github Profile
+                    Start
                   </label>
-                  <input value={eduData?.github} onChange={(e) => seteEduData({ ...eduData!, github: e.target.value })}
+                  <input required value={eduData?.start}
+                    onChange={(e) => seteEduData({ ...eduData!, start: e.target.value })}
                     className={inputStyle}
-                    type={'text'} placeholder={'Full Name'} />
+                    type={'date'} placeholder={'Start'} />
                 </div>
+                <div className='mb-4'>
+                  <label className='block text-gray-700 text-sm font-bold mb-2'>
+                    End
+                  </label>
+                  <input required value={eduData?.end}
+                    onChange={(e) => seteEduData({ ...eduData!, end: e.target.value })}
+                    className={inputStyle}
+                    type={'date'} placeholder={'End'} />
+                </div>
+                {/*
                 <div className='mb-4'>
                   <label className='block text-gray-700 text-sm font-bold mb-2'>
                     Website Link

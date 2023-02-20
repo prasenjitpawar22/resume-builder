@@ -44,7 +44,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
     //backend add resume header req
     await client.post("set-resume-header",
       {
-        __id: d?._id,
+        _id: d?._id,
         fullname: d?.fullname,
         contact: d?.contact,
         github: d?.github,

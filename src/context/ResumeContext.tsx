@@ -1,5 +1,7 @@
 import React, { createContext, Dispatch, MutableRefObject, ReactNode, SetStateAction, useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 import { resumeClient } from '../api/axiosClient'
+import { ResumeEduDataRequest } from '../api/ResumeApi'
 import { Education, Experience, Header, Skill } from '../types'
 
 export interface ResumeContextInterface {
@@ -36,7 +38,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
 
 
     useEffect(() => {
-        const getResumeData = async () => {
+        const getResumeHeaderData = async () => {
             resumeClient.get("get-resume-header")
                 .then((res) => {
                     console.log(res?.data)
@@ -44,8 +46,25 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 })
                 .catch((e) => console.log(e))
         }
-        getResumeData()
+
+        const getResumeEduData =async () => {
+            const resumeEduDataRequest = await ResumeEduDataRequest()
+            if(resumeEduDataRequest.status === 200 && resumeEduDataRequest.data){
+                setResumeEduData(resumeEduDataRequest.data)
+            }
+            else{
+                toast.warning("failed loading resume education data")
+            }
+        }
+        
+        getResumeEduData()
+        getResumeHeaderData()
     }, [])
+
+    // debug 
+    // useEffect(()=> {
+    //     console.log('this is all resume data', resumeHeaderData, resumeEduData);
+    // },[resumeEduData, resumeHeaderData])
 
     return (
         <ResumeContext.Provider value={{

@@ -195,7 +195,7 @@ export const Resume: React.FC = () => {
           <Reorder.Group axis="y" values={resumeEduData!} onReorder={setResumeEduData!}>
             {resumeEduData!.length > 0 && resumeEduData?.map(data =>
               <Reorder.Item key={data._id} value={data}>
-                <EduCardPlain data={data} setData={setResumeEduData} />
+                <EduCardPlain data={data} />
               </Reorder.Item>
             )}
           </Reorder.Group>
