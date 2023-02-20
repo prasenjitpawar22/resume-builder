@@ -37,7 +37,7 @@ const data: Data = {
         'company': 'Capgemini',
         'start': '02/2022',
         'end': '02/2022',
-        "desc": [
+        "description": [
             "Implemented scalable REST APIs on enterprise level \
             microservices and created workflows using Uber Cadence while\
             working as a backend developer.",
@@ -52,7 +52,7 @@ const data: Data = {
         'company': 'ATG',
         'start': '02/2022',
         'end': '02/2022',
-        'desc': []
+        'description': []
     }],
     'skill': [{
         '_id': '1',

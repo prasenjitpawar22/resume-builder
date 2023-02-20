@@ -1,5 +1,8 @@
 
 import React, { FormEvent, useContext, useState } from 'react'
+import { toast } from 'react-toastify'
+
+import { FeatureExpCreateRequest, FeatureExpDataRequest } from '../../api/FeaturesApi'
 import { FeatureContext } from '../../context/FeaturesContext'
 import { Experience } from '../../types'
 
@@ -17,9 +20,24 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
 
   const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
+    const createResponse = await FeatureExpCreateRequest(expData!)
+
+    if (createResponse.status === 200) {
+      //get update list
+      const expList = await FeatureExpDataRequest()
+      if (expList.status === 200) {
+        setFeatureExpData!(expList.data)
+      }
+      else {
+        toast.warn('unable to fetch the updated list')
+      }
+    }
+    else {
+      toast.warning('unable to create')
+    }
   }
 
   return (<div>

@@ -136,9 +136,10 @@ export const FeatureExpCreateRequest = async (data: Experience) => {
     error: undefined,
   };
 
-  let { end, company, start, desc, position } = data
+  let { end, company, start, description, position } = data
 
-  await featureClient.post('set-feature-education', { _id: uuid4(),position,  end, start, company, desc })
+  await featureClient.post('create-feature-experience',
+    { _id: uuid4(), position, end, start, company, description })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status
@@ -158,7 +159,7 @@ export const FeatureExpDeleteRequest = async (id: string) => {
     error: undefined,
   };
 
-  await featureClient.post('remove-feature-education', { id: id })
+  await featureClient.post('remove-feature-experience', { id: id })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status
@@ -170,7 +171,7 @@ export const FeatureExpDeleteRequest = async (id: string) => {
   return response;
 }
 
-//get all feature header
+//get all feature exp
 export const FeatureExpDataRequest = async () => {
   let response: FeatureExpDataResponse = {
     data: undefined,

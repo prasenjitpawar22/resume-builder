@@ -20,7 +20,7 @@ export type Experience = {
     company: string | undefined,
     start: string | undefined,
     end: string | undefined,
-    "desc": string[] | null
+    description: string[] | null
 }
 export type Skill = {
     _id: string | undefined,

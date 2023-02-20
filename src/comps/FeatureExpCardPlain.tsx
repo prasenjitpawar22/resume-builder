@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
+import { toast } from 'react-toastify'
 import styled from 'styled-components'
+
+import { FeatureExpDataRequest, FeatureExpDeleteRequest } from '../api/FeaturesApi'
 import { FeatureContext } from '../context/FeaturesContext'
 import { ResumeContext } from '../context/ResumeContext'
-import { Experience } from '../types'
 
 interface Props {
 	expBlockState: boolean
@@ -10,9 +12,9 @@ interface Props {
 
 const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
 	const { expBlockState, } = props
-	
-	const {featureExpData, setFeatureExpData} = useContext(FeatureContext)
-	const {setResumeExpData} = useContext(ResumeContext)
+
+	const { featureExpData, setFeatureExpData } = useContext(FeatureContext)
+	const { setResumeExpData } = useContext(ResumeContext)
 
 	// add to resume
 	const handleAddExp = (id: string) => {
@@ -27,6 +29,23 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
 		// }
 		// setResumeExpData!(resumeExpData => [...resumeExpData, d])
 	}
+
+	const handleDelete = async (id: string) => {
+		console.log('btn clicked', id);
+
+		const deleteResponse = await FeatureExpDeleteRequest(id)
+		// handle deleteResponse
+		console.log(deleteResponse);
+		if (deleteResponse.status === 200) {
+			const allExp = await FeatureExpDataRequest()
+			setFeatureExpData!(allExp.data)
+		}
+		if (deleteResponse.error) {
+			console.log('delete request error', deleteResponse.error);
+			toast.warning("error removing item")
+		}
+	}
+
 	return (
 		<CardHolder expBlockState={expBlockState} className='overflow-y-scroll max-h' >
 			{
@@ -34,9 +53,23 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
 					<Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
 						<h1> {d.company} </h1>
 						< h1 > {d.position} </h1>
-						< p > start: dd/ mm / yy </p>
-						<button className='px-2 bg-blue-400 rounded text-white'
-							onClick={() => handleAddExp(d._id!)}> add </button>
+						< p > {d.start} </p>
+						< p > {d.end} </p>
+						<ul className='list-disc px-4 mt-2'>
+							{d?.description?.map(l => {
+								return (<li> {l} </li>)
+							})}
+						</ul>
+						<div className='flex gap-2 align-middle mt-2'>
+							<button className='px-2 bg-blue-400 rounded text-white'
+								onClick={() => handleAddExp(d._id!)}>
+								add
+							</button>
+							<button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+								onClick={() => handleDelete(d?._id!)}>
+								Remove from list
+							</button>
+						</div>
 					</Card>
 				)}
 		</CardHolder>
