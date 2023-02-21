@@ -119,16 +119,17 @@ const CardHolder = styled.div<CardHolderProps>`
     transition: all;
     transition-duration: 1s;
     max-height: ${(props) => { return props.expBlockState ? 20 : 0 }}rem;
-    ::-webkit-scrollbar{
-        width: 12px;
+	::-webkit-scrollbar{
+        width: .4em;
     };
     ::-webkit-scrollbar-track {
-        background: #4a8dd8;
-        margin: 12px;
+        /* background: #4a8dd8; */
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        /* margin: 1em; */
     };
     ::-webkit-scrollbar-thumb {
         background-color: blue;
         border-radius: 20px;
         border: 3px solid #4a8dd8;
     };
-`   
+`

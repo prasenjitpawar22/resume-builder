@@ -293,7 +293,7 @@ const HeaderDiv = styled.div<HeaderProps>`
 
 const EducationDiv = styled.div<EducationProps>`
     width: auto;
-    height: ${(props) => props.height}px;
+    height: auto;
     min-height: ${(props) => props.height}px;
     margin-bottom: 12px;
     position: relative;
