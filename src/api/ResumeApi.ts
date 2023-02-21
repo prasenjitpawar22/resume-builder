@@ -1,11 +1,11 @@
 import { AxiosError } from "axios"
 import { v4 as uuid4 } from 'uuid'
 
-import { Education, Header } from "../types"
+import { Education, Experience, Header } from "../types"
 import { resumeClient } from "./axiosClient"
 
 
-
+//  ----------------------------------------header-------------------------------------------------
 type ResumeHeaderDataResponse = {
     data?: Header[],
     error?: AxiosError,
@@ -55,7 +55,7 @@ export const ResumeHeaderDeleteRequest = async (id: string) => {
     return response
 }
 
-//---------edu
+//---------------------------------------------edu------------------------------------
 type ResumeEduDataResponse = {
     data?: Education[],
     error?: AxiosError,
@@ -71,9 +71,9 @@ export const ResumeEduAddRequest = async (data: Education) => {
         data: undefined,
         error: undefined
     }
-    
+
     await resumeClient.post('add-resume-education',
-        { _id: _id, end: end, location: location, start: start, university:university })
+        { _id: _id, end: end, location: location, start: start, university: university })
         .then((res) => {
             console.log(res);
 
@@ -128,4 +128,74 @@ export const ResumeEduDeleteRequest = async (id: string) => {
     return response
 }
 
-// exp ---------------------
+//  ---------------------------------------exp--------------------------------------------------
+type ResumeExpDeleteResponse = {
+    data?: Experience[],
+    error?: AxiosError,
+    status: number
+}
+//delete resume edu
+export const ResumeExpDeleteRequest = async (id: string) => {
+
+    let response: ResumeExpDeleteResponse = {
+        status: 0,
+        data: undefined,
+        error: undefined
+    }
+
+    await resumeClient.post('delete-resume-experience', { id: id })
+        .then((res) => {
+            response.data = res.data
+            response.status = res.status
+        })
+        .catch((error) => {
+            response.error = error
+        })
+
+    return response
+}
+
+// get all list
+export const ResumeExpDataRequest = async () => {
+    let response: ResumeExpDeleteResponse = {
+        status: 0,
+        data: undefined,
+        error: undefined
+    }
+
+    await resumeClient.get('get-resume-experience')
+        .then((res) => {
+            response.data = res.data
+            response.status = res.status
+        })
+        .catch((error) => {
+            response.error = error
+        })
+
+    return response
+}
+
+// create
+export const ResumeExpAddRequest = async (data: Experience) => {
+    let { _id, end, company, start, description, position } = data
+
+    let response: ResumeExpDeleteResponse = {
+        status: 0,
+        data: undefined,
+        error: undefined
+    }
+
+    await resumeClient.post('create-resume-experience',
+        { _id: _id, end, company, start, description, position })
+        .then((res) => {
+            console.log(res);
+
+            response.data = res.data
+            response.status = res.status
+        })
+        .catch((error) => {
+            response.error = error
+        })
+
+    return response
+}

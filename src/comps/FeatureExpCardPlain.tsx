@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { FeatureExpDataRequest, FeatureExpDeleteRequest } from '../api/FeaturesApi'
+import { ResumeExpAddRequest, ResumeExpDataRequest } from '../api/ResumeApi'
 import { FeatureContext } from '../context/FeaturesContext'
 import { ResumeContext } from '../context/ResumeContext'
 
@@ -14,20 +15,41 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
 	const { expBlockState, } = props
 
 	const { featureExpData, setFeatureExpData } = useContext(FeatureContext)
-	const { setResumeExpData } = useContext(ResumeContext)
+	const { setResumeExpData, resumeExpData } = useContext(ResumeContext)
 
 	// add to resume
-	const handleAddExp = (id: string) => {
-		console.log(id);
-		// console.log("asd");
-		// let d = data.find(x => x._id === id)
-		// //check if already added
-		// var check = resumeExpData?.filter(d => d._id === id)
-		// console.log('this check', check);
-		// if (check?.length !== 0) {
-		//     return
-		// }
-		// setResumeExpData!(resumeExpData => [...resumeExpData, d])
+	const handleAddExp = async (id: string) => {
+		// check if already in list
+		const foundInList = resumeExpData?.find(data => data._id === id)
+		if (!foundInList) {
+			//get the data by filter list
+			const expAddRequestToResume = featureExpData?.find((data) => data._id === id)
+			if (!expAddRequestToResume) {
+				return console.log('expAddRequest data not found');
+			}
+			else {
+				const createRespons = await ResumeExpAddRequest(expAddRequestToResume)
+				if (createRespons.status === 200) {
+					//call get all resume edu list
+					const requestEduList = await ResumeExpDataRequest()
+					if (requestEduList.status === 200) {
+						setResumeExpData!(requestEduList.data!)
+					}
+					else {
+						toast.warn("error updating resume exp list")
+					}
+				}
+				//handle error
+				else {
+					console.log(createRespons.error);
+					toast.warning("error add to resume")
+				}
+			}
+		}
+		else {
+			//notify already added to resume
+			toast.warn('Already added to resume',)
+		}
 	}
 
 	const handleDelete = async (id: string) => {

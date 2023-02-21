@@ -1,20 +1,16 @@
-import Draggable from "react-draggable";
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Header } from "../../types";
-import axios from "axios";
-import { resumeClient } from "../../api/axiosClient";
 import { ResumeHeaderDataRequest, ResumeHeaderDeleteRequest } from "../../api/ResumeApi";
 import { ResumeContext } from "../../context/ResumeContext";
 import { toast } from "react-toastify";
 
 interface Props {
 	data: Header,
-	setData: React.Dispatch<React.SetStateAction<Header[] | undefined>>,
 }
 
 const HeaderCardPlain: React.FC<Props> = (props: Props) => {
-	const { data, setData } = props
+	const { data } = props
 	const { setResumeHeaderData } = useContext(ResumeContext)
 	const [hoverCardState, setHoverCardState] = useState<string>('none')
 
@@ -36,7 +32,6 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 			if (headerList.error) {
 				console.log("error getting header list", headerList.error);
 				toast.warning('error deleting')
-				const a='63f3202cd3356900ba07d7e1'
 			}
 		}
 		if (deleteResponse.error) {

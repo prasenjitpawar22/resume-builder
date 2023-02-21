@@ -16,7 +16,6 @@ export const Resume: React.FC = () => {
     resumeBlockHolderWidth, resumeColor,
     resumeEduData, resumeExpData,
     resumeHeaderData, resumeSkillData,
-    setResumeBlockHolderWidth, setResumeColor,
     setResumeEduData, setResumeExpData,
     setResumeHeaderData, setResumeSkillData,
   } = useContext(ResumeContext)
@@ -175,7 +174,7 @@ export const Resume: React.FC = () => {
           <Reorder.Group axis='y' values={resumeHeaderData!} onReorder={setResumeHeaderData!}>
             {resumeHeaderData?.length! > 0 && resumeHeaderData?.map(data =>
               <Reorder.Item key={data?._id} value={data}>
-                <HeaderCardPlain data={data} setData={setResumeHeaderData!} />
+                <HeaderCardPlain data={data}   />
               </Reorder.Item>
             )}
           </Reorder.Group>
@@ -213,7 +212,7 @@ export const Resume: React.FC = () => {
           <Reorder.Group axis='y' values={resumeExpData!} onReorder={setResumeExpData!}>
             {resumeExpData!.length > 0 && resumeExpData?.map(data =>
               <Reorder.Item key={data._id} value={data}>
-                <ExpCardPlain data={data} setData={setResumeExpData} />
+                <ExpCardPlain data={data} />
               </Reorder.Item>
             )}
           </Reorder.Group>
