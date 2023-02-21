@@ -2,12 +2,11 @@ import axios from 'axios'
 import React, { useContext } from 'react'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
-import { featureClient } from '../api/axiosClient'
-import { FeatureHeaderDataRequest, FeatureHeaderDeleteRequest } from '../api/FeaturesApi'
-import { ResumeHeaderDataRequest } from '../api/ResumeApi'
-import { FeatureContext } from '../context/FeaturesContext'
+import { FeatureHeaderDataRequest, FeatureHeaderDeleteRequest } from '../../api/FeaturesApi'
+import { ResumeHeaderDataRequest } from '../../api/ResumeApi'
+import { FeatureContext } from '../../context/FeaturesContext'
 
-import { Header } from '../types'
+import { Header } from '../../types'
 
 const client = axios.create({
   baseURL: "http://localhost:8000/resume/"

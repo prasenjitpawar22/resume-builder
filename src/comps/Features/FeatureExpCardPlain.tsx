@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
-import { FeatureExpDataRequest, FeatureExpDeleteRequest } from '../api/FeaturesApi'
-import { ResumeExpAddRequest, ResumeExpDataRequest } from '../api/ResumeApi'
-import { FeatureContext } from '../context/FeaturesContext'
-import { ResumeContext } from '../context/ResumeContext'
+import { FeatureExpDataRequest, FeatureExpDeleteRequest } from '../../api/FeaturesApi'
+import { ResumeExpAddRequest, ResumeExpDataRequest } from '../../api/ResumeApi'
+import { FeatureContext } from '../../context/FeaturesContext'
+import { ResumeContext } from '../../context/ResumeContext'
 
 interface Props {
 	expBlockState: boolean
@@ -73,10 +73,10 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
 			{
 				featureExpData?.map(d =>
 					<Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
-						<h1> {d.company} </h1>
-						< h1 > {d.position} </h1>
-						< p > {d.start} </p>
-						< p > {d.end} </p>
+						<h1>Company: {d.company} </h1>
+						<h1>Position: {d.position} </h1>
+						<p>Start: {d.start} </p>
+						<p>End: {d.end} </p>
 						<ul className='list-disc px-4 mt-2'>
 							{d?.description?.map(l => {
 								return (<li> {l} </li>)

@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, MutableRefObject, ReactNode, SetStateAction, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { resumeClient } from '../api/axiosClient'
-import { ResumeEduDataRequest } from '../api/ResumeApi'
+import { ResumeEduDataRequest, ResumeExpDataRequest } from '../api/ResumeApi'
 import { Education, Experience, Header, Skill } from '../types'
 
 export interface ResumeContextInterface {
@@ -38,6 +38,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
 
 
     useEffect(() => {
+        //set header 
         const getResumeHeaderData = async () => {
             resumeClient.get("get-resume-header")
                 .then((res) => {
@@ -47,6 +48,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 .catch((e) => console.log(e))
         }
 
+        //set edu 
         const getResumeEduData =async () => {
             const resumeEduDataRequest = await ResumeEduDataRequest()
             if(resumeEduDataRequest.status === 200 && resumeEduDataRequest.data){
@@ -56,15 +58,28 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 toast.warning("failed loading resume education data")
             }
         }
+
+        // set exp
+        const getResumeExpData =async () => {
+            const resumeExpDataRequest = await ResumeExpDataRequest()
+            if(resumeExpDataRequest.status === 200 && resumeExpDataRequest.data){
+                setResumeExpData(resumeExpDataRequest.data)
+            }
+            else{
+                toast.warning("failed loading resume experience data")
+            }
+        }
         
+        getResumeExpData()
         getResumeEduData()
         getResumeHeaderData()
     }, [])
 
     // debug 
-    // useEffect(()=> {
-    //     console.log('this is all resume data', resumeHeaderData, resumeEduData);
-    // },[resumeEduData, resumeHeaderData])
+    useEffect(()=> {
+        // console.log('this is all resume data', resumeHeaderData, resumeEduData);
+        console.log('this is all resume exp', resumeExpData);
+    },[resumeEduData, resumeHeaderData, resumeExpData])
 
     return (
         <ResumeContext.Provider value={{

@@ -7,12 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import data from './data';
 import DropDownList from './comps/DropDownList';
-import FeatureEduCardPlain from './comps/FeatureEduCardPlain';
-import FeatureExpCardPlain from './comps/FeatureExpCardPlain';
-import FeatureHeaderCardPlain from './comps/FeatureHeaderCardPlain';
+import FeatureEduCardPlain from './comps/Features/FeatureEduCardPlain';
+import FeatureExpCardPlain from './comps/Features/FeatureExpCardPlain';
+import FeatureHeaderCardPlain from './comps/Features/FeatureHeaderCardPlain';
 import { BiChevronsRight, BiChevronsLeft } from 'react-icons/bi'
 import ModalCreateHeaderData from './comps/Models/ModalCreateHeaderData';
-import FeatureSkillCardPlain from './comps/FeatureSkillCardPlain';
+import FeatureSkillCardPlain from './comps/Features/FeatureSkillCardPlain';
 import { Resume } from './comps/Resume/Resume';
 import { ResumeContext } from './context/ResumeContext';
 import { resumeClient } from './api/axiosClient';

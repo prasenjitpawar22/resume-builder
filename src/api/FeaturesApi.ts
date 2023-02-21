@@ -135,11 +135,13 @@ export const FeatureExpCreateRequest = async (data: Experience) => {
     status: 0,
     error: undefined,
   };
+  console.log("data in fe api", data);
 
   let { end, company, start, description, position } = data
-
+  console.log(position);
+  
   await featureClient.post('create-feature-experience',
-    { _id: uuid4(), position, end, start, company, description })
+    { _id: uuid4(), position: position, end, start, company, description })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status

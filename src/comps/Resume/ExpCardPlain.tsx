@@ -60,13 +60,15 @@ const ExpCardPlain: React.FC<Props> = (props: Props) => {
           <p>{data?.end}</p>
         </div>
       </div>
-      <ul className='list-disc px-4 mt-2'>
-        {data?.description?.map(d =>
-          <li>
-            {d}
-          </li>
-        )}
-      </ul>
+      {
+        data?.description?.length! > 0 &&
+        <ul className='list-disc px-4 mt-2'>
+          {data?.description?.map(d =>
+            <li>
+              {d}
+            </li>
+          )}
+        </ul>}
     </div>
   );
 }

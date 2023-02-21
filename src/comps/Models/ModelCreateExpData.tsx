@@ -16,7 +16,14 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
 
   const { setFeatureExpData } = useContext(FeatureContext)
 
-  const [expData, setExpData] = useState<Experience | undefined>()
+  const [expData, setExpData] = useState<Experience>({
+    _id: '',
+    company: '',
+    description: [],
+    end: '',
+    position: '',
+    start: ''
+  })
 
   const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
 
@@ -82,7 +89,7 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
                     <input required value={expData?.position}
                       onChange={(e) => setExpData({ ...expData!, position: e.target.value })}
                       className={inputStyle}
-                      type={'tel'} placeholder={'Position'} />
+                      type={'text'} placeholder={'Position'} />
                   </div>
                 </div>
                 <div className='mb-4'>

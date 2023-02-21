@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components';
-import { Skill } from '../types';
+import { Skill } from '../../types';
 
 interface Props {
     skillBlockState: boolean,
@@ -66,7 +66,7 @@ const CardHolder = styled.div<CardHolderProps>`
     transition-duration: 1s;
     max-height: ${(props) => { return props.skillBlockState ? 20 : 0 }}rem;
     ::-webkit-scrollbar{
-        w_idth: 12px;
+        width: 12px;
     };
     ::-webkit-scrollbar-track {
         background: #4a8dd8;

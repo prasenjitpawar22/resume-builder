@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { toast } from 'react-toastify';
 
-import { FeatureEduDataRequest, FeatureEduDeleteRequest } from '../api/FeaturesApi';
-import { ResumeEduAddRequest, ResumeEduDataRequest } from '../api/ResumeApi';
-import { FeatureContext } from '../context/FeaturesContext';
-import { ResumeContext } from '../context/ResumeContext';
+import { FeatureEduDataRequest, FeatureEduDeleteRequest } from '../../api/FeaturesApi';
+import { ResumeEduAddRequest, ResumeEduDataRequest } from '../../api/ResumeApi';
+import { FeatureContext } from '../../context/FeaturesContext';
+import { ResumeContext } from '../../context/ResumeContext';
 
 
 interface Props {
