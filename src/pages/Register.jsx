@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   return (
     <div className="bg-login w-screen h-screen
             flex tablet:bg-login tablet:bg-large-size 
@@ -13,7 +13,7 @@ const Login = () => {
           <div className="flex flex-col justify-start">
             <PageBrandIcon className='rounded-full '
               src='./brand.png' />
-            <h1 className="text-[38px] mb-4 font-gilroydark text-primary">Login</h1>
+            <h1 className="text-[38px] mb-4 font-gilroydark text-primary">Register</h1>
             <form>
               <div className="flex flex-col">
                 <div className="flex flex-col mb-5">
@@ -23,24 +23,24 @@ const Login = () => {
                     placeholder="username@gmail.com" type={"email"}
                   />
                 </div>
-                <div className="flex flex-col mb-2">
+                <div className="flex flex-col mb-6">
                   <label className="text-primary text-[14px] mb-1">Password</label>
                   <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
                     placeholder="********" type={"password"}
                   />
                 </div>
-                <Link className="font-gilroylight text-[12px] w-fit 
-                  text-primary mb-8" to={'#'}>Forgot Password?</Link>
+                {/* <Link className="font-gilroylight text-[12px] w-fit 
+                  text-primary mb-8" to={'#'}>Forgot Password?</Link> */}
                 <button
                   className="bg-[#F25019] hover:bg-[#d84616] rounded py-2 font-gilroylight
                 text-[#FFFFFF] text-[20px] mb-4"
-                  type="submit">Sign in</button>
+                  type="submit">Register</button>
                 <p className="text-center text-primary text-[14px] mb-2">Or continue with</p>
                 <p className="text-center text-primary text-[14px]">
-                  Don't have an account yet?
-                  <Link to={"/register"} className="font-gilroylight text-[14px] 
-                  text-primary" > Register for free
+                  Already have an account?
+                  <Link to={"/login"} className="font-gilroylight text-[14px] 
+                  text-primary" > Sign in
                   </Link>
                 </p>
               </div>
@@ -52,7 +52,7 @@ const Login = () => {
   );
 }
 
-export default Login;
+export default Register;
 
 // const BackgroundDiv = styled.div`
 
