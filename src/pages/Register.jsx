@@ -16,6 +16,13 @@ const Register = () => {
             <h1 className="text-[38px] mb-4 font-gilroydark text-primary">Register</h1>
             <form>
               <div className="flex flex-col">
+              <div className="flex flex-col mb-5">
+                  <label className="text-primary text-[14px] mb-1">Full Name</label>
+                  <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
+                   focus:border-purple-500 focus:outline-none focus:shadow-inner"
+                    placeholder="Full name" type={"text"}
+                  />
+                </div>
                 <div className="flex flex-col mb-5">
                   <label className="text-primary text-[14px] mb-1">Email</label>
                   <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
@@ -30,8 +37,6 @@ const Register = () => {
                     placeholder="********" type={"password"}
                   />
                 </div>
-                {/* <Link className="font-gilroylight text-[12px] w-fit 
-                  text-primary mb-8" to={'#'}>Forgot Password?</Link> */}
                 <button
                   className="bg-[#F25019] hover:bg-[#d84616] rounded py-2 font-gilroylight
                 text-[#FFFFFF] text-[20px] mb-4"
