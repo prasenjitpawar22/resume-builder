@@ -1,24 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import './index.css';
-import { ApplicationRoutes } from './comps/ApplicationRoutes';
 import reportWebVitals from './reportWebVitals';
-import ResumeProvider from './context/ResumeContext';
-import FeatureProvider from './context/FeaturesContext';
-
+import { ApplicationRoutes } from './comps/Routes/ApplicationRoutes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <FeatureProvider>
-      <ResumeProvider>
-        <Router>
-          <ApplicationRoutes />
-        </Router>
-      </ResumeProvider>
-    </FeatureProvider>
+      <Router>
+        <ApplicationRoutes />
+      </Router>
   </React.StrictMode>
 );
 

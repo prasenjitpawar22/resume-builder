@@ -9,3 +9,6 @@ export const featureClient = axios.create({
     baseURL: "http://localhost:8000/feature/"
 })
 
+export const userClient = axios.create({
+    baseURL: "http://localhost:8000/user/"
+})

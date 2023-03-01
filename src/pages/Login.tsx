@@ -1,8 +1,42 @@
 import styled from "styled-components";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, FormEvent, useContext } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { LoginRequest } from "../api/UserApi";
+import { toast } from "react-toastify";
+import { UserContext } from "../context/UserContext";
+
+interface Data {
+  email: string,
+  password: string
+}
 
 const Login = () => {
+  const [formData, setFormData] = useState<Data>({ email: 'prasen@gmail.com', password: '12345' })
+  const { setUser, user } = useContext(UserContext)
+
+  const handleSubmit = async (e: FormEvent) => {
+    setFormData({
+      email: 'prasen@gmail.com',
+      password: '12345'
+    })
+    e.preventDefault()
+    const res = await LoginRequest(formData)
+    if (res.error) {
+      toast.warning(res.error)
+      return
+    }
+
+    if (res.data?.token && res.data.userdata.email) {
+      localStorage.setItem('token', res.data?.token)
+      setUser!({
+        email: res.data.userdata.email, _id: '',
+        username: res.data.userdata.name
+      })
+      
+      return <Navigate to={'/'} />
+    }
+  }
+
   return (
     <div className="bg-login w-screen h-screen
             flex tablet:bg-login tablet:bg-large-size 
@@ -14,13 +48,14 @@ const Login = () => {
             <PageBrandIcon className='rounded-full '
               src='./brand.png' />
             <h1 className="text-[38px] mb-4 font-gilroydark text-primary">Login</h1>
-            <form>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <div className="flex flex-col">
                 <div className="flex flex-col mb-5">
                   <label className="text-primary text-[14px] mb-1">Email</label>
-                  <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
+                  <input autoComplete="on" className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
                     placeholder="username@gmail.com" type={"email"}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
                 </div>
                 <div className="flex flex-col mb-2">
@@ -28,6 +63,7 @@ const Login = () => {
                   <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
                     placeholder="********" type={"password"}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   />
                 </div>
                 <Link className="font-gilroylight text-[12px] w-fit 
