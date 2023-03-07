@@ -27,10 +27,10 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setFormData({
-      email: 'prasen@gmail.com',
-      password: '12345'
-    })
+    // setFormData({
+    //   email: 'prasen@gmail.com',
+    //   password: '12345'
+    // })
     const res = await LoginRequest(formData)
     if (res.error) {
       console.log('out', res);

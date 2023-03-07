@@ -199,7 +199,7 @@ export const FeatureExpDataRequest = async (token:string) => {
       response.status = res.status
     })
     .catch((error) => {
-      response.error = error
+      response.error = error.response?.data
     })
 
   return response

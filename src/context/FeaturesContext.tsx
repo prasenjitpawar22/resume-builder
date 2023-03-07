@@ -30,7 +30,7 @@ type FeatureProviderProps = {
 }
 
 const FeatureProvider = ({ children }: FeatureProviderProps) => {
-  const { user } = useContext(UserContext)
+  const { user, userLoader} = useContext(UserContext)
   const [featureHeaderData, setFeatureHeaderData] = useState<Header[]>()
   const [featureEduData, setFeatureEduData] = useState<Education[]>()
   const [featureSkillData, setFeatureSkillData] = useState<Skill[]>()
@@ -66,16 +66,19 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
 
     //experience
     const getFeatureExpData = async (token:string) => {
+      
       const response = await FeatureExpDataRequest(token)
-
+      console.log("this ", response);
+      
       if (response.status === 200) {
         setFeatureExpData(response.data)
       }
       else {
-        toast.warning('unable to get features experience data')
+        toast.warning(response?.error?.toString())
       }
     }
 
+    //
     if (user?.logedIn) {
       const token = localStorage.getItem('token')
       if (token) {
@@ -89,10 +92,10 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     }
   }, [])
 
-  useEffect(() => {
-    // console.log("this is feature header data", featureHeaderData);
-    // console.log("this is featureExpData data", featureExpData);
-  }, [featureHeaderData, featureExpData])
+  // useEffect(() => {
+  //   // console.log("this is feature header data", featureHeaderData);
+  //   // console.log("this is featureExpData data", featureExpData);
+  // }, [featureHeaderData, featureExpData])
 
 
   return (

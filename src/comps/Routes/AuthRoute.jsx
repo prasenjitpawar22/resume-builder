@@ -5,24 +5,27 @@ import { useNavigate, Outlet } from 'react-router-dom';
 import FeatureProvider from '../../context/FeaturesContext';
 import ResumeProvider from '../../context/ResumeContext';
 import { UserContext } from '../../context/UserContext';
+import { Loader } from '../Loader';
 
 const AuthRoute = ({ children }) => {
-    const { user } = useContext(UserContext)
-    const navigate = useNavigate()
+  const { user, userLoader } = useContext(UserContext)
+  const navigate = useNavigate()
 
-    useEffect(()=>{
-        if(!user.logedIn){
-            navigate('/login')
-        }
-    })
+  // useEffect(() => {
+  //     if (!user.logedIn) {
+  //         navigate('/login')
+  //     }
+  // },[])
 
-    return (
-        <ResumeProvider>
-            <FeatureProvider>
-                <Outlet />
-            </FeatureProvider >
-        </ResumeProvider>
-    );
+  return (
+    userLoader ? <Loader /> :
+      // if userlogedIn outlet, else render login page
+      user.logedIn ? <ResumeProvider>
+        <FeatureProvider> <Outlet />
+        </FeatureProvider >
+      </ResumeProvider>
+        : navigate('/login'))
+
 }
 
 export default AuthRoute;
