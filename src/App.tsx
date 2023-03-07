@@ -47,13 +47,13 @@ const App: React.FC = () => {
     setResumeColor!(color)
   }
 
-  useEffect(() => {
-    console.log('teadasda ', leftBlockWidth);
-  }, [leftBlockWidth])
+  // useEffect(() => {
+  //   console.log('teadasda ', leftBlockWidth);
+  // }, [leftBlockWidth])
 
-  useEffect(() => {
-    console.log(resumeExpData);
-  }, [resumeExpData])
+  // useEffect(() => {
+  //   console.log(resumeExpData);
+  // }, [resumeExpData])
 
   const handleDownloadImage = async () => {
     // const element = printRef.current;
@@ -114,7 +114,7 @@ const App: React.FC = () => {
             // eduBlockState &&
             <FeatureEduCardPlain eduBlockState={eduBlockState} />
           }
-          <DropDownList 
+          <DropDownList
             setExpBlockModalState={setExpBlockModalState}
             setBlockState={setExpBlockState} blockState={expBlockState} title={'Experience Block'} />
           {
@@ -161,9 +161,9 @@ const App: React.FC = () => {
         setEduBlockModalState={setEduBlockModalState}
         eduBlockModalState={eduBlockModalState} />
 
-      <ModelCreateExpData 
+      <ModelCreateExpData
         expBlockModalState={expBlockModalState}
-        setExpBlockModalState={setExpBlockModalState}/>
+        setExpBlockModalState={setExpBlockModalState} />
 
       {/* notification */}
       <ToastContainer />

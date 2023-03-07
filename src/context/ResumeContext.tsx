@@ -1,8 +1,9 @@
-import React, { createContext, Dispatch, MutableRefObject, ReactNode, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { createContext, Dispatch, MutableRefObject, ReactNode, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { resumeClient } from '../api/axiosClient'
 import { ResumeEduDataRequest, ResumeExpDataRequest } from '../api/ResumeApi'
 import { Education, Experience, Header, Skill } from '../types'
+import { UserContext } from './UserContext'
 
 export interface ResumeContextInterface {
     printRef: MutableRefObject<HTMLElement | undefined>
@@ -28,6 +29,7 @@ type ResumeProviderProps = {
 }
 
 const ResumeProvider = ({ children }: ResumeProviderProps) => {
+    const { user } = useContext(UserContext)
     const printRef = useRef<HTMLElement>();
     const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
     const [resumeHeaderData, setResumeHeaderData] = useState<Header[] | undefined>([])
@@ -42,44 +44,51 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
         const getResumeHeaderData = async () => {
             resumeClient.get("get-resume-header")
                 .then((res) => {
-                    console.log(res?.data)
+                    // console.log(res?.data)
                     setResumeHeaderData(res?.data)
                 })
-                .catch((e) => console.log(e))
+                .catch(() => {
+
+                    // console.log(e))
+                })
         }
 
         //set edu 
-        const getResumeEduData =async () => {
+        const getResumeEduData = async () => {
             const resumeEduDataRequest = await ResumeEduDataRequest()
-            if(resumeEduDataRequest.status === 200 && resumeEduDataRequest.data){
+            if (resumeEduDataRequest.status === 200 && resumeEduDataRequest.data) {
                 setResumeEduData(resumeEduDataRequest.data)
             }
-            else{
+            else {
                 toast.warning("failed loading resume education data")
             }
         }
 
         // set exp
-        const getResumeExpData =async () => {
+        const getResumeExpData = async () => {
             const resumeExpDataRequest = await ResumeExpDataRequest()
-            if(resumeExpDataRequest.status === 200 && resumeExpDataRequest.data){
+            if (resumeExpDataRequest.status === 200 && resumeExpDataRequest.data) {
                 setResumeExpData(resumeExpDataRequest.data)
             }
-            else{
+            else {
                 toast.warning("failed loading resume experience data")
             }
         }
-        
-        getResumeExpData()
-        getResumeEduData()
-        getResumeHeaderData()
+
+        if (user?.logedIn) {
+            getResumeExpData()
+            getResumeEduData()
+            getResumeHeaderData()
+        }
     }, [])
 
     // debug 
-    useEffect(()=> {
+    useEffect(() => {
+        // 
         // console.log('this is all resume data', resumeHeaderData, resumeEduData);
-        console.log('this is all resume exp', resumeExpData);
-    },[resumeEduData, resumeHeaderData, resumeExpData])
+
+        // console.log('this is all resume exp', resumeExpData);
+    }, [resumeEduData, resumeHeaderData, resumeExpData])
 
     return (
         <ResumeContext.Provider value={{

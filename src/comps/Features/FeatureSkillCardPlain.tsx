@@ -25,10 +25,10 @@ const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
         setResumeSkillData([...(resumeSkillData || []), d])
     }
 
-    useEffect(() => {
-        console.log(resumeSkillData);
+    // useEffect(() => {
+    //     console.log(resumeSkillData);
 
-    }, [resumeSkillData])
+    // }, [resumeSkillData])
 
     return (
         <CardHolder skillBlockState={skillBlockState}

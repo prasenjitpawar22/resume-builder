@@ -12,14 +12,18 @@ type FeatureHeaderDataResponse = {
 }
 
 //get all feature header
-export const FeatureHeaderDataRequest = async () => {
+export const FeatureHeaderDataRequest = async (token: string) => {
   let response: FeatureHeaderDataResponse = {
     data: undefined,
     error: undefined,
     status: 0
   }
 
-  await featureClient.get('get-all-header')
+  await featureClient.get('get-all-header', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
     .then((res) => {
       response.data = res?.data
       response.status = res.status
@@ -60,14 +64,18 @@ type FeatureEduDataResponse = {
 
 
 //get all feature header
-export const FeatureEduDataRequest = async () => {
+export const FeatureEduDataRequest = async (token:string) => {
   let response: FeatureEduDataResponse = {
     data: undefined,
     error: undefined,
     status: 0
   }
 
-  await featureClient.get('get-all-feature-education')
+  await featureClient.get('get-all-education', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
     .then((res) => {
       response.data = res?.data
       response.status = res.status
@@ -174,14 +182,18 @@ export const FeatureExpDeleteRequest = async (id: string) => {
 }
 
 //get all feature exp
-export const FeatureExpDataRequest = async () => {
+export const FeatureExpDataRequest = async (token:string) => {
   let response: FeatureExpDataResponse = {
     data: undefined,
     error: undefined,
     status: 0
   }
 
-  await featureClient.get('get-all-feature-experience')
+  await featureClient.get('get-all-experience', {
+    headers:{
+      Authorization: `Bearer ${token}`
+    }
+  })
     .then((res) => {
       response.data = res?.data
       response.status = res.status

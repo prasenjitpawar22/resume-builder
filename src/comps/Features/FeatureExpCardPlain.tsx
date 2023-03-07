@@ -8,94 +8,97 @@ import { FeatureContext } from '../../context/FeaturesContext'
 import { ResumeContext } from '../../context/ResumeContext'
 
 interface Props {
-	expBlockState: boolean
+  expBlockState: boolean
 }
 
 const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
-	const { expBlockState, } = props
+  const { expBlockState, } = props
 
-	const { featureExpData, setFeatureExpData } = useContext(FeatureContext)
-	const { setResumeExpData, resumeExpData } = useContext(ResumeContext)
+  const { featureExpData, setFeatureExpData } = useContext(FeatureContext)
+  const { setResumeExpData, resumeExpData } = useContext(ResumeContext)
 
-	// add to resume
-	const handleAddExp = async (id: string) => {
-		// check if already in list
-		const foundInList = resumeExpData?.find(data => data._id === id)
-		if (!foundInList) {
-			//get the data by filter list
-			const expAddRequestToResume = featureExpData?.find((data) => data._id === id)
-			if (!expAddRequestToResume) {
-				return console.log('expAddRequest data not found');
-			}
-			else {
-				const createRespons = await ResumeExpAddRequest(expAddRequestToResume)
-				if (createRespons.status === 200) {
-					//call get all resume edu list
-					const requestEduList = await ResumeExpDataRequest()
-					if (requestEduList.status === 200) {
-						setResumeExpData!(requestEduList.data!)
-					}
-					else {
-						toast.warn("error updating resume exp list")
-					}
-				}
-				//handle error
-				else {
-					console.log(createRespons.error);
-					toast.warning("error add to resume")
-				}
-			}
-		}
-		else {
-			//notify already added to resume
-			toast.warn('Already added to resume',)
-		}
-	}
+  // add to resume
+  const handleAddExp = async (id: string) => {
+    // check if already in list
+    const foundInList = resumeExpData?.find(data => data._id === id)
+    if (!foundInList) {
+      //get the data by filter list
+      const expAddRequestToResume = featureExpData?.find((data) => data._id === id)
+      if (!expAddRequestToResume) {
+        return console.log('expAddRequest data not found');
+      }
+      else {
+        const createRespons = await ResumeExpAddRequest(expAddRequestToResume)
+        if (createRespons.status === 200) {
+          //call get all resume edu list
+          const requestEduList = await ResumeExpDataRequest()
+          if (requestEduList.status === 200) {
+            setResumeExpData!(requestEduList.data!)
+          }
+          else {
+            toast.warn("error updating resume exp list")
+          }
+        }
+        //handle error
+        else {
+          console.log(createRespons.error);
+          toast.warning("error add to resume")
+        }
+      }
+    }
+    else {
+      //notify already added to resume
+      toast.warn('Already added to resume',)
+    }
+  }
 
-	const handleDelete = async (id: string) => {
-		console.log('btn clicked', id);
+  const handleDelete = async (id: string) => {
+    console.log('btn clicked', id);
 
-		const deleteResponse = await FeatureExpDeleteRequest(id)
-		// handle deleteResponse
-		console.log(deleteResponse);
-		if (deleteResponse.status === 200) {
-			const allExp = await FeatureExpDataRequest()
-			setFeatureExpData!(allExp.data)
-		}
-		if (deleteResponse.error) {
-			console.log('delete request error', deleteResponse.error);
-			toast.warning("error removing item")
-		}
-	}
+    const deleteResponse = await FeatureExpDeleteRequest(id)
+    // handle deleteResponse
+    console.log(deleteResponse);
+    if (deleteResponse.status === 200) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const allExp = await FeatureExpDataRequest(token)
+        setFeatureExpData!(allExp.data)
+      }
+    }
+    if (deleteResponse.error) {
+      console.log('delete request error', deleteResponse.error);
+      toast.warning("error removing item")
+    }
+  }
 
-	return (
-		<CardHolder expBlockState={expBlockState} className='overflow-y-scroll max-h' >
-			{
-				featureExpData?.map(d =>
-					<Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
-						<h1>Company: {d.company} </h1>
-						<h1>Position: {d.position} </h1>
-						<p>Start: {d.start} </p>
-						<p>End: {d.end} </p>
-						<ul className='list-disc px-4 mt-2'>
-							{d?.description?.map(l => {
-								return (<li> {l} </li>)
-							})}
-						</ul>
-						<div className='flex gap-2 align-middle mt-2'>
-							<button className='px-2 bg-blue-400 rounded text-white'
-								onClick={() => handleAddExp(d._id!)}>
-								add
-							</button>
-							<button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-								onClick={() => handleDelete(d?._id!)}>
-								Remove from list
-							</button>
-						</div>
-					</Card>
-				)}
-		</CardHolder>
-	)
+  return (
+    <CardHolder expBlockState={expBlockState} className='overflow-y-scroll max-h' >
+      {
+        featureExpData?.map(d =>
+          <Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
+            <h1>Company: {d.company} </h1>
+            <h1>Position: {d.position} </h1>
+            <p>Start: {d.start} </p>
+            <p>End: {d.end} </p>
+            <ul className='list-disc px-4 mt-2'>
+              {d?.description?.map(l => {
+                return (<li> {l} </li>)
+              })}
+            </ul>
+            <div className='flex gap-2 align-middle mt-2'>
+              <button className='px-2 bg-blue-400 rounded text-white'
+                onClick={() => handleAddExp(d._id!)}>
+                add
+              </button>
+              <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                onClick={() => handleDelete(d?._id!)}>
+                Remove from list
+              </button>
+            </div>
+          </Card>
+        )}
+    </CardHolder>
+  )
 
 
 }
@@ -112,7 +115,7 @@ const Card = styled.div`
     margin: 12px;
 `
 type CardHolderProps = {
-	expBlockState: boolean
+  expBlockState: boolean
 }
 
 const CardHolder = styled.div<CardHolderProps>`

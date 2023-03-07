@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import React, { useState, FormEvent, useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
+import React, { useState, FormEvent, useContext, useEffect } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 import { LoginRequest } from "../api/UserApi";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { UserContext } from "../context/UserContext";
 
 interface Data {
@@ -11,29 +12,40 @@ interface Data {
 }
 
 const Login = () => {
-  const [formData, setFormData] = useState<Data>({ email: 'prasen@gmail.com', password: '12345' })
+  const [formData, setFormData] = useState<Data>({
+    email: 'rohan@gmail.com', password: '12345'
+  })
   const { setUser, user } = useContext(UserContext)
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (user?.logedIn) {
+      navigate('/')
+    }
+  })
 
   const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
     setFormData({
       email: 'prasen@gmail.com',
       password: '12345'
     })
-    e.preventDefault()
     const res = await LoginRequest(formData)
     if (res.error) {
+      console.log('out', res);
       toast.warning(res.error)
+
       return
     }
 
-    if (res.data?.token && res.data.userdata.email) {
+    if (res.data?.token && res.data.email) {
       localStorage.setItem('token', res.data?.token)
       setUser!({
-        email: res.data.userdata.email, _id: '',
-        username: res.data.userdata.name
+        ...user, email: res.data?.email,
+        logedIn: true, name: res.data?.name
       })
-      
-      return <Navigate to={'/'} />
+      return navigate('/')
     }
   }
 
@@ -84,6 +96,7 @@ const Login = () => {
           </div>
         </Fields>
       </Box>
+      <ToastContainer />
     </div >
   );
 }

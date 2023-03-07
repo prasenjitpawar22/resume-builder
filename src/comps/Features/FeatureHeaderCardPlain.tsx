@@ -68,8 +68,11 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
     // handle deleteResponse
     console.log(deleteResponse);
     if (deleteResponse.status === 200) {
-      const allHeaders = await FeatureHeaderDataRequest()
-      setFeatureHeaderData!(allHeaders.data)
+      const token = localStorage.getItem('token');
+      if (token) {
+        const allHeaders = await FeatureHeaderDataRequest(token)
+        setFeatureHeaderData!(allHeaders.data)
+      }
     }
     if (deleteResponse.error) {
       console.log('delete request error', deleteResponse.error);

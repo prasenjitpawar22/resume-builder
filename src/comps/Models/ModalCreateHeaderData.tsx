@@ -38,9 +38,12 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
         console.log('create submit response', res);
         // call api 
         if (res?.data) {
-          const allHeaders = await FeatureHeaderDataRequest()
-          if (allHeaders.data) {
-            setFeatureHeaderData!(allHeaders.data)
+          const token = localStorage.getItem('token');
+          if (token) {
+            const allHeaders = await FeatureHeaderDataRequest(token)
+            if (allHeaders.data) {
+              setFeatureHeaderData!(allHeaders.data)
+            }
           }
         }
       })

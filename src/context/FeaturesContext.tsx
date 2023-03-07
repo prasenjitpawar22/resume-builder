@@ -1,8 +1,16 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import React, {
+  createContext, ReactNode, useEffect, useState,
+  useContext
+} from 'react'
 import { toast } from 'react-toastify'
+
 import { featureClient } from '../api/axiosClient'
-import { FeatureEduDataRequest, FeatureExpDataRequest, FeatureHeaderDataRequest } from '../api/FeaturesApi'
+import {
+  FeatureEduDataRequest, FeatureExpDataRequest,
+  FeatureHeaderDataRequest
+} from '../api/FeaturesApi'
 import { Education, Experience, Header, Skill } from '../types'
+import { UserContext } from './UserContext'
 
 interface FeatureContext {
   featureHeaderData: Header[] | undefined
@@ -22,6 +30,7 @@ type FeatureProviderProps = {
 }
 
 const FeatureProvider = ({ children }: FeatureProviderProps) => {
+  const { user } = useContext(UserContext)
   const [featureHeaderData, setFeatureHeaderData] = useState<Header[]>()
   const [featureEduData, setFeatureEduData] = useState<Education[]>()
   const [featureSkillData, setFeatureSkillData] = useState<Skill[]>()
@@ -29,45 +38,55 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
 
   useEffect(() => {
     // header 
-    const getFeatureHeaderData = async () => {
-      const response = await FeatureHeaderDataRequest()
+    const getFeatureHeaderData = async (token:string) => {
+      const response = await FeatureHeaderDataRequest(token)
+      console.log(response);
       if (response.data) {
+        
         setFeatureHeaderData(response.data)
       }
       //handle error 
-      else{
+      else {
         toast.warning('unable to get features header data')
       }
     }
 
     // education
-    const getFeatureEducationData =async () => {
-      const response = await FeatureEduDataRequest()
-      
-      if (response.status === 200){
+    const getFeatureEducationData = async (token:string) => {
+      const response = await FeatureEduDataRequest(token)
+
+      if (response.status === 200) {
         setFeatureEduData(response?.data)
       }
       //handle error
-      else{
+      else {
         toast.warning('unable to get features education data')
       }
     }
 
     //experience
-    const getFeatureExpData =async () => {
-      const response = await FeatureExpDataRequest()
+    const getFeatureExpData = async (token:string) => {
+      const response = await FeatureExpDataRequest(token)
 
       if (response.status === 200) {
         setFeatureExpData(response.data)
-      } 
-      else{
+      }
+      else {
         toast.warning('unable to get features experience data')
       }
     }
 
-    getFeatureExpData()
-    getFeatureEducationData()
-    getFeatureHeaderData()
+    if (user?.logedIn) {
+      const token = localStorage.getItem('token')
+      if (token) {
+        getFeatureExpData(token)
+        getFeatureEducationData(token)
+        getFeatureHeaderData(token)
+      }
+      else {
+        toast.warning('not logged in')
+      }
+    }
   }, [])
 
   useEffect(() => {

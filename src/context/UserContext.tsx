@@ -1,8 +1,11 @@
-import React, { ReactNode, createContext, useState, Dispatch, SetStateAction, useEffect } from "react";
-import {LoginRequest} from '../api/UserApi'
+import React, {
+  ReactNode, createContext, useState,
+  Dispatch, SetStateAction, useEffect
+} from "react";
+import { SetUserContextRequest } from "../api/UserApi";
 interface UserContextInterface {
-  user: User
-  setUser: Dispatch<SetStateAction<User>>
+  user: IUser
+  setUser: Dispatch<SetStateAction<IUser>>
 }
 
 export const UserContext = createContext<Partial<UserContextInterface>>({})
@@ -11,23 +14,39 @@ type UserProviderProps = {
   children: ReactNode
 }
 
-type User = {
-  username: string | undefined
-  _id: string | undefined
+type IUser = {
+  name: string | undefined
   email: string | undefined
+  logedIn: boolean
 }
 
 
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<User>({ _id: '', email: '', username: '' })
+  const [user, setUser] = useState<IUser>({
+    email: undefined, name: undefined, logedIn: false
+  })
 
   useEffect(() => {
-    const requestUser = async() => {
-      // const res = await LoginRequest()
+    const userRequest = async () => {
+      const token = localStorage.getItem("token")
+      
+      if (token) {
+        const response = await SetUserContextRequest(token)
+        // console.log(response); 
+        if (response.success){
+          setUser({...user, 
+            name: response.data.name, 
+            logedIn: response.success,
+            email: response.data.email
+          })
+        }
+      }
     }
+    userRequest()
+  },[])
 
-  }, [])
-
+  // useEffect(() => { console.log('debug user,', user);
+  //  }, [user])
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

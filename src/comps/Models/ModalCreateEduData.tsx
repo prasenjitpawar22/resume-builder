@@ -27,9 +27,12 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
     }
     if (createResponse.status === 200) {
       //get all list 
-      const allEdu = await FeatureEduDataRequest()
-      if (allEdu.status === 200) {
-        setFeatureEduData!(allEdu.data)
+      const token = localStorage.getItem('token')
+      if (token) {
+        const allEdu = await FeatureEduDataRequest(token)
+        if (allEdu.status === 200) {
+          setFeatureEduData!(allEdu.data)
+        }
       }
     }
     if (createResponse.error) {

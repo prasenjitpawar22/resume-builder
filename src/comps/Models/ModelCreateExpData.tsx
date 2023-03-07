@@ -34,12 +34,15 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
 
     if (createResponse.status === 200) {
       //get update list
-      const expList = await FeatureExpDataRequest()
-      if (expList.status === 200) {
-        setFeatureExpData!(expList.data)
-      }
-      else {
-        toast.warn('unable to fetch the updated list')
+      const token = localStorage.getItem('token')
+      if (token) {
+        const expList = await FeatureExpDataRequest(token)
+        if (expList.status === 200) {
+          setFeatureExpData!(expList.data)
+        }
+        else {
+          toast.warn('unable to fetch the updated list')
+        }
       }
     }
     else {

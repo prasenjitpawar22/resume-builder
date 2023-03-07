@@ -55,8 +55,11 @@ export default function FeatureEduCardPlain(props: Props) {
         // handle deleteResponse
         console.log(deleteResponse);
         if (deleteResponse.status === 200) {
-            const allEdu = await FeatureEduDataRequest()
-            setFeatureEduData!(allEdu.data)
+            const token = localStorage.getItem('token')
+            if (token) {
+                const allEdu = await FeatureEduDataRequest(token)
+                setFeatureEduData!(allEdu.data)
+            }
         }
         if (deleteResponse.error) {
             console.log('delete request error', deleteResponse.error);
