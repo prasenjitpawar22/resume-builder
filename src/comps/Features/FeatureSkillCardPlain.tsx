@@ -12,12 +12,12 @@ interface Props {
 const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
     const { skillBlockState, resumeSkillData, setResumeSkillData, data } = props
 
-    const handleAddSkill = (_id: string | undefined) => {
-        console.log(_id);
+    const handleAddSkill = (id: string | undefined) => {
+        console.log(id);
         console.log("asd");
-        let d: Skill | undefined = data?.find(x => x?._id === _id)
+        let d: Skill | undefined = data?.find(x => x?.id === id)
         //check if already added
-        var check = resumeSkillData?.filter(d => d?._id === _id)
+        var check = resumeSkillData?.filter(d => d?.id === id)
         console.log('this check', check);
         if (check?.length !== 0) {
             return
@@ -34,14 +34,14 @@ const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
         <CardHolder skillBlockState={skillBlockState}
             className='overflow-y-scroll max-h'>
             {data?.map(d =>
-                <Card key={d?._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+                <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
                     {d?.data &&
-                        <h1 key={d._id} className='flex gap-1 flex-wrap font-medium'>Skills:
+                        <h1 key={d.id} className='flex gap-1 flex-wrap font-medium'>Skills:
                             {d?.data.map(s => <p key={s} className='font-normal'>{s} |</p>)}
                         </h1>
                     }
                     <button className='px-2 bg-blue-400 rounded text-white'
-                        onClick={() => handleAddSkill(d?._id)}>add</button>
+                        onClick={() => handleAddSkill(d?.id)}>add</button>
                 </Card>
             )}
         </CardHolder>)

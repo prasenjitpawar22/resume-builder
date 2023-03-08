@@ -64,7 +64,7 @@ type ResumeEduDataResponse = {
 
 // create
 export const ResumeEduAddRequest = async (data: Education) => {
-    let { _id, end, location, start, university } = data
+    let { id, end, location, start, university } = data
 
     let response: ResumeEduDataResponse = {
         status: 0,
@@ -73,7 +73,7 @@ export const ResumeEduAddRequest = async (data: Education) => {
     }
 
     await resumeClient.post('add-resume-education',
-        { _id: _id, end: end, location: location, start: start, university: university })
+        { id: id, end: end, location: location, start: start, university: university })
         .then((res) => {
             console.log(res);
 
@@ -177,7 +177,7 @@ export const ResumeExpDataRequest = async () => {
 
 // create
 export const ResumeExpAddRequest = async (data: Experience) => {
-    let { _id, end, company, start, description, position } = data
+    let { id, end, company, start, description, position } = data
 
     let response: ResumeExpDeleteResponse = {
         status: 0,
@@ -186,7 +186,7 @@ export const ResumeExpAddRequest = async (data: Experience) => {
     }
 
     await resumeClient.post('create-resume-experience',
-        { _id: _id, end, company, start, description, position })
+        { id: id, end, company, start, description, position })
         .then((res) => {
             console.log(res);
 

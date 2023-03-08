@@ -57,9 +57,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     userRequest()
   }, [])
 
-  useEffect(() => {
-    console.log('debug user,', user);
-  }, [user])
+  // useEffect(() => {
+  //   console.log('debug user,', user);
+  // }, [user])
 
   return (
     <UserContext.Provider value={{ user, setUser, userLoader, setUserLoader }}>

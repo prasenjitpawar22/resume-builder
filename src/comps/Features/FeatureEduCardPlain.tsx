@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { toast } from 'react-toastify';
 
@@ -20,10 +20,10 @@ export default function FeatureEduCardPlain(props: Props) {
 
     const handleAdd = async (id: string) => {
         // check if already in list
-        const foundInList = resumeEduData?.find(data => data._id === id)
+        const foundInList = resumeEduData?.find(data => data.id === id)
         if (!foundInList) {
             //get the data by filter list
-            const eduAddRequestToResume = featureEduData?.find((data) => data._id === id)
+            const eduAddRequestToResume = featureEduData?.find((data) => data.id === id)
             if (!eduAddRequestToResume) {
                 return console.log('eduAddRequest data not found');
             }
@@ -72,7 +72,7 @@ export default function FeatureEduCardPlain(props: Props) {
                 <Card>
                     <h1>asd</h1>
                 </Card> : featureEduData?.map((d) =>
-                    <Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+                    <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
                         {<div>
                             <p>University: {d.university}</p>
                             <p>Location: {d.location}</p>
@@ -81,9 +81,9 @@ export default function FeatureEduCardPlain(props: Props) {
 
                             <div className='flex gap-2 align-middle mt-2'>
                                 <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                                    onClick={() => handleAdd(d?._id!)}>Add</button>
+                                    onClick={() => handleAdd(d?.id!)}>Add</button>
                                 <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                                    onClick={() => handleDelete(d?._id!)}>Remove from list</button>
+                                    onClick={() => handleDelete(d?.id!)}>Remove from list</button>
                             </div>
                         </div>}
                     </Card>

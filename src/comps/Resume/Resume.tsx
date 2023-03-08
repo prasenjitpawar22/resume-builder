@@ -173,7 +173,7 @@ export const Resume: React.FC = () => {
           <span className='shadow-md p-2'>Header</span>
           <Reorder.Group axis='y' values={resumeHeaderData!} onReorder={setResumeHeaderData!}>
             {resumeHeaderData?.length! > 0 && resumeHeaderData?.map(data =>
-              <Reorder.Item key={data?._id} value={data}>
+              <Reorder.Item key={data?.id} value={data}>
                 <HeaderCardPlain data={data}   />
               </Reorder.Item>
             )}
@@ -193,7 +193,7 @@ export const Resume: React.FC = () => {
           <span className='uppercase font-medium p-2'>Education</span>
           <Reorder.Group axis="y" values={resumeEduData!} onReorder={setResumeEduData!}>
             {resumeEduData!.length > 0 && resumeEduData?.map(data =>
-              <Reorder.Item key={data._id} value={data}>
+              <Reorder.Item key={data.id} value={data}>
                 <EduCardPlain data={data} />
               </Reorder.Item>
             )}
@@ -211,7 +211,7 @@ export const Resume: React.FC = () => {
           <span className='uppercase p-2 font-normal'>Experience</span>
           <Reorder.Group axis='y' values={resumeExpData!} onReorder={setResumeExpData!}>
             {resumeExpData!.length > 0 && resumeExpData?.map(data =>
-              <Reorder.Item key={data._id} value={data}>
+              <Reorder.Item key={data.id} value={data}>
                 <ExpCardPlain data={data} />
               </Reorder.Item>
             )}

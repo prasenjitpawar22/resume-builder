@@ -88,8 +88,9 @@ const App: React.FC = () => {
       <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100'
         width={leftBlockWidth!} marginLeft={leftBlockMargin}>
         <div className='flex items-center px-8 gap-4 mt-2 bg-violet-300 rounded ml-2 py-2 mr-2'>
-          <img className='w-20 h-20 rounded-full shadow-2xl shadow-neutral-900' src='./brand.png' />
-          <h1 className='text-2xl font-normal'>Resume Builder</h1>
+          {/* <img className='w-20 h-20 rounded-full shadow-2xl shadow-neutral-900' src='./brand.png' /> */}
+          <h1 className='text-[64px] leading-[77px] text-[#434343] 
+             font-Lato font-[800] drop-shadow-[rgba(0, 0, 0, 0.25)]'>Resume Builder</h1>
         </div>
         {/* <h1 className='text-3xl font-semibold text-center'>Features</h1> */}
         <span onClick={handleLeftBlock}>

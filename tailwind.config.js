@@ -14,8 +14,7 @@ module.exports = {
         'none': "none"
       },
       fontFamily:{
-        gilroylight: ["Gilroy-light"],
-        gilroydark : ["Gilroy-extra-bold"]
+        Lato: "'Lato', sans-serif"
       },
       textColor:{
         primary: '#2A1E17'

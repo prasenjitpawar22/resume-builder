@@ -20,7 +20,7 @@ const ExpCardPlain: React.FC<Props> = (props: Props) => {
   }
 
   const handleDelete = async (id: string) => {
-    setResumeExpData!(currentData => currentData.filter(data => data?._id !== id))
+    setResumeExpData!(currentData => currentData.filter(data => data?.id !== id))
 
     if (!id) return
     const deleteResponse = await ResumeExpDeleteRequest(id)
@@ -49,7 +49,7 @@ const ExpCardPlain: React.FC<Props> = (props: Props) => {
       {/* <div className={hoverCardState + " gap-2 absolute -mt-10"}> */}
       <EditBar className="z-10" display={hoverCardState}>
         <button className="">edit</button>
-        <button onClick={() => handleDelete(data._id!)}>delete</button>
+        <button onClick={() => handleDelete(data.id!)}>delete</button>
       </EditBar>
       {/* </div> */}
       <div className='w-full flex rounded-md  justify-between'>

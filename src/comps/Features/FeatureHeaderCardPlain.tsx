@@ -31,10 +31,10 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
 
   const { featureHeaderData, setFeatureHeaderData } = useContext(FeatureContext)
 
-  const handleAdd = async (_id: string | undefined) => {
-    let d: Header | undefined = featureHeaderData?.find(x => x?._id === _id)
+  const handleAdd = async (id: string | undefined) => {
+    let d: Header | undefined = featureHeaderData?.find(x => x?.id === id)
     //check if already added
-    var check = resumeHeaderData?.filter(d => d?._id === _id)
+    var check = resumeHeaderData?.filter(d => d?.id === id)
     console.log('this check', check);
     if (check?.length !== 0) {
       toast.warn('already added to resume')
@@ -45,7 +45,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
     //backend add resume header req
     await client.post("set-resume-header",
       {
-        _id: d?._id,
+        id: d?.id,
         fullname: d?.fullname,
         contact: d?.contact,
         github: d?.github,
@@ -81,12 +81,12 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
 
   return (
     <CardHolder headerBlockState={headerBlockState}
-      className='overflow-y-scroll max-h'>
+      className='overflow-y-scroll max-h tracking-wider'>
       {featureHeaderData?.length === 0 ?
         <Card>
           <h1>asd</h1>
         </Card> : featureHeaderData?.map(d =>
-          <Card key={d?._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+          <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
             {d?.fullname && <h1>Full Name: {d?.fullname}</h1>}
             {d?.contact && <h1>Contact: {d?.contact}</h1>}
             {d?.linkedin && <h1>Linkedin: {d?.linkedin}</h1>}
@@ -94,9 +94,9 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
             {d?.websit && <h1>Websit: {d?.websit}</h1>}
             <div className='flex gap-2 align-middle mt-2'>
               <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                onClick={() => handleAdd(d?._id)}>Add</button>
+                onClick={() => handleAdd(d?.id)}>Add</button>
               <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                onClick={() => handleDelete(d?._id!)}>Remove from list</button>
+                onClick={() => handleDelete(d?.id!)}>Remove from list</button>
             </div>
           </Card>
         )}
@@ -116,6 +116,7 @@ const Card = styled.div`
 `
 const CardHolder = styled.div<CardHolderProps>`
     transition: all;
+    font-family: 'Lato', sans;
     transition-duration: 1s;
     max-height: ${(props) => { return props.headerBlockState ? 20 : 0 }}rem;
     ::-webkit-scrollbar{

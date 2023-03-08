@@ -18,33 +18,33 @@ const Register = () => {
               <div className="flex flex-col">
               <div className="flex flex-col mb-5">
                   <label className="text-primary text-[14px] mb-1">Full Name</label>
-                  <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
+                  <input className="font-Lato rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
                     placeholder="Full name" type={"text"}
                   />
                 </div>
                 <div className="flex flex-col mb-5">
                   <label className="text-primary text-[14px] mb-1">Email</label>
-                  <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
+                  <input className="font-Lato rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
                     placeholder="username@gmail.com" type={"email"}
                   />
                 </div>
                 <div className="flex flex-col mb-6">
                   <label className="text-primary text-[14px] mb-1">Password</label>
-                  <input className="font-gilroylight rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
+                  <input className="font-Lato rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
                     placeholder="********" type={"password"}
                   />
                 </div>
                 <button
-                  className="bg-[#F25019] hover:bg-[#d84616] rounded py-2 font-gilroylight
+                  className="bg-[#F25019] hover:bg-[#d84616] rounded py-2 font-Lato
                 text-[#FFFFFF] text-[20px] mb-4"
                   type="submit">Register</button>
                 <p className="text-center text-primary text-[14px] mb-2">Or continue with</p>
                 <p className="text-center text-primary text-[14px]">
                   Already have an account?
-                  <Link to={"/login"} className="font-gilroylight text-[14px] 
+                  <Link to={"/login"} className="font-Lato text-[14px] 
                   text-primary" > Sign in
                   </Link>
                 </p>

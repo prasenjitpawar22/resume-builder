@@ -40,7 +40,7 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     // header 
     const getFeatureHeaderData = async (token:string) => {
       const response = await FeatureHeaderDataRequest(token)
-      console.log(response);
+      // console.log(response);
       if (response.data) {
         
         setFeatureHeaderData(response.data)
@@ -68,7 +68,6 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     const getFeatureExpData = async (token:string) => {
       
       const response = await FeatureExpDataRequest(token)
-      console.log("this ", response);
       
       if (response.status === 200) {
         setFeatureExpData(response.data)

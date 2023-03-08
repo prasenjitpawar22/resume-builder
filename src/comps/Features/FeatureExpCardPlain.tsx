@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
@@ -6,6 +6,7 @@ import { FeatureExpDataRequest, FeatureExpDeleteRequest } from '../../api/Featur
 import { ResumeExpAddRequest, ResumeExpDataRequest } from '../../api/ResumeApi'
 import { FeatureContext } from '../../context/FeaturesContext'
 import { ResumeContext } from '../../context/ResumeContext'
+import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain'
 
 interface Props {
   expBlockState: boolean
@@ -20,10 +21,10 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
   // add to resume
   const handleAddExp = async (id: string) => {
     // check if already in list
-    const foundInList = resumeExpData?.find(data => data._id === id)
+    const foundInList = resumeExpData?.find(data => data.id === id)
     if (!foundInList) {
       //get the data by filter list
-      const expAddRequestToResume = featureExpData?.find((data) => data._id === id)
+      const expAddRequestToResume = featureExpData?.find((data) => data.id === id)
       if (!expAddRequestToResume) {
         return console.log('expAddRequest data not found');
       }
@@ -74,29 +75,31 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
   return (
     <CardHolder expBlockState={expBlockState} className='overflow-y-scroll max-h' >
       {
-        featureExpData?.map(d =>
-          <Card key={d._id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
-            <h1>Company: {d.company} </h1>
-            <h1>Position: {d.position} </h1>
-            <p>Start: {d.start} </p>
-            <p>End: {d.end} </p>
-            <ul className='list-disc px-4 mt-2'>
-              {d?.description?.map(l => {
-                return (<li> {l} </li>)
-              })}
-            </ul>
-            <div className='flex gap-2 align-middle mt-2'>
-              <button className='px-2 bg-blue-400 rounded text-white'
-                onClick={() => handleAddExp(d._id!)}>
-                add
-              </button>
-              <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                onClick={() => handleDelete(d?._id!)}>
-                Remove from list
-              </button>
-            </div>
-          </Card>
-        )}
+        featureExpData === undefined ?
+          <FeatureEmptyDataCardPlain text={'Empty experience data please add'} /> :
+          featureExpData?.map(d =>
+            <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
+              <h1>Company: {d.company} </h1>
+              <h1>Position: {d.position} </h1>
+              <p>Start: {d.start} </p>
+              <p>End: {d.end} </p>
+              <ul className='list-disc px-4 mt-2'>
+                {d?.description?.map(l => {
+                  return (<li> {l} </li>)
+                })}
+              </ul>
+              <div className='flex gap-2 align-middle mt-2'>
+                <button className='px-2 bg-blue-400 rounded text-white'
+                  onClick={() => handleAddExp(d.id!)}>
+                  add
+                </button>
+                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                  onClick={() => handleDelete(d?.id!)}>
+                  Remove from list
+                </button>
+              </div>
+            </Card>
+          )}
     </CardHolder>
   )
 

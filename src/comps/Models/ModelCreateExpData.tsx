@@ -17,7 +17,7 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
   const { setFeatureExpData } = useContext(FeatureContext)
 
   const [expData, setExpData] = useState<Experience>({
-    _id: '',
+    id: '',
     company: '',
     description: [],
     end: '',

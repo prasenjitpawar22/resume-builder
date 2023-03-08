@@ -3,12 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Gilroy-light";
-    src: url("../public/fonts/Gilroy/Gilroy-Light.otf");
+    font-family: "Lato";
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 }
-@font-face {
-    font-family: "Gilroy-extra-bold";
-    src: url("../public/fonts/Gilroy/Gilroy-ExtraBold.otf");
-}
-
+ 
  

@@ -18,7 +18,7 @@ const SkillCardPlain: React.FC<Props> = (props: Props) => {
     }
 
     const handleDelete = (i?: string) => {
-        setData(currentData => currentData?.filter(data => data?._id !== i))
+        setData(currentData => currentData?.filter(data => data?.id !== i))
     }
 
     return <Draggable bounds="parent">
@@ -26,7 +26,7 @@ const SkillCardPlain: React.FC<Props> = (props: Props) => {
             className='flex flex-col p-4 cursor-default'>
             <EditBar className="z-50" display={hoverCardState}>
                 <button className="editBarBtn">edit</button>
-                <button onClick={() => handleDelete(data?._id)}>delete</button>
+                <button onClick={() => handleDelete(data?.id)}>delete</button>
             </EditBar>
             <div className='w-full flex flex-col items-center rounded-md justify-center'>
                 <h1 className="font-normal font-serif text-2xl underline underline-offset-2">

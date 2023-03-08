@@ -21,7 +21,7 @@ const EduCardPlain: React.FC<Props> = (props: Props) => {
     }
 
     const handleDelete = async (id: string) => {
-        setResumeEduData!(currentData => currentData.filter(data => data?._id !== id))
+        setResumeEduData!(currentData => currentData.filter(data => data?.id !== id))
 
         if (!id) return
         const deleteResponse = await ResumeEduDeleteRequest(id)
@@ -49,7 +49,7 @@ const EduCardPlain: React.FC<Props> = (props: Props) => {
             className='flex flex-col p-4 cursor-default '>
             <EditBar className="z-50" display={hoverCardState}>
                 <button className="editBarBtn">edit</button>
-                <button onClick={() => handleDelete(data._id!)}>delete</button>
+                <button onClick={() => handleDelete(data.id!)}>delete</button>
             </EditBar>
             <div className='w-full flex rounded-md justify-between'>
                 <p>{data?.university} </p>
