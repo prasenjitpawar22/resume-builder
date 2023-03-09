@@ -28,7 +28,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
 
   return (
     <div className='flex'>
-      <div className="tablet:flex phone:hidden flex-col h-screen p-3 shadow tablet:w-70 bg-slate-100 ">
+      <div className="tablet:flex phone:hidden flex-col h-screen p-3 shadow tablet:w-70">
         <div className="space-y-3">
           <div className="flex p-3 items-center shadow bg-component-secondary rounded-xl">
             <h2 className="font-Lato phone:text-3xl tablet:text-7xl text-primary text-center
@@ -37,7 +37,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
             </h2>
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 ">
             <ul className="pt-2 pb-4 space-y-1 text-sm">
               <li className="rounded-sm">
                 <DropDownList
@@ -105,6 +105,9 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
+
+
+      {/* resume's  */}
       <div className="container bg-slate-400 h-screen mx-auto overflow-y-scroll">
         <Resume />
         {/* <div className="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3"> */}
