@@ -1,0 +1,112 @@
+.simple-resume-h1 {
+    color: #5D68C9;
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.simple-resume-h2 {
+    color: #5D68C9;
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    font-size:38px;
+    text-align: right;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.simple-resume-h3 {
+    color: #202020;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    text-align: left;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.simple-resume-h4 {
+    color: #3a3a3a;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: left;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.simple-resume-h5 {
+    color: #3a3a3a;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    text-align: left;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.simple-resume-h6 {
+    color: #C6C5C5;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: left;
+    line-height: 1;
+    letter-spacing: .12px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+.simple-resume-p {
+    color: #737373;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    text-align: left;
+    line-height: 1.3;
+    letter-spacing: .12px;
+}
+
+@media (min-width: 330px) and (max-width: 1230px) {
+    .simple-resume-h1 {
+        font-size: 34px;
+    }
+    .simple-resume-h2 {
+        font-size: 20px;
+    }
+    .simple-resume-h3 {
+        font-size: 16px;
+    }
+    .simple-resume-h4 {
+        font-size: 14px;
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+    }
+    .simple-resume-h5 {
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+    }
+    .simple-resume-h6 {
+        overflow: hidden;
+        font-size: 12px;
+    }
+    .simple-resume-p {
+        font-weight: 500;
+        font-size: 12px;
+    }
+}
