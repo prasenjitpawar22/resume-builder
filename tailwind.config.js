@@ -13,33 +13,39 @@ module.exports = {
         'login': "url('../public/resume-background.png')",
         'none': "none"
       },
-      fontFamily:{
+      backgroundColor: {
+        'component-primary': '#8155FF',
+        'component-secondary': '#B49AFF'
+      },
+      fontFamily: {
         Lato: "'Lato', sans-serif"
       },
-      textColor:{
-        primary: '#2A1E17'
+      textColor: {
+        primary: '#434343',
+        secondary: '#838383',
+        ternary: '#C6C5C5',
       },
-      dropShadow:{
-        'custom':[
+      dropShadow: {
+        'custom': [
           '0px 4px 70px rgba(0, 0, 0, 0.60)',
         ]
       },
-      backdropBlur:{
-        
-      }
+      backdropBlur: {
+
+      },
+      fontSize: {
+
+        ...require('tailwindcss/defaultTheme').fontSize
+      },
+
     },
     screens: {
-      'phone': '290px',
-      // => @media (min-width: 390px) { ... }
-
-      'tablet': '640px',
-      // => @media (min-width: 640px) { ... }
-
-      'laptop': '1024px',
-      // => @media (min-width: 1024px) { ... }
-
-      'desktop': '1280px',
-      // => @media (min-width: 1280px) { ... }
+      'phone': '330px',
+      // => @media (min-width: 330px) { ... }
+      'tablet': '660px',
+      // => @media (min-width: 660px) {... }
+      'desktop': '1024px',
+      // => @media (min-width: 1024px) {... }
     },
   },
   plugins: [],

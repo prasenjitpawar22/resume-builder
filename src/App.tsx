@@ -18,6 +18,7 @@ import { ResumeContext } from './context/ResumeContext';
 import { resumeClient } from './api/axiosClient';
 import ModalCreateEduData from './comps/Models/ModalCreateEduData';
 import ModelCreateExpData from './comps/Models/ModelCreateExpData';
+import ResumeBuildSidebar from './comps/sidebar/ResumeBuildSidebar';
 
 const App: React.FC = () => {
 
@@ -26,7 +27,7 @@ const App: React.FC = () => {
     resumeSkillData, setResumeSkillData } = useContext(ResumeContext)
   const navigate = useNavigate();
 
-  const [leftBlockWidth, setLeftBlockWidth] = useState<number>(30)
+  const [leftBlockWidth, setLeftBlockWidth] = useState<number>(410)
   const [leftBlockMargin, setLeftBlockMargin] = useState(0)
   const [resumeBlockPosition, setResumeBlockPosition] = useState(0)
   const [headerBlockState, setHeaderBlockState] = useState(false)
@@ -81,18 +82,13 @@ const App: React.FC = () => {
   };
   return (
     <div className="App">
-      {/* <NavBar className='bg-slate-100'>
-
-      </NavBar> */}
-
-      <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100'
+      {/* <FeatureBlock className='shadow-violet-600 shadow-2xl bg-slate-100'
         width={leftBlockWidth!} marginLeft={leftBlockMargin}>
-        <div className='flex items-center px-8 gap-4 mt-2 bg-violet-300 rounded ml-2 py-2 mr-2'>
-          {/* <img className='w-20 h-20 rounded-full shadow-2xl shadow-neutral-900' src='./brand.png' /> */}
+        <div className='flex items-center px-8 gap-4 mt-2 bg-violet-300
+         rounded ml-2 py-2 mr-2'>
           <h1 className='text-[64px] leading-[77px] text-[#434343] 
              font-Lato font-[800] drop-shadow-[rgba(0, 0, 0, 0.25)]'>Resume Builder</h1>
         </div>
-        {/* <h1 className='text-3xl font-semibold text-center'>Features</h1> */}
         <span onClick={handleLeftBlock}>
           {leftBlockMargin === 0 ? <BiChevronsLeft size={40} /> : <BiChevronsRight size={40} />}
         </span>
@@ -131,9 +127,9 @@ const App: React.FC = () => {
             data={data.skill} />
           <DropDownList title={'Other Block'} />
         </Feature>
-      </FeatureBlock>
+      </FeatureBlock> */}
 
-      <ResumeBlockHolder
+      {/* <ResumeBlockHolder
         width={resumeBlockHolderWidth!}
         marginLeft={leftBlockWidth!}
         resumeBlockPosition={resumeBlockPosition}>
@@ -151,9 +147,11 @@ const App: React.FC = () => {
           </button>
         </ColorBlock>
         <Resume />
-      </ResumeBlockHolder>
+      </ResumeBlockHolder> */}
 
-      {/* modals  */}
+
+      <ResumeBuildSidebar/>
+
       <ModalCreateHeaderData
         setHeaderBlockModalState={setHeaderBlockModalState}
         headerBlockModalState={headerBlockModalState} />
@@ -166,7 +164,6 @@ const App: React.FC = () => {
         expBlockModalState={expBlockModalState}
         setExpBlockModalState={setExpBlockModalState} />
 
-      {/* notification */}
       <ToastContainer />
     </div >
   );
@@ -193,7 +190,7 @@ const NavBar = styled.div`
 
 const FeatureBlock = styled.div<FeatureBlockProps>`
   position: absolute;
-  width: ${(props) => props.width}%;
+  width: ${(props) => props.width}px;
   height: fit-content;
   min-height: 100%;
   z-index: 1;
@@ -247,5 +244,5 @@ const ResumeBlockHolder = styled.div<ResumeBlockHolder>`
   transition: all;
   transition-duration: 1s;
   /* background-color: greenyellow; */
-  left:${(props) => props.marginLeft - props.resumeBlockPosition + 2}%;
+  left:${(props) => props.marginLeft - props.resumeBlockPosition + 40}px;
 `
