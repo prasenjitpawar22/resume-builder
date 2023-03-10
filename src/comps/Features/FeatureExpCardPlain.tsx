@@ -63,7 +63,9 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
       const token = localStorage.getItem('token');
       if (token) {
         const allExp = await FeatureExpDataRequest(token)
-        setFeatureExpData!(allExp.data)
+        if (allExp.status === 200 && allExp.data) {
+          setFeatureExpData!(allExp.data)
+        }
       }
     }
     if (deleteResponse.error) {
@@ -75,7 +77,7 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
   return (
     <CardHolder expBlockState={expBlockState} className='overflow-y-scroll max-h' >
       {
-        featureExpData === undefined ?
+        featureExpData === undefined || featureExpData.length <= 1 ?
           <FeatureEmptyDataCardPlain text={'Empty experience data please add'} /> :
           featureExpData?.map(d =>
             <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >

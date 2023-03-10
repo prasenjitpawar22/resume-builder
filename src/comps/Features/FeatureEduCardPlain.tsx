@@ -6,6 +6,7 @@ import { FeatureEduDataRequest, FeatureEduDeleteRequest } from '../../api/Featur
 import { ResumeEduAddRequest, ResumeEduDataRequest } from '../../api/ResumeApi';
 import { FeatureContext } from '../../context/FeaturesContext';
 import { ResumeContext } from '../../context/ResumeContext';
+import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain';
 
 
 interface Props {
@@ -58,7 +59,9 @@ export default function FeatureEduCardPlain(props: Props) {
             const token = localStorage.getItem('token')
             if (token) {
                 const allEdu = await FeatureEduDataRequest(token)
-                setFeatureEduData!(allEdu.data)
+                if (allEdu.status === 200 && allEdu.data) {
+                    setFeatureEduData!(allEdu.data)
+                }
             }
         }
         if (deleteResponse.error) {
@@ -68,26 +71,28 @@ export default function FeatureEduCardPlain(props: Props) {
 
     return (
         <CardHolder eduBlockState={eduBlockState} className='overflow-y-scroll'>
-            {featureEduData?.length === 0 ?
-                <Card>
-                    <h1>asd</h1>
-                </Card> : featureEduData?.map((d) =>
-                    <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
-                        {<div>
-                            <p>University: {d.university}</p>
-                            <p>Location: {d.location}</p>
-                            <p>Start: {d.start}</p>
-                            <p>End: {d.end}</p>
+            {featureEduData === undefined || featureEduData.length <=1 ?
+                <FeatureEmptyDataCardPlain text={'Empty education data please add'} />
+                : featureEduData?.length === 0 ?
+                    <Card>
+                        <h1>asd</h1>
+                    </Card> : featureEduData?.map((d) =>
+                        <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+                            {<div>
+                                <p>University: {d.university}</p>
+                                <p>Location: {d.location}</p>
+                                <p>Start: {d.start}</p>
+                                <p>End: {d.end}</p>
 
-                            <div className='flex gap-2 align-middle mt-2'>
-                                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                                    onClick={() => handleAdd(d?.id!)}>Add</button>
-                                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                                    onClick={() => handleDelete(d?.id!)}>Remove from list</button>
-                            </div>
-                        </div>}
-                    </Card>
-                )}
+                                <div className='flex gap-2 align-middle mt-2'>
+                                    <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                                        onClick={() => handleAdd(d?.id!)}>Add</button>
+                                    <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                                        onClick={() => handleDelete(d?.id!)}>Remove from list</button>
+                                </div>
+                            </div>}
+                        </Card>
+                    )}
         </CardHolder>
     )
 }

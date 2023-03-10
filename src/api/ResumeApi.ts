@@ -1,13 +1,13 @@
 import { AxiosError } from "axios"
 import { v4 as uuid4 } from 'uuid'
 
-import { Education, Experience, Header } from "../types"
+import { IEducation, IExperience, IHeader } from "../types"
 import { resumeClient } from "./axiosClient"
 
 
 //  ----------------------------------------header-------------------------------------------------
 type ResumeHeaderDataResponse = {
-    data?: Header[],
+    data?: IHeader[],
     error?: AxiosError,
     status: number
 }
@@ -57,13 +57,13 @@ export const ResumeHeaderDeleteRequest = async (id: string) => {
 
 //---------------------------------------------edu------------------------------------
 type ResumeEduDataResponse = {
-    data?: Education[],
+    data?: IEducation[],
     error?: AxiosError,
     status: number
 }
 
 // create
-export const ResumeEduAddRequest = async (data: Education) => {
+export const ResumeEduAddRequest = async (data: IEducation) => {
     let { id, end, location, start, university } = data
 
     let response: ResumeEduDataResponse = {
@@ -130,7 +130,7 @@ export const ResumeEduDeleteRequest = async (id: string) => {
 
 //  ---------------------------------------exp--------------------------------------------------
 type ResumeExpDeleteResponse = {
-    data?: Experience[],
+    data?: IExperience[],
     error?: AxiosError,
     status: number
 }
@@ -176,7 +176,7 @@ export const ResumeExpDataRequest = async () => {
 }
 
 // create
-export const ResumeExpAddRequest = async (data: Experience) => {
+export const ResumeExpAddRequest = async (data: IExperience) => {
     let { id, end, company, start, description, position } = data
 
     let response: ResumeExpDeleteResponse = {

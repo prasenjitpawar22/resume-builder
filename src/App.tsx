@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import data from './data';
-import DropDownList from './comps/DropDownList';
+// import DropDownList from './comps/DropDownList';
 import FeatureEduCardPlain from './comps/Features/FeatureEduCardPlain';
 import FeatureExpCardPlain from './comps/Features/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from './comps/Features/FeatureHeaderCardPlain';
@@ -52,9 +51,9 @@ const App: React.FC = () => {
   //   console.log('teadasda ', leftBlockWidth);
   // }, [leftBlockWidth])
 
-  useEffect(() => {
-    console.log(headerBlockModalState);
-  }, [headerBlockModalState])
+  // useEffect(() => {
+  //   console.log(headerBlockModalState);
+  // }, [headerBlockModalState])
 
   const handleDownloadImage = async () => {
     // const element = printRef.current;

@@ -6,7 +6,8 @@ import { FeatureHeaderDataRequest, FeatureHeaderDeleteRequest } from '../../api/
 import { ResumeHeaderDataRequest } from '../../api/ResumeApi'
 import { FeatureContext } from '../../context/FeaturesContext'
 
-import { Header } from '../../types'
+import { IHeader } from '../../types'
+import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain'
 
 const client = axios.create({
   baseURL: "http://localhost:8000/resume/"
@@ -15,8 +16,8 @@ const client = axios.create({
 interface Props {
   // data: Header[],
   headerBlockState: boolean,
-  resumeHeaderData: Header[] | undefined,
-  setResumeHeaderData: React.Dispatch<React.SetStateAction<Header[] | undefined>>
+  resumeHeaderData: IHeader[],
+  setResumeHeaderData: React.Dispatch<React.SetStateAction<IHeader[]>>
 }
 
 interface CardHolderProps {
@@ -32,7 +33,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
   const { featureHeaderData, setFeatureHeaderData } = useContext(FeatureContext)
 
   const handleAdd = async (id: string | undefined) => {
-    let d: Header | undefined = featureHeaderData?.find(x => x?.id === id)
+    let d: IHeader | undefined = featureHeaderData?.find(x => x?.id === id)
     //check if already added
     var check = resumeHeaderData?.filter(d => d?.id === id)
     console.log('this check', check);
@@ -50,56 +51,61 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
         contact: d?.contact,
         github: d?.github,
         linkedin: d?.linkedin,
-        website: d?.websit
+        website: d?.website
       })
       .then((res) => console.log(res))
       .catch((e) => console.log(e))
 
     //update the header list for resume
     const allHeader = await ResumeHeaderDataRequest()
-    setResumeHeaderData!(allHeader.data)
+    if (allHeader.data) {
+      setResumeHeaderData(allHeader.data)
+    }
   }
 
 
-  const handleDelete = async (id: string) => {
-    console.log('btn clicked', id);
+  const handleRemove = async (id: string) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const deleteResponse = await FeatureHeaderDeleteRequest(id, token)
 
-    const deleteResponse = await FeatureHeaderDeleteRequest(id)
-    // handle deleteResponse
-    console.log(deleteResponse);
-    if (deleteResponse.status === 200) {
-      const token = localStorage.getItem('token');
-      if (token) {
+      if (deleteResponse.status === 200) {
         const allHeaders = await FeatureHeaderDataRequest(token)
-        setFeatureHeaderData!(allHeaders.data)
+        
+        if (allHeaders.status === 200 && allHeaders.data) {
+          setFeatureHeaderData!(allHeaders.data)
+        }
       }
-    }
-    if (deleteResponse.error) {
-      console.log('delete request error', deleteResponse.error);
+      if (deleteResponse.error) {
+        // console.log('delete request error', deleteResponse.error);
+        toast.warning(deleteResponse.error)
+      }
     }
   }
 
   return (
     <CardHolder headerBlockState={headerBlockState}
       className='overflow-y-scroll max-h tracking-wider'>
-      {featureHeaderData?.length === 0 ?
-        <Card>
-          <h1>asd</h1>
-        </Card> : featureHeaderData?.map(d =>
-          <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
-            {d?.fullname && <h1>Full Name: {d?.fullname}</h1>}
-            {d?.contact && <h1>Contact: {d?.contact}</h1>}
-            {d?.linkedin && <h1>Linkedin: {d?.linkedin}</h1>}
-            {d?.github && <h1>Github: {d?.github}</h1>}
-            {d?.websit && <h1>Websit: {d?.websit}</h1>}
-            <div className='flex gap-2 align-middle mt-2'>
-              <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                onClick={() => handleAdd(d?.id)}>Add</button>
-              <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                onClick={() => handleDelete(d?.id!)}>Remove from list</button>
-            </div>
-          </Card>
-        )}
+      {featureHeaderData === undefined || featureHeaderData.length === 0 ?
+        <FeatureEmptyDataCardPlain text={'Empty header data please add'} />
+        : featureHeaderData?.length === 0 ?
+          <Card>
+            <h1>asd</h1>
+          </Card> : featureHeaderData?.map(d =>
+            <Card key={d?.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+              {d?.fullname && <h1>Full Name: {d?.fullname}</h1>}
+              {d?.contact && <h1>Contact: {d?.contact}</h1>}
+              {d?.linkedin && <h1>Linkedin: {d?.linkedin}</h1>}
+              {d?.github && <h1>Github: {d?.github}</h1>}
+              {d?.website && <h1>Websit: {d?.website}</h1>}
+              <div className='flex gap-2 align-middle mt-2'>
+                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                  onClick={() => handleAdd(d?.id)}>Add</button>
+                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                  onClick={() => handleRemove(d?.id!)}>Remove from list</button>
+              </div>
+            </Card>
+          )}
     </CardHolder>
   )
 }

@@ -9,18 +9,18 @@ import {
   FeatureEduDataRequest, FeatureExpDataRequest,
   FeatureHeaderDataRequest
 } from '../api/FeaturesApi'
-import { Education, Experience, Header, Skill } from '../types'
+import { IEducation, IExperience, IHeader, ISkill } from '../types'
 import { UserContext } from './UserContext'
 
 interface FeatureContext {
-  featureHeaderData: Header[] | undefined
-  setFeatureHeaderData: React.Dispatch<React.SetStateAction<Header[] | undefined>>
-  featureEduData: Education[] | undefined
-  setFeatureSkillData: React.Dispatch<React.SetStateAction<Skill[] | undefined>>
-  featureExpData: Experience[] | undefined
-  setFeatureExpData: React.Dispatch<React.SetStateAction<Experience[] | undefined>>
-  featureSkillData: Skill[] | undefined
-  setFeatureEduData: React.Dispatch<React.SetStateAction<Education[] | undefined>>
+  featureHeaderData: IHeader[]
+  setFeatureHeaderData: React.Dispatch<React.SetStateAction<IHeader[]>>
+  featureEduData: IEducation[]
+  setFeatureSkillData: React.Dispatch<React.SetStateAction<ISkill[]>>
+  featureExpData: IExperience[]
+  setFeatureExpData: React.Dispatch<React.SetStateAction<IExperience[]>>
+  featureSkillData: ISkill[]
+  setFeatureEduData: React.Dispatch<React.SetStateAction<IEducation[]>>
 }
 
 export const FeatureContext = createContext<Partial<FeatureContext>>({})
@@ -30,19 +30,27 @@ type FeatureProviderProps = {
 }
 
 const FeatureProvider = ({ children }: FeatureProviderProps) => {
-  const { user, userLoader} = useContext(UserContext)
-  const [featureHeaderData, setFeatureHeaderData] = useState<Header[]>()
-  const [featureEduData, setFeatureEduData] = useState<Education[]>()
-  const [featureSkillData, setFeatureSkillData] = useState<Skill[]>()
-  const [featureExpData, setFeatureExpData] = useState<Experience[]>()
+  const { user, userLoader } = useContext(UserContext)
+  const [featureHeaderData, setFeatureHeaderData] = useState<IHeader[]>([])
+    // [{ contact: undefined, fullname: undefined, github: undefined, id: undefined, linkedin: undefined, website: undefined }]
+  
+    // )
+  const [featureEduData, setFeatureEduData] = useState<IEducation[]>(
+    [{ current: undefined, end: undefined, id: undefined, location: undefined, start: undefined, university: undefined }]
+  )
+  const [featureSkillData, setFeatureSkillData] = useState<ISkill[]>(
+    [{ data: undefined, id: undefined }]
+  )
+  const [featureExpData, setFeatureExpData] = useState<IExperience[]>(
+    [{ company: undefined, current: undefined, description: undefined, end: undefined, id: undefined, position: undefined, start: undefined }]
+  )
 
   useEffect(() => {
     // header 
-    const getFeatureHeaderData = async (token:string) => {
+    const getFeatureHeaderData = async (token: string) => {
       const response = await FeatureHeaderDataRequest(token)
-      // console.log(response);
+      
       if (response.data) {
-        
         setFeatureHeaderData(response.data)
       }
       //handle error 
@@ -52,28 +60,28 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     }
 
     // education
-    const getFeatureEducationData = async (token:string) => {
+    const getFeatureEducationData = async (token: string) => {
       const response = await FeatureEduDataRequest(token)
 
-      if (response.status === 200) {
-        setFeatureEduData(response?.data)
+      if (response.status === 200 && response.data) {
+        setFeatureEduData(response.data)
       }
       //handle error
       else {
-        toast.warning('unable to get features education data')
+        // toast.warning('unable to get features education data')
       }
     }
 
     //experience
-    const getFeatureExpData = async (token:string) => {
-      
+    const getFeatureExpData = async (token: string) => {
+
       const response = await FeatureExpDataRequest(token)
-      
-      if (response.status === 200) {
+
+      if (response.status === 200 && response.data) {
         setFeatureExpData(response.data)
       }
       else {
-        toast.warning(response?.error?.toString())
+        // toast.warning(response?.error?.toString())
       }
     }
 

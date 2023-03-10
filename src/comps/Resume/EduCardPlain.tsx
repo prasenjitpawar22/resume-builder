@@ -1,13 +1,13 @@
 import { useContext, useState, } from "react";
 import styled from "styled-components";
-import { Education } from "../../types";
+import { IEducation } from "../../types";
 import React from "react";
 import { ResumeEduDataRequest, ResumeEduDeleteRequest } from "../../api/ResumeApi";
 import { toast } from "react-toastify";
 import { ResumeContext } from "../../context/ResumeContext";
 
 interface Props {
-    data: Education
+    data: IEducation
 }
 
 const EduCardPlain: React.FC<Props> = (props: Props) => {

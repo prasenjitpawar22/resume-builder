@@ -21,7 +21,6 @@ const DropDownList: React.FC<Props> = (props: Props) => {
 
     const handleCreateList = (title: string) => {
         if (title === 'Header Block' && setHeaderBlockModalState) {
-            console.log('header ');
             setHeaderBlockModalState(true)
         }
         if (title === 'Education Block' && setEduBlockModalState) {

@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { ResumeContext } from '../../context/ResumeContext';
+
 import DropDownList from '../DropDownList';
+import { ResumeContext } from '../../context/ResumeContext';
 import FeatureEduCardPlain from '../Features/FeatureEduCardPlain';
 import FeatureExpCardPlain from '../Features/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from '../Features/FeatureHeaderCardPlain';
@@ -50,7 +51,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
                 {
                   <FeatureHeaderCardPlain
                     headerBlockState={headerBlockState}
-                    resumeHeaderData={resumeHeaderData}
+                    resumeHeaderData={resumeHeaderData!}
                     setResumeHeaderData={setResumeHeaderData!}
                   />
                 }

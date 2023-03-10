@@ -1,12 +1,12 @@
 import { featureClient } from "./axiosClient"
-import { AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 
-import { Education, Experience, Header } from '../types'
+import { IEducation, IExperience, ISkill, IHeader } from '../types'
 import { v4 as uuid4 } from "uuid"
 
-//-------header------------------------------------------------------------------------------
+//*********************************************header****************************************
 type FeatureHeaderDataResponse = {
-  data?: Header[],
+  data?: IHeader[],
   error?: AxiosError,
   status: number
 }
@@ -36,14 +36,15 @@ export const FeatureHeaderDataRequest = async (token: string) => {
 }
 
 //delete feature header
-export const FeatureHeaderDeleteRequest = async (id: string) => {
+export const FeatureHeaderDeleteRequest = async (id: string, token: string) => {
   let response = {
     data: undefined,
     status: 0,
     error: undefined,
   };
 
-  await featureClient.post('remove-feature-header', { id: id })
+  await featureClient.post('delete-header', { id: id },
+    { headers: { 'Authorization': `Bearer ${token}` } })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status
@@ -55,16 +56,57 @@ export const FeatureHeaderDeleteRequest = async (id: string) => {
   return response;
 }
 
+interface IFeatureHeaderCreateRequestResponse {
+  data: IHeader | undefined
+  error: AxiosError | any
+  status: number | undefined
+}
+
+
+/**
+ * It's a function that sends a request to the server to create a header.
+ * @param {IHeader} data - IHeader
+ * @returns An object with the following properties:
+ * data,
+ * error,
+ * status
+ */
+export const FeatureHeaderCreateRequest = async (data: Omit<IHeader, "id">) => {
+  let response: IFeatureHeaderCreateRequestResponse = {
+    data: undefined,
+    error: undefined,
+    status: undefined
+  }
+
+  const { contact, fullname, github, linkedin, website } = data
+  const token = localStorage.getItem('token')
+
+  await featureClient.post<IHeader>('create-header',
+    { contact, fullname, github, linkedin, website },
+    { headers: { 'Authorization': 'Bearer ' + token } }
+  ).then((res) => {
+    console.log(res);
+    response.data = res.data
+    response.status = res.status
+  }).catch((err: AxiosError) => {
+    console.log(err);
+    response.error = err.response?.data
+    response.status = err.response?.status
+  })
+
+  return response
+}
+
 //-------edu------------------------------------------------------------------------------
 type FeatureEduDataResponse = {
-  data?: Education[],
+  data?: IEducation[],
   error?: AxiosError,
   status: number
 }
 
 
 //get all feature header
-export const FeatureEduDataRequest = async (token:string) => {
+export const FeatureEduDataRequest = async (token: string) => {
   let response: FeatureEduDataResponse = {
     data: undefined,
     error: undefined,
@@ -108,7 +150,7 @@ export const FeatureEduDeleteRequest = async (id: string) => {
 }
 
 //create
-export const FeatureEduCreateRequest = async (data: Education) => {
+export const FeatureEduCreateRequest = async (data: IEducation) => {
   let response: FeatureEduDataResponse = {
     data: undefined,
     status: 0,
@@ -131,13 +173,13 @@ export const FeatureEduCreateRequest = async (data: Education) => {
 
 // exp ----------------------------------------------------------------------
 type FeatureExpDataResponse = {
-  data?: Experience[],
+  data?: IExperience[],
   error?: AxiosError,
   status: number
 }
 
 //create exp
-export const FeatureExpCreateRequest = async (data: Experience) => {
+export const FeatureExpCreateRequest = async (data: IExperience) => {
   let response: FeatureEduDataResponse = {
     data: undefined,
     status: 0,
@@ -147,7 +189,7 @@ export const FeatureExpCreateRequest = async (data: Experience) => {
 
   let { end, company, start, description, position } = data
   console.log(position);
-  
+
   await featureClient.post('create-feature-experience',
     { _id: uuid4(), position: position, end, start, company, description })
     .then((res: AxiosResponse) => {
@@ -182,7 +224,7 @@ export const FeatureExpDeleteRequest = async (id: string) => {
 }
 
 //get all feature exp
-export const FeatureExpDataRequest = async (token:string) => {
+export const FeatureExpDataRequest = async (token: string) => {
   let response: FeatureExpDataResponse = {
     data: undefined,
     error: undefined,
@@ -190,7 +232,7 @@ export const FeatureExpDataRequest = async (token:string) => {
   }
 
   await featureClient.get('get-all-experience', {
-    headers:{
+    headers: {
       Authorization: `Bearer ${token}`
     }
   })

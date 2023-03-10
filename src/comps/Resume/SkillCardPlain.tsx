@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Draggable from "react-draggable";
 import styled from "styled-components";
-import { Skill } from "../../types";
+
+import { ISkill } from "../../types";
 
 
 interface Props {
-    data: Skill
-    setData: React.Dispatch<React.SetStateAction<Skill[] | undefined>>
+    data: ISkill
+    setData: React.Dispatch<React.SetStateAction<ISkill[]>>
 }
 
 const SkillCardPlain: React.FC<Props> = (props: Props) => {

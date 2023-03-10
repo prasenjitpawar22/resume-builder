@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 
 import { FeatureExpCreateRequest, FeatureExpDataRequest } from '../../api/FeaturesApi'
 import { FeatureContext } from '../../context/FeaturesContext'
-import { Experience } from '../../types'
+import { IExperience } from '../../types'
 
 interface Props {
   expBlockModalState: boolean,
@@ -16,16 +16,18 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
 
   const { setFeatureExpData } = useContext(FeatureContext)
 
-  const [expData, setExpData] = useState<Experience>({
+  const [expData, setExpData] = useState<IExperience>({
     id: '',
     company: '',
     description: [],
     end: '',
     position: '',
-    start: ''
+    start: '',
+    current: false,
   })
 
-  const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
+  const inputStyle = `shadow appearance-none border leading-tight focus:shadow-2xl focus:shadow-blue-600 
+  rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none focus:border-white`
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -37,7 +39,7 @@ const ModelCreateExpData: React.FC<Props> = (props: Props) => {
       const token = localStorage.getItem('token')
       if (token) {
         const expList = await FeatureExpDataRequest(token)
-        if (expList.status === 200) {
+        if (expList.status === 200 && expList.data) {
           setFeatureExpData!(expList.data)
         }
         else {

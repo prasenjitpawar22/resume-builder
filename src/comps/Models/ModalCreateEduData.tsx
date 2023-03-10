@@ -3,7 +3,7 @@ import React, { FormEvent, useContext, useState } from 'react'
 import { featureClient } from '../../api/axiosClient'
 import { FeatureEduCreateRequest, FeatureEduDataRequest } from '../../api/FeaturesApi'
 import { FeatureContext } from '../../context/FeaturesContext'
-import { Education } from '../../types'
+import { IEducation } from '../../types'
 
 interface Props {
   eduBlockModalState: boolean
@@ -12,10 +12,11 @@ interface Props {
 const ModalCreateEduData: React.FC<Props> = (props: Props) => {
   const { eduBlockModalState, setEduBlockModalState } = props
   const { setFeatureEduData } = useContext(FeatureContext)
-  const [eduData, seteEduData] = useState<Education>()
+  const [eduData, seteEduData] = useState<IEducation>()
 
 
-  const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
+  const inputStyle = `shadow appearance-none border leading-tight focus:shadow-2xl focus:shadow-blue-600 
+  rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none focus:border-white`
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -30,7 +31,7 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
       const token = localStorage.getItem('token')
       if (token) {
         const allEdu = await FeatureEduDataRequest(token)
-        if (allEdu.status === 200) {
+        if (allEdu.status === 200 && allEdu.data) {
           setFeatureEduData!(allEdu.data)
         }
       }
