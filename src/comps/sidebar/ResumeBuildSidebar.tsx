@@ -1,11 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { ResumeContext } from '../../context/ResumeContext';
 import DropDownList from '../DropDownList';
 import FeatureEduCardPlain from '../Features/FeatureEduCardPlain';
 import FeatureExpCardPlain from '../Features/FeatureExpCardPlain';
 import FeatureHeaderCardPlain from '../Features/FeatureHeaderCardPlain';
 import FeatureSkillCardPlain from '../Features/FeatureSkillCardPlain';
+import ModalCreateEduData from '../Models/ModalCreateEduData';
+import ModalCreateHeaderData from '../Models/ModalCreateHeaderData';
+import ModelCreateExpData from '../Models/ModelCreateExpData';
 import { Resume } from '../Resume/Resume';
 
 type Props = {
@@ -139,6 +143,20 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
         {/* </div> */}
         {/* </div> */}
       </div>
+
+      <ModalCreateHeaderData
+        setHeaderBlockModalState={setHeaderBlockModalState}
+        headerBlockModalState={headerBlockModalState} />
+
+      <ModalCreateEduData
+        setEduBlockModalState={setEduBlockModalState}
+        eduBlockModalState={eduBlockModalState} />
+
+      <ModelCreateExpData
+        expBlockModalState={expBlockModalState}
+        setExpBlockModalState={setExpBlockModalState} />
+
+      <ToastContainer />
     </div>
   );
 }

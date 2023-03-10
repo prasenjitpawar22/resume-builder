@@ -13,7 +13,7 @@ interface Data {
 
 const Login = () => {
   const [formData, setFormData] = useState<Data>({
-    email: 'rohan@gmail.com', password: '12345'
+    email: 'prasen@gmail.com', password: '12345'
   })
   const { setUser, user } = useContext(UserContext)
   const navigate = useNavigate()
@@ -31,6 +31,7 @@ const Login = () => {
     //   email: 'prasen@gmail.com',
     //   password: '12345'
     // })
+
     const res = await LoginRequest(formData)
     if (res.error) {
       console.log('out', res);

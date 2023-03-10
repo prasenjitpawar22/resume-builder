@@ -27,16 +27,16 @@ const App: React.FC = () => {
     resumeSkillData, setResumeSkillData } = useContext(ResumeContext)
   const navigate = useNavigate();
 
-  const [leftBlockWidth, setLeftBlockWidth] = useState<number>(410)
+  // const [leftBlockWidth, setLeftBlockWidth] = useState<number>(410)
   const [leftBlockMargin, setLeftBlockMargin] = useState(0)
   const [resumeBlockPosition, setResumeBlockPosition] = useState(0)
-  const [headerBlockState, setHeaderBlockState] = useState(false)
-  const [eduBlockState, setEduBlockState] = useState(false)
-  const [expBlockState, setExpBlockState] = useState<boolean>(false)
-  const [skillBlockState, setSkillBlockState] = useState(false)
-  const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(false)
-  const [eduBlockModalState, setEduBlockModalState] = useState<boolean>(false)
-  const [expBlockModalState, setExpBlockModalState] = useState<boolean>(false)
+  // const [headerBlockState, setHeaderBlockState] = useState(false)
+  // const [eduBlockState, setEduBlockState] = useState(false)
+  // const [expBlockState, setExpBlockState] = useState<boolean>(false)
+  // const [skillBlockState, setSkillBlockState] = useState(false)
+  const [headerBlockModalState, setHeaderBlockModalState] = useState<boolean>(true)
+  // const [eduBlockModalState, setEduBlockModalState] = useState<boolean>(false)
+  // const [expBlockModalState, setExpBlockModalState] = useState<boolean>(false)
 
   const handleLeftBlock = () => {
     setLeftBlockMargin(leftBlockMargin === 0 ? 30 : 0)
@@ -52,9 +52,9 @@ const App: React.FC = () => {
   //   console.log('teadasda ', leftBlockWidth);
   // }, [leftBlockWidth])
 
-  // useEffect(() => {
-  //   console.log(resumeExpData);
-  // }, [resumeExpData])
+  useEffect(() => {
+    console.log(headerBlockModalState);
+  }, [headerBlockModalState])
 
   const handleDownloadImage = async () => {
     // const element = printRef.current;
@@ -150,21 +150,8 @@ const App: React.FC = () => {
       </ResumeBlockHolder> */}
 
 
-      <ResumeBuildSidebar/>
+      <ResumeBuildSidebar />
 
-      <ModalCreateHeaderData
-        setHeaderBlockModalState={setHeaderBlockModalState}
-        headerBlockModalState={headerBlockModalState} />
-
-      <ModalCreateEduData
-        setEduBlockModalState={setEduBlockModalState}
-        eduBlockModalState={eduBlockModalState} />
-
-      <ModelCreateExpData
-        expBlockModalState={expBlockModalState}
-        setExpBlockModalState={setExpBlockModalState} />
-
-      <ToastContainer />
     </div >
   );
 }

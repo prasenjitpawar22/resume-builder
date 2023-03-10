@@ -2,25 +2,34 @@ import React from 'react'
 import styled from 'styled-components'
 import { useState } from 'react'
 
-export default function DropDownList(props) {
+type Props = {
+    title: string
+    setBlockState: React.Dispatch<React.SetStateAction<boolean>>
+    blockState: boolean
+    setHeaderBlockModalState?: React.Dispatch<React.SetStateAction<boolean>>
+    setEduBlockModalState?: React.Dispatch<React.SetStateAction<boolean>>
+    setExpBlockModalState?: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const DropDownList: React.FC<Props> = (props: Props) => {
     const { title, setBlockState, blockState, setHeaderBlockModalState,
-         setEduBlockModalState, setExpBlockModalState } = props
+        setEduBlockModalState, setExpBlockModalState } = props
 
     const handleBlockClick = () => {
         setBlockState(!blockState)
     }
 
-    const handleCreateList = (title) => {
-        if (title === 'Header Block') {
+    const handleCreateList = (title: string) => {
+        if (title === 'Header Block' && setHeaderBlockModalState) {
+            console.log('header ');
             setHeaderBlockModalState(true)
         }
-        if(title ==='Education Block'){
+        if (title === 'Education Block' && setEduBlockModalState) {
             setEduBlockModalState(true)
         }
-        if(title ==='Experience Block'){
+        if (title === 'Experience Block' && setExpBlockModalState) {
             setExpBlockModalState(true)
         }
-        console.log('clicked create');
     }
 
     return (
@@ -44,11 +53,16 @@ export default function DropDownList(props) {
     )
 }
 
+export default DropDownList
 
 const List = styled.div`
     transition: all;
 `
-const ListEdit = styled.div`
+
+type IListEdit = {
+    blockState: boolean
+}
+const ListEdit = styled.div<IListEdit>`
     height: ${(props) => { return props.blockState ? '2' : 0 }}rem;
     /* width: ${(props) => { return props.blockState ? '100' : 0 }}%; */
     transition: all;

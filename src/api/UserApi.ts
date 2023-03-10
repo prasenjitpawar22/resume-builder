@@ -28,7 +28,7 @@ export const LoginRequest =
           status: res.status
         }
       })
-      .catch((error: AxiosError) => {
+      .catch((error: AxiosError | any) => {
         response = { ...response, error: error.response?.data?.toString() }
       })
 
@@ -56,7 +56,7 @@ export const SetUserContextRequest = async (token: string): Promise<ISetUserCont
     error: undefined,
     success: false
   }
-  
+
   await userClient.post('', {}, {
     headers: {
       Authorization: `Bearer ${token}`
