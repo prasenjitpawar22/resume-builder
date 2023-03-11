@@ -104,6 +104,11 @@ type FeatureEduDataResponse = {
   status: number
 }
 
+type FeatureEduCreateRequestResponse = {
+  data: IEducation | undefined
+  error: AxiosError | any
+  status: number | undefined
+}
 
 //get all feature header
 export const FeatureEduDataRequest = async (token: string) => {
@@ -130,14 +135,19 @@ export const FeatureEduDataRequest = async (token: string) => {
 }
 
 //delete feature header
-export const FeatureEduDeleteRequest = async (id: string) => {
+export const FeatureEduDeleteRequest = async (id: string, token: string) => {
   let response: FeatureEduDataResponse = {
     data: undefined,
     status: 0,
     error: undefined,
   };
 
-  await featureClient.post('remove-feature-education', { id: id })
+  await featureClient.post('delete-education', { id: id },
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status
@@ -150,8 +160,8 @@ export const FeatureEduDeleteRequest = async (id: string) => {
 }
 
 //create
-export const FeatureEduCreateRequest = async (data: IEducation) => {
-  let response: FeatureEduDataResponse = {
+export const FeatureEduCreateRequest = async (data: Omit<IEducation, "id">, token: string) => {
+  let response: FeatureEduCreateRequestResponse = {
     data: undefined,
     status: 0,
     error: undefined,
@@ -159,7 +169,12 @@ export const FeatureEduCreateRequest = async (data: IEducation) => {
 
   let { end, location, start, university } = data
 
-  await featureClient.post('set-feature-education', { _id: uuid4(), end, location, start, university })
+  await featureClient.post('create-education', { end, location, start, university }
+    , {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status

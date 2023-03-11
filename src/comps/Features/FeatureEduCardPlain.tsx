@@ -50,28 +50,28 @@ export default function FeatureEduCardPlain(props: Props) {
     }
 
     const handleDelete = async (id: string) => {
-        console.log('btn clicked', id);
+        const token = localStorage.getItem('token')
 
-        const deleteResponse = await FeatureEduDeleteRequest(id)
-        // handle deleteResponse
-        console.log(deleteResponse);
-        if (deleteResponse.status === 200) {
-            const token = localStorage.getItem('token')
-            if (token) {
+        if (token) {
+            const deleteResponse = await FeatureEduDeleteRequest(id, token)
+            // handle deleteResponse
+            console.log(deleteResponse);
+            if (deleteResponse.status === 200) {
                 const allEdu = await FeatureEduDataRequest(token)
                 if (allEdu.status === 200 && allEdu.data) {
+                    console.log(allEdu.data);
                     setFeatureEduData!(allEdu.data)
                 }
             }
-        }
-        if (deleteResponse.error) {
-            console.log('delete request error', deleteResponse.error);
+            if (deleteResponse.error) {
+                console.log('delete request error', deleteResponse.error);
+            }
         }
     }
 
     return (
         <CardHolder eduBlockState={eduBlockState} className='overflow-y-scroll'>
-            {featureEduData === undefined || featureEduData.length <=1 ?
+            {featureEduData === undefined || featureEduData.length === 0 ?
                 <FeatureEmptyDataCardPlain text={'Empty education data please add'} />
                 : featureEduData?.length === 0 ?
                     <Card>

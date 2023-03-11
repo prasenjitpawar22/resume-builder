@@ -32,7 +32,8 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
 
     if (headerData) {
       const response = await FeatureHeaderCreateRequest(headerData)
-
+      // console.log(response);
+      
       if (response.error !== undefined) {
         toast.warning(response.error.error)
       }

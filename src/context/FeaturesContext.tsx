@@ -32,12 +32,7 @@ type FeatureProviderProps = {
 const FeatureProvider = ({ children }: FeatureProviderProps) => {
   const { user, userLoader } = useContext(UserContext)
   const [featureHeaderData, setFeatureHeaderData] = useState<IHeader[]>([])
-    // [{ contact: undefined, fullname: undefined, github: undefined, id: undefined, linkedin: undefined, website: undefined }]
-  
-    // )
-  const [featureEduData, setFeatureEduData] = useState<IEducation[]>(
-    [{ current: undefined, end: undefined, id: undefined, location: undefined, start: undefined, university: undefined }]
-  )
+  const [featureEduData, setFeatureEduData] = useState<IEducation[]>([])
   const [featureSkillData, setFeatureSkillData] = useState<ISkill[]>(
     [{ data: undefined, id: undefined }]
   )
@@ -62,13 +57,14 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     // education
     const getFeatureEducationData = async (token: string) => {
       const response = await FeatureEduDataRequest(token)
-
+      
       if (response.status === 200 && response.data) {
+        console.log(response.data);
         setFeatureEduData(response.data)
       }
       //handle error
       else {
-        // toast.warning('unable to get features education data')
+        toast.warning('unable to get features education data')
       }
     }
 
