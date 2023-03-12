@@ -36,9 +36,7 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
   const [featureSkillData, setFeatureSkillData] = useState<ISkill[]>(
     [{ data: undefined, id: undefined }]
   )
-  const [featureExpData, setFeatureExpData] = useState<IExperience[]>(
-    [{ company: undefined, current: undefined, description: undefined, end: undefined, id: undefined, position: undefined, start: undefined }]
-  )
+  const [featureExpData, setFeatureExpData] = useState<IExperience[]>([])
 
   useEffect(() => {
     // header 
@@ -59,7 +57,6 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
       const response = await FeatureEduDataRequest(token)
       
       if (response.status === 200 && response.data) {
-        console.log(response.data);
         setFeatureEduData(response.data)
       }
       //handle error
@@ -77,7 +74,7 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
         setFeatureExpData(response.data)
       }
       else {
-        // toast.warning(response?.error?.toString())
+        toast.warning(response.error.error)
       }
     }
 

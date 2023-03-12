@@ -12,3 +12,6 @@ export const featureClient = axios.create({
 export const userClient = axios.create({
     baseURL: "http://localhost:8000/user/"
 })
+
+// http://localhost:8000
+//https://resume-builder-backend-ten.vercel.app

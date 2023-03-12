@@ -54,37 +54,38 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
   }
 
   const handleDelete = async (id: string) => {
-    console.log('btn clicked', id);
 
-    const deleteResponse = await FeatureExpDeleteRequest(id)
-    // handle deleteResponse
-    console.log(deleteResponse);
-    if (deleteResponse.status === 200) {
-      const token = localStorage.getItem('token');
-      if (token) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const deleteResponse = await FeatureExpDeleteRequest(id, token)
+       
+      if (deleteResponse.status === 200) {
         const allExp = await FeatureExpDataRequest(token)
         if (allExp.status === 200 && allExp.data) {
           setFeatureExpData!(allExp.data)
         }
       }
-    }
-    if (deleteResponse.error) {
-      console.log('delete request error', deleteResponse.error);
-      toast.warning("error removing item")
+      if (deleteResponse.error) {
+        console.log('delete request error', deleteResponse.error);
+        toast.warning("error removing item")
+      }
     }
   }
 
   return (
     <CardHolder expBlockState={expBlockState} className='overflow-y-scroll max-h' >
       {
-        featureExpData === undefined || featureExpData.length <= 1 ?
+        featureExpData === undefined || featureExpData.length === 0 ?
           <FeatureEmptyDataCardPlain text={'Empty experience data please add'} /> :
           featureExpData?.map(d =>
             <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2' >
               <h1>Company: {d.company} </h1>
               <h1>Position: {d.position} </h1>
               <p>Start: {d.start} </p>
-              <p>End: {d.end} </p>
+              {
+                d.end ?
+                  <p>End: {d.end} </p> : <p>Current</p>
+              }
               <ul className='list-disc px-4 mt-2'>
                 {d?.description?.map(l => {
                   return (<li> {l} </li>)

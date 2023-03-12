@@ -189,50 +189,56 @@ export const FeatureEduCreateRequest = async (data: Omit<IEducation, "id">, toke
 // exp ----------------------------------------------------------------------
 type FeatureExpDataResponse = {
   data?: IExperience[],
-  error?: AxiosError,
-  status: number
+  error?: AxiosError | any,
+  status: number | undefined
+}
+
+type FeatureExpCreateRequestResponse = {
+  data: IExperience | undefined
+  error: AxiosError | any
+  status: number | undefined
 }
 
 //create exp
-export const FeatureExpCreateRequest = async (data: IExperience) => {
-  let response: FeatureEduDataResponse = {
+export const FeatureExpCreateRequest = async (data: Omit<IExperience, 'id'>, token: string) => {
+  let response: FeatureExpCreateRequestResponse = {
     data: undefined,
-    status: 0,
+    status: undefined,
     error: undefined,
   };
-  console.log("data in fe api", data);
 
-  let { end, company, start, description, position } = data
-  console.log(position);
+  let { end, company, start, description, position, current } = data
 
-  await featureClient.post('create-feature-experience',
-    { _id: uuid4(), position: position, end, start, company, description })
+  await featureClient.post('create-experience',
+    { position, end, start, company, description, current },
+    { headers: { 'Authorization': `Bearer ${token}` } })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status
     })
-    .catch((e: any) => {
-      response.error = e
+    .catch((e: AxiosError | any) => {
+      response.error = e.response?.data.error
     })
 
   return response;
 }
 
 //delete feature exp
-export const FeatureExpDeleteRequest = async (id: string) => {
+export const FeatureExpDeleteRequest = async (id: string, token: string) => {
   let response: FeatureExpDataResponse = {
     data: undefined,
     status: 0,
     error: undefined,
   };
 
-  await featureClient.post('remove-feature-experience', { id: id })
+  await featureClient.post('delete-experience', { id: id },
+    { headers: { 'Authorization': `Bearer ${token}` } })
     .then((res: AxiosResponse) => {
       response.data = res.data
       response.status = res.status
     })
-    .catch((e: any) => {
-      response.error = e
+    .catch((e: AxiosError) => {
+      response.error = e.response?.data
     })
 
   return response;
@@ -243,7 +249,7 @@ export const FeatureExpDataRequest = async (token: string) => {
   let response: FeatureExpDataResponse = {
     data: undefined,
     error: undefined,
-    status: 0
+    status: undefined
   }
 
   await featureClient.get('get-all-experience', {
@@ -255,7 +261,7 @@ export const FeatureExpDataRequest = async (token: string) => {
       response.data = res?.data
       response.status = res.status
     })
-    .catch((error) => {
+    .catch((error: AxiosError) => {
       response.error = error.response?.data
     })
 
