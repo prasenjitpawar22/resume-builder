@@ -1,26 +1,27 @@
 import axios from "axios";
 
-const check = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BACKEND : null
-console.log(check);
+let beUrl
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    // dev code
+    beUrl = "http://localhost:8000/resume/"
+
+} else {
+    // production code
+    beUrl = process.env.REACT_APP_BACKEND
+}
+console.log(beUrl);
 
 export const resumeClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ?
-        process.env.REACT_APP_BACKEND + "/resume/" :
-        "http://localhost:8000/resume/"
+    baseURL: beUrl
 
 })
 
 export const featureClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ?
-        process.env.REACT_APP_BACKEND + "/feature/" :
-        "http://localhost:8000/feature/"
-
+    baseURL: beUrl
 })
 
 export const userClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'developement' ?
-        process.env.REACT_APP_BACKEND + "/user/" :
-        "http://localhost:8000/user/"
+    baseURL: beUrl
 })
 
 // http://localhost:8000
