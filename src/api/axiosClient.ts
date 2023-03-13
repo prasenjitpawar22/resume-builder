@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const check = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BACKEND : null
+console.log(check);
 
 export const resumeClient = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ?
