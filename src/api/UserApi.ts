@@ -9,29 +9,36 @@ interface LoginResponse {
     email: string
     token: string
   } | undefined,
-  error: string | undefined
+  error: string | any
+  success: boolean
 }
 export const LoginRequest =
   async (data: { email: string, password: string }): Promise<LoginResponse> => {
-    
+
     let response: LoginResponse = {
       status: undefined,
       data: undefined,
       error: undefined,
+      success: false
     }
 
-    await userClient.post('login', { email: data.email, password: data.password })
-      .then((res) => {
-        response = {
-          ...response,
-          data: res.data,
-          status: res.status
-        }
-      })
-      .catch((error: AxiosError | any) => {
-        response = { ...response, error: error.response?.data?.toString() }
-      })
-
+    try {
+      await userClient.post('login', { email: data.email, password: data.password })
+        .then((res) => {
+          response = {
+            ...response,
+            data: res.data,
+            status: res.status
+          }
+        })
+        .catch((error: AxiosError) => {
+          response = { ...response, error: error.response?.data }
+        })
+      response = { ...response, success: true }
+    } catch (error: any) {
+      console.log('un', error);
+      response = { ...response, error: error }
+    }
     return response
   }
 

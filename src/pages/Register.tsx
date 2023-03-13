@@ -3,20 +3,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+
+
+
+
   return (
     <div className="bg-login w-screen h-screen
             flex tablet:bg-login tablet:bg-large-size 
             desktop:bg-large-size justify-center items-center bg-no-repeat ">
       <Box
-        className="phone:w-8/12 laptop:w-5/12 backdrop-blur-2xl drop-shadow-custom">
+        className="phone:w-11/12 tablet:w-5/12 desktop:8/12 backdrop-blur-2xl drop-shadow-custom">
         <Fields className="w-8/12 py-12">
           <div className="flex flex-col justify-start">
-            <PageBrandIcon className='rounded-full '
-              src='./brand.png' />
+            {/* <PageBrandIcon className='rounded-full '
+              src='./brand.png' /> */}
             <h1 className="text-[38px] mb-4 font-gilroydark text-primary">Register</h1>
-            <form>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <div className="flex flex-col">
-              <div className="flex flex-col mb-5">
+                <div className="flex flex-col mb-5">
                   <label className="text-primary text-[14px] mb-1">Full Name</label>
                   <input className="font-Lato rounded bg-gray-200 border-2 px-2 py-1 placeholder-[#BCBEC0] 
                    focus:border-purple-500 focus:outline-none focus:shadow-inner"
@@ -38,7 +42,7 @@ const Register = () => {
                   />
                 </div>
                 <button
-                  className="bg-[#F25019] hover:bg-[#d84616] rounded py-2 font-Lato
+                  className="bg-component-secondary hover:bg-component-primary rounded py-2 font-Lato
                 text-[#FFFFFF] text-[20px] mb-4"
                   type="submit">Register</button>
                 <p className="text-center text-primary text-[14px] mb-2">Or continue with</p>
