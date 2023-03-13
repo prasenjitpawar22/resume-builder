@@ -11,21 +11,21 @@ const AuthRoute = ({ children }) => {
   const { user, userLoader } = useContext(UserContext)
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //     if (!user.logedIn) {
-  //         navigate('/login')
-  //     }
-  // },[])
+  useEffect(()=> {
+  if(!user.logedIn && !userLoader){
+    navigate('/login')
+  }
+  },[userLoader])
 
   return (
     userLoader ? <Loader /> :
       // if userlogedIn outlet, else render login page
-      user.logedIn ? <ResumeProvider>
+      user.logedIn && <ResumeProvider>
         <FeatureProvider> <Outlet />
         </FeatureProvider >
       </ResumeProvider>
-        : navigate('/login'))
-
+        // : navigate('/login'))
+  )
 }
 
 export default AuthRoute;

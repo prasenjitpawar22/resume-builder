@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { userClient } from "./axiosClient";
 
-
+// ********************************************Login ****************************************************
 interface LoginResponse {
   status: number | undefined
   data: {
@@ -22,25 +22,60 @@ export const LoginRequest =
       success: false
     }
 
-    try {
-      await userClient.post('login', { email: data.email, password: data.password })
-        .then((res) => {
-          response = {
-            ...response,
-            data: res.data,
-            status: res.status
-          }
-        })
-        .catch((error: AxiosError) => {
-          response = { ...response, error: error.response?.data }
-        })
-      response = { ...response, success: true }
-    } catch (error: any) {
-      console.log('un', error);
-      response = { ...response, error: error }
-    }
+    await userClient.post('login', { email: data.email, password: data.password })
+      .then((res) => {
+        response = {
+          ...response,
+          data: res.data,
+          status: res.status
+        }
+        response = { ...response, success: true }
+      })
+      .catch((error: AxiosError) => {
+        response = { ...response, error: error.response?.data, status: error.status }
+      })
+
     return response
   }
+
+// ********************************************Register User ****************************************************
+interface RegisterResponse {
+  status: number | undefined
+  data: {
+    name: string,
+    email: string
+    token: string
+  } | undefined,
+  error: string | any
+  success: boolean
+}
+type Data = {
+  fullname: string;
+  email: string;
+  password: string;
+}
+
+export const RegisterUserRequest = async ({ email, fullname, password }: Data) => {
+  let response: RegisterResponse = {
+    data: undefined,
+    error: undefined,
+    success: false,
+    status: undefined
+  }
+
+  await userClient.post('register', { email, fullname, password })
+    .then((res) => {
+      console.log(res, "res");
+      response = { ...response, data: res.data, status: res.status }
+    })
+    .catch((error: AxiosError) => {
+      console.log(error, "err");
+      response = { ...response, error: error.response?.data }
+    })
+
+  return response
+}
+// ********************************************SetUserContextRequest ****************************************************
 
 type ISetUserContextRequesResponse = {
   data: {

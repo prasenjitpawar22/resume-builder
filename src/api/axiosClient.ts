@@ -9,7 +9,6 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     // production code
     beUrl = process.env.REACT_APP_BACKEND
 }
-console.log(beUrl);
 
 export const resumeClient = axios.create({
     baseURL: beUrl + "resume/"

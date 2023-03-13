@@ -20,7 +20,6 @@ const Login = () => {
 
 
   useEffect(() => {
-
     if (user?.logedIn) {
       navigate('/')
     }
@@ -30,10 +29,10 @@ const Login = () => {
     e.preventDefault()
 
     const res = await LoginRequest(formData)
-
-    if (!res.success) toast.warning("server is down!")
+    console.log(res);
+    
     if (res.error) {
-      toast.warning(res.error.error)
+      toast.warning(res.error.message)
       return
     }
 
