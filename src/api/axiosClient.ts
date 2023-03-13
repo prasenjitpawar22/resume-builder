@@ -20,3 +20,6 @@ export const userClient = axios.create({
         process.env.REACT_APP_API_URL + "/user/" :
         "http://localhost:8000/user/"
 })
+
+// http://localhost:8000
+//https://resume-builder-backend-ten.vercel.app

@@ -1,44 +1,51 @@
 import React, { FormEvent, useContext, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { featureClient } from '../../api/axiosClient'
 import { FeatureEduCreateRequest, FeatureEduDataRequest } from '../../api/FeaturesApi'
 import { FeatureContext } from '../../context/FeaturesContext'
-import { Education } from '../../types'
+import { IEducation } from '../../types'
 
 interface Props {
   eduBlockModalState: boolean
   setEduBlockModalState: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+type EducationDataPost = Omit<IEducation, "id">
+
 const ModalCreateEduData: React.FC<Props> = (props: Props) => {
   const { eduBlockModalState, setEduBlockModalState } = props
-  const { setFeatureEduData } = useContext(FeatureContext)
-  const [eduData, seteEduData] = useState<Education>()
+  const { setFeatureEduData, featureEduData} = useContext(FeatureContext)
+  const [eduData, seteEduData] = useState<EducationDataPost>({
+    current: false, end: '', location: '', start: '', university: ''
+  })
 
 
-  const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
+  const inputStyle = `shadow appearance-none border leading-tight focus:shadow-2xl focus:shadow-blue-600 
+  rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none focus:border-white`
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    const token = localStorage.getItem('token')
+    if (token) {
 
-    const createResponse = await FeatureEduCreateRequest(eduData!)
-    //handle error 
-    if (createResponse.error) {
-      alert(createResponse.error.message)
-    }
-    if (createResponse.status === 200) {
-      //get all list 
-      const token = localStorage.getItem('token')
-      if (token) {
-        const allEdu = await FeatureEduDataRequest(token)
-        if (allEdu.status === 200) {
-          setFeatureEduData!(allEdu.data)
-        }
+      const createResponse = await FeatureEduCreateRequest(eduData!, token)
+      //handle error 
+      // console.log(createResponse);
+
+      if (createResponse.error) {
+        toast.warn(createResponse.error.message)
+      }
+      if (createResponse.status === 200 && createResponse.data) {
+        setFeatureEduData!([...featureEduData!, createResponse.data])
+        seteEduData({
+          current: false, end: '', location: '', start: '', university: ''
+        })
+        setEduBlockModalState(false)
+        toast.success('added feature header successfully')
       }
     }
-    if (createResponse.error) {
-      alert(createResponse.error)
-    }
-
   }
 
   return (<div>
@@ -142,6 +149,4 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
 
 export default ModalCreateEduData;
 
-function uuidv4() {
-  throw new Error('Function not implemented.')
-}
+

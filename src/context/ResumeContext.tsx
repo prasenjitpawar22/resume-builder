@@ -1,24 +1,25 @@
 import React, { createContext, Dispatch, MutableRefObject, ReactNode, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
+
 import { resumeClient } from '../api/axiosClient'
 import { ResumeEduDataRequest, ResumeExpDataRequest } from '../api/ResumeApi'
-import { Education, Experience, Header, Skill } from '../types'
+import { IEducation, IExperience, IHeader, ISkill } from '../types'
 import { UserContext } from './UserContext'
 
 export interface ResumeContextInterface {
     printRef: MutableRefObject<HTMLElement | undefined>
     resumeBlockHolderWidth: number
     setResumeBlockHolderWidth: Dispatch<SetStateAction<number>>
-    setResumeHeaderData: React.Dispatch<React.SetStateAction<Header[] | undefined>>
-    resumeHeaderData: Header[] | undefined
-    resumeExpData: Experience[]
-    setResumeExpData: React.Dispatch<React.SetStateAction<Experience[]>>
+    setResumeHeaderData: React.Dispatch<React.SetStateAction<IHeader[]>>
+    resumeHeaderData: IHeader[]
+    resumeExpData: IExperience[]
+    setResumeExpData: React.Dispatch<React.SetStateAction<IExperience[]>>
     resumeColor: string
     setResumeColor: React.Dispatch<React.SetStateAction<string>>
-    resumeEduData: Education[]
-    setResumeEduData: React.Dispatch<React.SetStateAction<Education[]>>
-    resumeSkillData: Skill[] | undefined
-    setResumeSkillData: React.Dispatch<React.SetStateAction<Skill[] | undefined>>
+    resumeEduData: IEducation[]
+    setResumeEduData: React.Dispatch<React.SetStateAction<IEducation[]>>
+    resumeSkillData: ISkill[]
+    setResumeSkillData: React.Dispatch<React.SetStateAction<ISkill[]>>
 
 }
 
@@ -32,12 +33,19 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
     const { user } = useContext(UserContext)
     const printRef = useRef<HTMLElement>();
     const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
-    const [resumeHeaderData, setResumeHeaderData] = useState<Header[] | undefined>([])
-    const [resumeExpData, setResumeExpData] = useState<Experience[]>([])
     const [resumeColor, setResumeColor] = useState<string>('#E7E9EC');
-    const [resumeEduData, setResumeEduData] = useState<Education[]>([])
-    const [resumeSkillData, setResumeSkillData] = useState<Skill[] | undefined>([])
-
+    const [resumeHeaderData, setResumeHeaderData] = useState<IHeader[]>(
+        [{ contact: '', fullname: '', github: '', id: '', linkedin: '', website: '' }]
+    )
+    const [resumeEduData, setResumeEduData] = useState<IEducation[]>(
+        [{ current: false, end: '', id: '', location: '', start: '', university: '' }]
+    )
+    const [resumeSkillData, setResumeSkillData] = useState<ISkill[]>(
+        [{ data: [''], id: '' }]
+    )
+    const [resumeExpData, setResumeExpData] = useState<IExperience[]>(
+        [{ company: '', current: false, description: [''], end: '', id: '', position: '', start: '' }]
+    )
 
     useEffect(() => {
         //set header 
@@ -48,7 +56,6 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                     setResumeHeaderData(res?.data)
                 })
                 .catch(() => {
-
                     // console.log(e))
                 })
         }
@@ -60,7 +67,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 setResumeEduData(resumeEduDataRequest.data)
             }
             else {
-                toast.warning("failed loading resume education data")
+                // toast.warning("failed loading resume education data")
             }
         }
 
@@ -71,7 +78,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 setResumeExpData(resumeExpDataRequest.data)
             }
             else {
-                toast.warning("failed loading resume experience data")
+                // toast.warning("failed loading resume experience data")
             }
         }
 

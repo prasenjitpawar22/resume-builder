@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components';
-import { Skill } from '../../types';
+import { ISkill } from '../../types';
 
 interface Props {
     skillBlockState: boolean,
-    resumeSkillData: Skill[] | undefined,
-    setResumeSkillData: React.Dispatch<React.SetStateAction<Skill[] | undefined>>,
-    data: Skill[] | undefined
+    resumeSkillData: ISkill[],
+    setResumeSkillData: React.Dispatch<React.SetStateAction<ISkill[]>>,
+    data: ISkill[]
 }
 
 const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
@@ -15,14 +15,17 @@ const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
     const handleAddSkill = (id: string | undefined) => {
         console.log(id);
         console.log("asd");
-        let d: Skill | undefined = data?.find(x => x?.id === id)
-        //check if already added
-        var check = resumeSkillData?.filter(d => d?.id === id)
-        console.log('this check', check);
-        if (check?.length !== 0) {
-            return
+        let d = data?.find(x => x?.id === id)
+
+        if (d) {
+            //check if already added
+            var check = resumeSkillData?.filter(d => d?.id === id)
+            console.log('this check', check);
+            if (check?.length !== 0) {
+                return
+            }
+            setResumeSkillData([...resumeSkillData, d])
         }
-        setResumeSkillData([...(resumeSkillData || []), d])
     }
 
     // useEffect(() => {

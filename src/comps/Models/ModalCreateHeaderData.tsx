@@ -1,71 +1,52 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
 
-import data from '../../data'
 import { v4 as uuidv4 } from 'uuid';
-import { Header } from '../../types';
+import { IHeader } from '../../types';
 import { featureClient } from '../../api/axiosClient';
-import { FeatureHeaderDataRequest } from '../../api/FeaturesApi';
+import { FeatureHeaderCreateRequest, FeatureHeaderDataRequest } from '../../api/FeaturesApi';
 import { FeatureContext } from '../../context/FeaturesContext';
+import { toast } from 'react-toastify';
 
 interface Props {
   headerBlockModalState: boolean,
   setHeaderBlockModalState: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type HeaderDataPost = Omit<IHeader, "id">
+
 const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
 
   const { headerBlockModalState, setHeaderBlockModalState } = props
 
-  const { setFeatureHeaderData } = useContext(FeatureContext)
+  const { setFeatureHeaderData, featureHeaderData } = useContext(FeatureContext)
 
-  const [headerData, setHeaderData] = useState<Header | undefined>()
+  const [headerData, setHeaderData] = useState<HeaderDataPost>({
+    contact: "", fullname: "", github: "", linkedin: "", website: ""
+  })
 
-  const inputStyle = "shadow appearance-none border leading-tight rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none"
+  const inputStyle = `shadow appearance-none border leading-tight focus:shadow-2xl focus:shadow-blue-600 
+  rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none focus:border-white`
 
-  const handleSubmit = (e: FormEvent) => {
-    const id = uuidv4()
-    console.log({ headerData });
-
-    featureClient.post("set-feature-header", {
-      fullname: headerData?.fullname,
-      _id: uuidv4(),
-      contact: headerData?.contact,
-      linkedin: headerData?.linkedin,
-      github: headerData?.github,
-      websit: headerData?.websit,
-    })
-      .then(async (res) => {
-        console.log('create submit response', res);
-        // call api 
-        if (res?.data) {
-          const token = localStorage.getItem('token');
-          if (token) {
-            const allHeaders = await FeatureHeaderDataRequest(token)
-            if (allHeaders.data) {
-              setFeatureHeaderData!(allHeaders.data)
-            }
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-
-    // data.header.push({
-    //   id: uuidv4(),
-    //   contact: headerData?.contact,
-    //   fullname: headerData?.fullname,
-    //   github: headerData?.github,
-    //   websit: headerData?.websit,
-    //   linkedin: headerData?.linkedin
-    // })
-    // console.log(data);
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-  }
 
-  useEffect(() => {
-    console.log(headerBlockModalState);
-  }, [headerBlockModalState])
+    if (headerData) {
+      const response = await FeatureHeaderCreateRequest(headerData)
+      // console.log(response);
+      
+      if (response.error !== undefined) {
+        toast.warning(response.error.error)
+      }
+      if (response.status === 200 && response.data) {
+        setFeatureHeaderData!([...featureHeaderData!, response.data])
+        setHeaderData({
+          contact: '', fullname: '', github: '', linkedin: '', website: ''
+        })
+        setHeaderBlockModalState(false)
+        toast.success('added feature header successfully')
+      }
+    }
+  }
 
   return (<div>
     {headerBlockModalState &&
@@ -98,10 +79,11 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                     <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
                       Full Name
                     </label>
-                    <input required value={headerData?.fullname}
-                      onChange={(e) => setHeaderData({ ...(headerData!), fullname: e.target.value })}
+                    <input required
+                      value={headerData?.fullname}
+                      onChange={(e) => setHeaderData({ ...headerData!, fullname: e.target.value })}
                       className={inputStyle}
-                      type={'text'} placeholder={'Full Name'} />
+                      type={'text'} placeholder={'Full  Name'} />
                   </div>
                   <div>
                     <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
@@ -126,7 +108,8 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                   <label className='block text-gray-700 text-sm font-bold mb-2'>
                     Github Profile
                   </label>
-                  <input value={headerData?.github} onChange={(e) => setHeaderData({ ...headerData!, github: e.target.value })}
+                  <input value={headerData?.github}
+                    onChange={(e) => setHeaderData({ ...headerData!, github: e.target.value })}
                     className={inputStyle}
                     type={'text'} placeholder={'Github Profile'} />
                 </div>
@@ -134,7 +117,8 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                   <label className='block text-gray-700 text-sm font-bold mb-2'>
                     Website Link
                   </label>
-                  <input value={headerData?.websit} onChange={(e) => setHeaderData({ ...headerData!, websit: e.target.value })}
+                  <input value={headerData?.website}
+                    onChange={(e) => setHeaderData({ ...headerData!, website: e.target.value })}
                     className={inputStyle}
                     type={'text'} placeholder={'Website Link'} />
                 </div>
@@ -152,9 +136,7 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                 <button
                   className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg 
                   outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                  type="submit"
-                  onClick={() => setHeaderData(undefined)}
-                >
+                  type="submit">
                   Save Changes
                 </button>
               </div>

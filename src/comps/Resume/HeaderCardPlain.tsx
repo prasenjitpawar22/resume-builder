@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { Header } from "../../types";
+
+import { IHeader } from "../../types";
 import { ResumeHeaderDataRequest, ResumeHeaderDeleteRequest } from "../../api/ResumeApi";
 import { ResumeContext } from "../../context/ResumeContext";
 import { toast } from "react-toastify";
 
 interface Props {
-	data: Header,
+	data: IHeader,
 }
 
 const HeaderCardPlain: React.FC<Props> = (props: Props) => {
@@ -26,7 +27,7 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 		if (deleteResponse.status === 200) {
 			// update the resume header list
 			const headerList = await ResumeHeaderDataRequest()
-			if (headerList.status === 200) {
+			if (headerList.status === 200 && headerList.data) {
 				setResumeHeaderData!(headerList.data)
 			}
 			if (headerList.error) {
@@ -67,9 +68,9 @@ const HeaderCardPlain: React.FC<Props> = (props: Props) => {
 							<HeaderTextSpan className="font-normal">{data?.github}</HeaderTextSpan>
 						</p>
 					}
-					{data?.websit &&
+					{data?.website &&
 						<p className="flex gap-2 font-semibold text-sm">Website:
-							<HeaderTextSpan className="font-normal">{data?.websit}</HeaderTextSpan>
+							<HeaderTextSpan className="font-normal">{data?.website}</HeaderTextSpan>
 						</p>
 					}
 				</div>

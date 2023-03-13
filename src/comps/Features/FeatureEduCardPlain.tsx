@@ -6,6 +6,7 @@ import { FeatureEduDataRequest, FeatureEduDeleteRequest } from '../../api/Featur
 import { ResumeEduAddRequest, ResumeEduDataRequest } from '../../api/ResumeApi';
 import { FeatureContext } from '../../context/FeaturesContext';
 import { ResumeContext } from '../../context/ResumeContext';
+import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain';
 
 
 interface Props {
@@ -49,45 +50,49 @@ export default function FeatureEduCardPlain(props: Props) {
     }
 
     const handleDelete = async (id: string) => {
-        console.log('btn clicked', id);
+        const token = localStorage.getItem('token')
 
-        const deleteResponse = await FeatureEduDeleteRequest(id)
-        // handle deleteResponse
-        console.log(deleteResponse);
-        if (deleteResponse.status === 200) {
-            const token = localStorage.getItem('token')
-            if (token) {
+        if (token) {
+            const deleteResponse = await FeatureEduDeleteRequest(id, token)
+            // handle deleteResponse
+            console.log(deleteResponse);
+            if (deleteResponse.status === 200) {
                 const allEdu = await FeatureEduDataRequest(token)
-                setFeatureEduData!(allEdu.data)
+                if (allEdu.status === 200 && allEdu.data) {
+                    console.log(allEdu.data);
+                    setFeatureEduData!(allEdu.data)
+                }
             }
-        }
-        if (deleteResponse.error) {
-            console.log('delete request error', deleteResponse.error);
+            if (deleteResponse.error) {
+                console.log('delete request error', deleteResponse.error);
+            }
         }
     }
 
     return (
         <CardHolder eduBlockState={eduBlockState} className='overflow-y-scroll'>
-            {featureEduData?.length === 0 ?
-                <Card>
-                    <h1>asd</h1>
-                </Card> : featureEduData?.map((d) =>
-                    <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
-                        {<div>
-                            <p>University: {d.university}</p>
-                            <p>Location: {d.location}</p>
-                            <p>Start: {d.start}</p>
-                            <p>End: {d.end}</p>
+            {featureEduData === undefined || featureEduData.length === 0 ?
+                <FeatureEmptyDataCardPlain text={'Empty education data please add'} />
+                : featureEduData?.length === 0 ?
+                    <Card>
+                        <h1>asd</h1>
+                    </Card> : featureEduData?.map((d) =>
+                        <Card key={d.id} className='m-2 bg-slate-200 shadow-2xl rounded-xl p-2'>
+                            {<div>
+                                <p>University: {d.university}</p>
+                                <p>Location: {d.location}</p>
+                                <p>Start: {d.start}</p>
+                                <p>End: {d.end}</p>
 
-                            <div className='flex gap-2 align-middle mt-2'>
-                                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                                    onClick={() => handleAdd(d?.id!)}>Add</button>
-                                <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
-                                    onClick={() => handleDelete(d?.id!)}>Remove from list</button>
-                            </div>
-                        </div>}
-                    </Card>
-                )}
+                                <div className='flex gap-2 align-middle mt-2'>
+                                    <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                                        onClick={() => handleAdd(d?.id!)}>Add</button>
+                                    <button className='px-2 hover:bg-blue-600 bg-blue-400 rounded text-white'
+                                        onClick={() => handleDelete(d?.id!)}>Remove from list</button>
+                                </div>
+                            </div>}
+                        </Card>
+                    )}
         </CardHolder>
     )
 }

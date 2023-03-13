@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { Experience } from "../../types";
+
+import { IExperience } from "../../types";
 import { ResumeContext } from "../../context/ResumeContext";
 import { ResumeExpDataRequest, ResumeExpDeleteRequest } from "../../api/ResumeApi";
 import { toast } from "react-toastify";
 
 interface Props {
-  data: Experience
+  data: IExperience
 }
 
 const ExpCardPlain: React.FC<Props> = (props: Props) => {
