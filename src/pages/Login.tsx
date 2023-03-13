@@ -20,6 +20,9 @@ const Login = () => {
 
 
   useEffect(() => {
+    // console.log(process.env.REACT_APP_API_URL);
+    // console.log(process.env.REACT_APP_BACKEND);
+
     if (user?.logedIn) {
       navigate('/')
     }
@@ -27,7 +30,7 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    
+
     const res = await LoginRequest(formData)
 
     if (res.error) {
