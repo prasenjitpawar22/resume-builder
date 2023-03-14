@@ -29,21 +29,24 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
         return console.log('expAddRequest data not found');
       }
       else {
-        const createRespons = await ResumeExpAddRequest(expAddRequestToResume)
-        if (createRespons.status === 200) {
-          //call get all resume edu list
-          const requestEduList = await ResumeExpDataRequest()
-          if (requestEduList.status === 200) {
-            setResumeExpData!(requestEduList.data!)
+        const token = localStorage.getItem('token');
+        if (token) {
+          const createRespons = await ResumeExpAddRequest(expAddRequestToResume)
+          if (createRespons.status === 200) {
+            //call get all resume edu list
+            const requestEduList = await ResumeExpDataRequest(token)
+            if (requestEduList.status === 200) {
+              setResumeExpData!(requestEduList.data!)
+            }
+            else {
+              toast.warn("error updating resume exp list")
+            }
           }
+          //handle error
           else {
-            toast.warn("error updating resume exp list")
+            console.log(createRespons.error);
+            toast.warning("error add to resume")
           }
-        }
-        //handle error
-        else {
-          console.log(createRespons.error);
-          toast.warning("error add to resume")
         }
       }
     }
@@ -58,7 +61,7 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
     const token = localStorage.getItem('token');
     if (token) {
       const deleteResponse = await FeatureExpDeleteRequest(id, token)
-       
+
       if (deleteResponse.status === 200) {
         const allExp = await FeatureExpDataRequest(token)
         if (allExp.status === 200 && allExp.data) {

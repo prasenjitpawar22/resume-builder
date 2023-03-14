@@ -6,9 +6,10 @@ import './simpleResume.css'
 import ExpCardPlain from './ExpCardPlain'
 import EduCardPlain from './EduCardPlain';
 import { IoIosResize } from 'react-icons/io'
-import HeaderCardPlain from './HeaderCardPlain';
+import HeaderCardPlain from './SimpleResumeHeaderCard';
 import SkillCardPlain from './SkillCardPlain';
 import { ResumeContext } from '../../context/ResumeContext'
+import SimpleResumeHeaderCard from './SimpleResumeHeaderCard';
 
 export const Resume: React.FC = () => {
 
@@ -21,33 +22,15 @@ export const Resume: React.FC = () => {
         setResumeHeaderData, setResumeSkillData,
     } = useContext(ResumeContext)
 
-
     return (
-        <div className='flex mx-4 mt-12 mb-4'>
+        <div className='flex mx-4 mt-2 mb-4'>
             <div className='grid p-4 w-11/12 grid-cols-1 gap-5 bg-slate-100'>
                 <div className='flex phone:gap-2 tablet:gap-6'>
                     <div className='w-2/4'>
 
                     </div>
                     <div className='phone:w-2/6  tablet:w-9/12'>
-                        <div>
-                            <h1 className='simple-resume-h1'>
-                                First Name
-                            </h1>
-                            <h3 className='simple-resume-h3'>Title</h3>
-                            <h6 className='simple-resume-h6'>
-                                Atlanta, USA 5555-222-12121 firstemail@email.com
-                            </h6>
-                            <p className='simple-resume-p'>
-                                is simply dummy text of the printing and typesetting industry.
-                                Lorem Ipsum has been the industry's standard dummy text ever since the
-                                1500s, when an unknown printer took a galley of type and scrambled it to
-                                make a type specimen book. It has survived not only five centuries, but
-                                also the leap into electronic typesetting, remaining essentially unchanged.
-                                It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                                like Aldus PageMaker including versions of Lorem Ipsum
-                            </p>
-                        </div>
+                        <SimpleResumeHeaderCard />
                     </div>
                 </div>
                 <div className='flex phone:gap-2 tablet:gap-6'>

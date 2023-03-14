@@ -29,17 +29,20 @@ export default function FeatureEduCardPlain(props: Props) {
                 return console.log('eduAddRequest data not found');
             }
             else {
-                const createRespons = await ResumeEduAddRequest(eduAddRequestToResume)
-                if (createRespons.status === 200) {
-                    //call get all resume edu list
-                    const requestEduList = await ResumeEduDataRequest()
-                    if (requestEduList.status === 200) {
-                        setResumeEduData!(requestEduList.data!)
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const createRespons = await ResumeEduAddRequest(eduAddRequestToResume)
+                    if (createRespons.status === 200) {
+                        //call get all resume edu list
+                        const requestEduList = await ResumeEduDataRequest(token)
+                        if (requestEduList.status === 200) {
+                            setResumeEduData!(requestEduList.data!)
+                        }
                     }
-                }
-                //handle error
-                else {
-                    console.log(createRespons.error);
+                    //handle error
+                    else {
+                        console.log(createRespons.error);
+                    }
                 }
             }
         }

@@ -2,16 +2,16 @@ import React, { createContext, Dispatch, MutableRefObject, ReactNode, SetStateAc
 import { toast } from 'react-toastify'
 
 import { resumeClient } from '../api/axiosClient'
-import { ResumeEduDataRequest, ResumeExpDataRequest } from '../api/ResumeApi'
-import { IEducation, IExperience, IHeader, ISkill } from '../types'
+import { ResumeEduDataRequest, ResumeExpDataRequest, ResumeHeaderDataRequest } from '../api/ResumeApi'
+import { IEducation, IExperience, IHeader, IResumeHeader, ISkill } from '../types'
 import { UserContext } from './UserContext'
 
 export interface ResumeContextInterface {
     printRef: MutableRefObject<HTMLElement | undefined>
     resumeBlockHolderWidth: number
     setResumeBlockHolderWidth: Dispatch<SetStateAction<number>>
-    setResumeHeaderData: React.Dispatch<React.SetStateAction<IHeader[]>>
-    resumeHeaderData: IHeader[]
+    setResumeHeaderData: React.Dispatch<React.SetStateAction<IResumeHeader[]>>
+    resumeHeaderData: IResumeHeader[]
     resumeExpData: IExperience[]
     setResumeExpData: React.Dispatch<React.SetStateAction<IExperience[]>>
     resumeColor: string
@@ -34,9 +34,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
     const printRef = useRef<HTMLElement>();
     const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
     const [resumeColor, setResumeColor] = useState<string>('#E7E9EC');
-    const [resumeHeaderData, setResumeHeaderData] = useState<IHeader[]>(
-        [{ contact: '', fullname: '', github: '', id: '', linkedin: '', website: '' }]
-    )
+    const [resumeHeaderData, setResumeHeaderData] = useState<IResumeHeader[]>([])
     const [resumeEduData, setResumeEduData] = useState<IEducation[]>(
         [{ current: false, end: '', id: '', location: '', start: '', university: '' }]
     )
@@ -48,21 +46,26 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
     )
 
     useEffect(() => {
+        console.log(resumeHeaderData);
+
+    }, [resumeHeaderData])
+
+    useEffect(() => {
         //set header 
-        const getResumeHeaderData = async () => {
-            resumeClient.get("get-resume-header")
-                .then((res) => {
-                    // console.log(res?.data)
-                    setResumeHeaderData(res?.data)
-                })
-                .catch(() => {
-                    // console.log(e))
-                })
+        const getResumeHeaderData = async (token: string) => {
+            const resumeHeaderDataRequest = await ResumeHeaderDataRequest(token)
+            if (resumeHeaderDataRequest.status === 200 && resumeHeaderDataRequest.data) {
+                setResumeHeaderData(resumeHeaderDataRequest.data)
+                console.log(resumeHeaderDataRequest);
+            }
+            else {
+                toast.warning('failed to load resume header data')
+            }
         }
 
         //set edu 
-        const getResumeEduData = async () => {
-            const resumeEduDataRequest = await ResumeEduDataRequest()
+        const getResumeEduData = async (token: string) => {
+            const resumeEduDataRequest = await ResumeEduDataRequest(token)
             if (resumeEduDataRequest.status === 200 && resumeEduDataRequest.data) {
                 setResumeEduData(resumeEduDataRequest.data)
             }
@@ -72,8 +75,8 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
         }
 
         // set exp
-        const getResumeExpData = async () => {
-            const resumeExpDataRequest = await ResumeExpDataRequest()
+        const getResumeExpData = async (token: string) => {
+            const resumeExpDataRequest = await ResumeExpDataRequest(token)
             if (resumeExpDataRequest.status === 200 && resumeExpDataRequest.data) {
                 setResumeExpData(resumeExpDataRequest.data)
             }
@@ -83,9 +86,16 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
         }
 
         if (user?.logedIn) {
-            getResumeExpData()
-            getResumeEduData()
-            getResumeHeaderData()
+            const token = localStorage.getItem('token')
+            if (token) {
+                getResumeExpData(token)
+                getResumeEduData(token)
+                getResumeHeaderData(token)
+            }
+            else {
+                // toast.warn('unable to get token')
+
+            }
         }
     }, [])
 

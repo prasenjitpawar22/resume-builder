@@ -33,7 +33,7 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
     if (headerData) {
       const response = await FeatureHeaderCreateRequest(headerData)
       // console.log(response);
-      
+
       if (response.error !== undefined) {
         toast.warning(response.error.error)
       }
@@ -62,7 +62,7 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
                 Create header
               </h3>
               <button
-                className="p-1 ml-auto bg-transparent border-0 text-black 
+                className="p-1 ml-auto bg-transparent border-0 text-primary
                 opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setHeaderBlockModalState(false)}>
                 <span className="text-black h-6 w-6 text-2xl block outline-none focus:outline-none">

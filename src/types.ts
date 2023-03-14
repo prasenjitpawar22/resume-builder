@@ -7,13 +7,17 @@ export interface IHeader {
     linkedin: string | undefined;
 }
 
+export interface IResumeHeader extends IHeader {
+    featureHeaderId: string | undefined
+}
+
 export interface IEducation {
     id: string | undefined;
     end: string | undefined
     location: string | undefined
     start: string | undefined
     university: string | undefined
-    current: boolean|undefined
+    current: boolean | undefined
 }
 
 export interface ISkill {

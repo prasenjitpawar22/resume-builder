@@ -3,10 +3,10 @@ import React, { useContext } from 'react'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import { FeatureHeaderDataRequest, FeatureHeaderDeleteRequest } from '../../api/FeaturesApi'
-import { ResumeHeaderDataRequest } from '../../api/ResumeApi'
+import { ResumeHeaderAddRequest, ResumeHeaderDataRequest } from '../../api/ResumeApi'
 import { FeatureContext } from '../../context/FeaturesContext'
 
-import { IHeader } from '../../types'
+import { IHeader, IResumeHeader } from '../../types'
 import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain'
 
 const client = axios.create({
@@ -16,8 +16,8 @@ const client = axios.create({
 interface Props {
   // data: Header[],
   headerBlockState: boolean,
-  resumeHeaderData: IHeader[],
-  setResumeHeaderData: React.Dispatch<React.SetStateAction<IHeader[]>>
+  resumeHeaderData: IResumeHeader[],
+  setResumeHeaderData: React.Dispatch<React.SetStateAction<IResumeHeader[]>>
 }
 
 interface CardHolderProps {
@@ -32,34 +32,29 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
 
   const { featureHeaderData, setFeatureHeaderData } = useContext(FeatureContext)
 
+  // add to resume button handle function
   const handleAdd = async (id: string | undefined) => {
-    let d: IHeader | undefined = featureHeaderData?.find(x => x?.id === id)
+
+    //get feature header from id
+    let header = featureHeaderData?.find(x => x?.id === id)
+
     //check if already added
-    var check = resumeHeaderData?.filter(d => d?.id === id)
-    console.log('this check', check);
+    var check = resumeHeaderData?.filter(d => d?.featureHeaderId === id)
     if (check?.length !== 0) {
       toast.warn('already added to resume')
       return
     }
-    // setResumeHeaderData([...(resumeHeaderData || []), d])
 
     //backend add resume header req
-    await client.post("set-resume-header",
-      {
-        id: d?.id,
-        fullname: d?.fullname,
-        contact: d?.contact,
-        github: d?.github,
-        linkedin: d?.linkedin,
-        website: d?.website
-      })
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e))
+    const token = localStorage.getItem('token')
+    if (token && header && id) {
+      const resumeHeaderRequest: IResumeHeader = { ...header, featureHeaderId: id }
+      const addResumeHeaderResponse = await ResumeHeaderAddRequest(resumeHeaderRequest, token)
+      console.log(addResumeHeaderResponse);
 
-    //update the header list for resume
-    const allHeader = await ResumeHeaderDataRequest()
-    if (allHeader.data) {
-      setResumeHeaderData(allHeader.data)
+      if (addResumeHeaderResponse.data) {
+        setResumeHeaderData([...resumeHeaderData, addResumeHeaderResponse.data])
+      }
     }
   }
 
@@ -71,7 +66,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
 
       if (deleteResponse.status === 200) {
         const allHeaders = await FeatureHeaderDataRequest(token)
-        
+
         if (allHeaders.status === 200 && allHeaders.data) {
           setFeatureHeaderData!(allHeaders.data)
         }

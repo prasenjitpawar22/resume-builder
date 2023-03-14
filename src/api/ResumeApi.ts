@@ -1,26 +1,28 @@
 import { AxiosError } from "axios"
 import { v4 as uuid4 } from 'uuid'
 
-import { IEducation, IExperience, IHeader } from "../types"
+import { IEducation, IExperience, IResumeHeader } from "../types"
 import { resumeClient } from "./axiosClient"
 
 
 //  ----------------------------------------header-------------------------------------------------
 type ResumeHeaderDataResponse = {
-    data?: IHeader[],
+    data?: IResumeHeader[],
     error?: AxiosError,
     status: number
 }
 
 // get resume header data
-export const ResumeHeaderDataRequest = async () => {
+export const ResumeHeaderDataRequest = async (token: string) => {
     let response: ResumeHeaderDataResponse = {
         status: 0,
         data: undefined,
         error: undefined
     }
 
-    await resumeClient.get('get-resume-header')
+    await resumeClient.get('get-all-header',
+        { headers: { Authorization: 'Bearer ' + token } }
+    )
         .then((res) => {
             response.data = res.data
             response.status = res.status
@@ -34,8 +36,7 @@ export const ResumeHeaderDataRequest = async () => {
 
 // delete resume header data
 type ResumeHeaderDeleteResponse = ResumeHeaderDataResponse
-export const ResumeHeaderDeleteRequest = async (id: string) => {
-    console.log(id, 'delete id');
+export const ResumeHeaderDeleteRequest = async (id: string, token: string) => {
 
     let response: ResumeHeaderDeleteResponse = {
         status: 0,
@@ -43,7 +44,8 @@ export const ResumeHeaderDeleteRequest = async (id: string) => {
         error: undefined
     }
 
-    await resumeClient.post('delete-resume-header', { id: id })
+    await resumeClient.post('delete-header', { id: id },
+        { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
             response.data = res.data
             response.status = res.status
@@ -54,6 +56,32 @@ export const ResumeHeaderDeleteRequest = async (id: string) => {
 
     return response
 }
+
+//add to resume header
+interface ResumeHeaderAddResponse extends Omit<ResumeHeaderDataResponse, "data"> {
+    data: IResumeHeader | undefined
+}
+
+export const ResumeHeaderAddRequest =
+    async (data: IResumeHeader, token: string): Promise<ResumeHeaderAddResponse> => {
+        let response: ResumeHeaderAddResponse = {
+            status: 0,
+            data: undefined,
+            error: undefined
+        }
+        // const {contact, featureHeaderId, fullname, github, id, linkedin, website } = data
+        await resumeClient.post('add-header', data,
+            { headers: { Authorization: `Bearer ${token}` } })
+            .then((res) => {
+                response.data = res.data
+                response.status = res.status
+            })
+            .catch((error) => {
+                response.error = error
+            })
+
+        return response
+    }
 
 //---------------------------------------------edu------------------------------------
 type ResumeEduDataResponse = {
@@ -88,14 +116,18 @@ export const ResumeEduAddRequest = async (data: IEducation) => {
 }
 
 // get all list
-export const ResumeEduDataRequest = async () => {
+export const ResumeEduDataRequest = async (token: string) => {
     let response: ResumeEduDataResponse = {
         status: 0,
         data: undefined,
         error: undefined
     }
 
-    await resumeClient.get('get-resume-education')
+    await resumeClient.get('get-all-education', {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
         .then((res) => {
             response.data = res.data
             response.status = res.status
@@ -156,14 +188,15 @@ export const ResumeExpDeleteRequest = async (id: string) => {
 }
 
 // get all list
-export const ResumeExpDataRequest = async () => {
+export const ResumeExpDataRequest = async (token: string) => {
     let response: ResumeExpDeleteResponse = {
         status: 0,
         data: undefined,
         error: undefined
     }
 
-    await resumeClient.get('get-resume-experience')
+    await resumeClient.get('get-resume-experience',
+        { headers: { Authorization: 'Bearer ' + token } })
         .then((res) => {
             response.data = res.data
             response.status = res.status

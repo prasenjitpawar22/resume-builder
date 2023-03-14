@@ -24,23 +24,28 @@ const ExpCardPlain: React.FC<Props> = (props: Props) => {
     setResumeExpData!(currentData => currentData.filter(data => data?.id !== id))
 
     if (!id) return
-    const deleteResponse = await ResumeExpDeleteRequest(id)
+    const token = localStorage.getItem('token')
 
-    if (deleteResponse.status === 200) {
-      // update the resume edu list
-      const eduList = await ResumeExpDataRequest()
-      if (eduList.status === 200 && eduList.data) {
-        setResumeExpData!(eduList.data)
-        console.log('this is edu resume list', eduList);
+    if (token) {
+
+      const deleteResponse = await ResumeExpDeleteRequest(id)
+
+      if (deleteResponse.status === 200) {
+        // update the resume edu list
+        const eduList = await ResumeExpDataRequest(token)
+        if (eduList.status === 200 && eduList.data) {
+          setResumeExpData!(eduList.data)
+          console.log('this is edu resume list', eduList);
+        }
+        if (eduList.error) {
+          console.log("error getting edu list", eduList.error);
+          toast.warning('unable to delete data')
+        }
       }
-      if (eduList.error) {
-        console.log("error getting edu list", eduList.error);
+      if (deleteResponse.error) {
+        console.log('error deleting the edu', deleteResponse.error);
         toast.warning('unable to delete data')
       }
-    }
-    if (deleteResponse.error) {
-      console.log('error deleting the edu', deleteResponse.error);
-      toast.warning('unable to delete data')
     }
   }
 
