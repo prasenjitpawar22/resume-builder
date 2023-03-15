@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginRequest } from "../api/UserApi";
 import { toast, ToastContainer } from "react-toastify";
 import { UserContext } from "../context/UserContext";
+import { ClipLoader } from "react-spinners";
 
 interface Data {
   email: string,
@@ -12,10 +13,11 @@ interface Data {
 }
 
 const Login = () => {
-  const [formData, setFormData] = useState<Data>({
-    email: '', password: ''
-  })
   const { setUser, user } = useContext(UserContext)
+
+  const [formData, setFormData] = useState<Data>({ email: '', password: '' })
+  const [loginBtnLoader, setLoginBtnLoader] = useState<boolean>(false)
+
   const navigate = useNavigate()
 
 
@@ -27,12 +29,12 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-
+    setLoginBtnLoader(true)
     const res = await LoginRequest(formData)
-    console.log(res);
-    
+
     if (res.error) {
       toast.warning(res.error.message)
+      setLoginBtnLoader(false)
       return
     }
 
@@ -42,6 +44,7 @@ const Login = () => {
         ...user, email: res.data?.email,
         logedIn: true, name: res.data?.name
       })
+      setLoginBtnLoader(false)
       return navigate('/')
     }
   }
@@ -54,8 +57,6 @@ const Login = () => {
         className="phone:w-11/12 tablet:w-5/12 desktop:8/12 backdrop-blur-2xl drop-shadow-custom">
         <Fields className="w-8/12 py-12">
           <div className="flex flex-col justify-start">
-            {/* <PageBrandIcon className='rounded-full '
-              src='./brand.png' /> */}
             <h1 className="text-[38px] mb-4 font-gilroydark text-primary">Login</h1>
             <form onSubmit={(e) => handleSubmit(e)}>
               <div className="flex flex-col">
@@ -79,8 +80,9 @@ const Login = () => {
                   text-primary mb-8" to={'#'}>Forgot Password?</Link>
                 <button
                   className="bg-component-secondary hover:bg-component-primary rounded py-2 font-Lato
-                text-[#FFFFFF] text-[20px] mb-4"
-                  type="submit">Sign in</button>
+                text-[#FFFFFF] flex justify-center text-[20px] mb-4"
+                  type="submit"> {!loginBtnLoader ? 'Sign in' :
+                    <ClipLoader size={30} color={'white'} />}</button>
                 <p className="text-center text-primary text-[14px] mb-2">Or continue with</p>
                 <p className="text-center text-primary text-[14px]">
                   Don't have an account yet?
@@ -100,9 +102,6 @@ const Login = () => {
 
 export default Login;
 
-// const BackgroundDiv = styled.div`
-
-// `
 const Box = styled.div`
     background: rgba(255, 255, 255, 0.3);
     border-radius: 40px;
@@ -115,9 +114,4 @@ const Box = styled.div`
 const Fields = styled.div`
   /* width: 70%;
   height: 80%; */
-`
-const PageBrandIcon = styled.img`
-  width: 2rem;
-  height: 2rem;
-  
 `

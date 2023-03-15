@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { MdOutlineDelete } from 'react-icons/md'
 import styled from "styled-components";
 import moment from "moment";
+import { ClipLoader } from "react-spinners";
 
 import { ResumeContext } from "../../context/ResumeContext";
 import { ResumeExpDataRequest, ResumeExpDeleteRequest } from "../../api/ResumeApi";
@@ -13,15 +14,16 @@ interface Props {
 const SimpleResumeExperienceCard: React.FC<Props> = () => {
   // const { data } = props
   const { resumeExpData, setResumeExpData } = useContext(ResumeContext)
+  const [deleteLoader, setDeleteLoader] =
+    useState<{ state: boolean, id: undefined | string }>({ state: false, id: 'bf03610d-922f-4f8a-b745-c722b2fe5de2' })
 
-  const [hoverCardState, setHoverCardState] = useState('none')
-  const handleHover = () => {
-    // console.log("Asdasd");
-    setHoverCardState(hoverCardState === 'none' ? 'flex' : 'none')
-  }
+  useEffect(() => {
+    console.log(deleteLoader);
+  }, [deleteLoader])
 
   // handle remove 
   const handleRemove = async (id: string) => {
+    setDeleteLoader({ state: true, id: id })
     const token = localStorage.getItem('token')
     if (token) {
       const deleteResponse = await ResumeExpDeleteRequest(id, token)
@@ -42,6 +44,7 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
         toast.warning('error deleting')
       }
     }
+    setDeleteLoader({ state: false, id: id })
   }
 
   return (<>
@@ -64,17 +67,17 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
               industry's standard dummy text ever since the 1500s, when an unknown
               printer took a galley of type and scrambled it to make a type specimen book. It
             </p>
-            <RemoveDiv
+            {deleteLoader.state && deleteLoader.id === experience.id ? <RemoveDiv
               className='absolute right-0 top-0 px-3 rounded-md hidden'>
               <MdOutlineDelete className={experience.id} size={20} cursor="pointer"
                 onClick={() => handleRemove(experience.id!)} />
-            </RemoveDiv>
+            </RemoveDiv> : <ClipLoader id={experience.id} size={20} className="absolute right-3 top-0" />}
           </Block>
         ) :
         <div className="opacity-40">
           <h3 className='simple-resume-h3'>New Position</h3>
           <h4 className='simple-resume-h4'>New Company</h4>
-          <h6 className='simple-resume-h6'>January 2018 to Present </h6>
+          <h6 className='simple-resume-h6'>January 2018 to Present</h6>
           <p className='simple-resume-p'>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
             industry's standard dummy text ever since the 1500s, when an unknown
             printer took a galley of type and scrambled it to make a type specimen book. It

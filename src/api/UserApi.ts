@@ -27,12 +27,17 @@ export const LoginRequest =
         response = {
           ...response,
           data: res.data,
-          status: res.status
+          status: res.status,
+          success: true
         }
-        response = { ...response, success: true }
       })
       .catch((error: AxiosError) => {
-        response = { ...response, error: error.response?.data, status: error.status }
+        if (error.response?.data) {
+          response = { ...response, error: error.response?.data, status: error.status }
+        }
+        else {
+          response = { ...response, error: error, status: error.status }
+        }
       })
 
     return response
@@ -65,12 +70,15 @@ export const RegisterUserRequest = async ({ email, fullname, password }: TRegist
 
   await userClient.post('register', { email, fullname, password })
     .then((res) => {
-      console.log(res, "res");
       response = { ...response, data: res.data, status: res.status }
     })
     .catch((error: AxiosError) => {
-      console.log(error, "err");
-      response = { ...response, error: error.response?.data }
+      if (error.response?.data) {
+        response = { ...response, error: error.response.data }
+      }
+      else {
+        response = { ...response, error: error }
+      }
     })
 
   return response

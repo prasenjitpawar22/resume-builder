@@ -41,7 +41,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
     //check if already added
     var check = resumeHeaderData?.filter(d => d?.featureHeaderId === id)
     if (check?.length !== 0) {
-      toast.warn('already added to resume')
+      toast.warn('already added to resume', { autoClose: 1000, hideProgressBar: true })
       return
     }
 
@@ -56,7 +56,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
         setResumeHeaderData([...resumeHeaderData, addResumeHeaderResponse.data])
       }
       if (addResumeHeaderResponse.error) {
-        toast.warn('unable to add to resume')
+        toast.warn('unable to add to resume', { autoClose: 1000, hideProgressBar: true })
       }
     }
     else {
@@ -86,7 +86,7 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
       }
       if (deleteResponse.error) {
         // console.log('delete request error', deleteResponse.error);
-        toast.warning(deleteResponse.error)
+        toast.warning(deleteResponse.error, { autoClose: 1000, hideProgressBar: true })
       }
     }
   }

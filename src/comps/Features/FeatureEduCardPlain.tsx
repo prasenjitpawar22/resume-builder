@@ -29,7 +29,7 @@ export default function FeatureEduCardPlain(props: Props) {
         //check if already added
         var check = resumeEduData?.filter(d => d?.featureEducationId === id)
         if (check?.length !== 0) {
-            toast.warn('already added to resume')
+            toast.warn('already added to resume', { autoClose: 1000, hideProgressBar: true })
             return
         }
 
@@ -44,13 +44,12 @@ export default function FeatureEduCardPlain(props: Props) {
                 setResumeEduData!([...resumeEduData, addResumeEducationResponse.data])
             }
             if (addResumeEducationResponse.error) {
-                toast.warn('unable to add to resume')
+                toast.warn('unable to add to resume',{ autoClose: 1000, hideProgressBar: true })
             }
         }
         else {
             toast.warn("error adding", { autoClose: 1000, hideProgressBar: true })
         }
-
     }
 
     const handleDelete = async (id: string) => {
@@ -68,7 +67,7 @@ export default function FeatureEduCardPlain(props: Props) {
                 }
             }
             if (deleteResponse.error) {
-                console.log('delete request error', deleteResponse.error);
+                toast.warning("error removing item",  { autoClose: 1000, hideProgressBar: true })
             }
         }
     }

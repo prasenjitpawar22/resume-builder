@@ -4,26 +4,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { RegisterUserRequest } from "../api/UserApi";
 import { toast, ToastContainer } from "react-toastify";
 import { UserContext } from "../context/UserContext";
+import { ClipLoader } from "react-spinners";
 
 const Register = () => {
 
   const [registerData, setResgisterData] = useState({
     fullname: '', email: '', password: ''
   })
+  const [registerBtnLoader, setRegisterBtnLoader] = useState<boolean>(false)
 
   const { setUser, user } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(registerData);
+    setRegisterBtnLoader(true)
 
     const registerResponse = await RegisterUserRequest(registerData)
 
-    console.log(registerResponse);
-
     if (registerResponse.error) {
       toast.warn(registerResponse.error.message);
+      setRegisterBtnLoader(false)
       return
     }
 
@@ -33,6 +34,7 @@ const Register = () => {
         ...user, email: registerResponse.data?.email,
         logedIn: true, name: registerResponse.data?.name
       })
+      setRegisterBtnLoader(false)
       return navigate('/')
     }
   }
@@ -78,8 +80,11 @@ const Register = () => {
                 </div>
                 <button
                   className="bg-component-secondary hover:bg-component-primary rounded py-2 font-Lato
-                text-[#FFFFFF] text-[20px] mb-4"
-                  type="submit">Register</button>
+                text-[#FFFFFF] flex justify-center text-[20px] mb-4"
+                  type="submit">
+                  {!registerBtnLoader ? 'Register' :
+                    <ClipLoader size={30} color={'white'} />}
+                </button>
                 <p className="text-center text-primary text-[14px] mb-2">Or continue with</p>
                 <p className="text-center text-primary text-[14px]">
                   Already have an account?

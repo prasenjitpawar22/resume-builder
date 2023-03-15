@@ -6,6 +6,7 @@ import { IHeader } from "../../types";
 import { ResumeHeaderDataRequest, ResumeHeaderDeleteRequest } from "../../api/ResumeApi";
 import { ResumeContext } from "../../context/ResumeContext";
 import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
 	// data: IHeader,
@@ -14,10 +15,12 @@ interface Props {
 const SimpleResumeHeaderCard: React.FC<Props> = () => {
 
 	const { resumeHeaderData, setResumeHeaderData } = useContext(ResumeContext)
+	const [deleteLoader, setDeleteLoader] = useState<boolean>(false)
 
 	// handle remove 
 	const handleRemove = async (id?: string) => {
 		if (!id) return
+		setDeleteLoader(true)
 		const token = localStorage.getItem('token')
 		if (token) {
 			const deleteResponse = await ResumeHeaderDeleteRequest(id, token)
@@ -38,6 +41,7 @@ const SimpleResumeHeaderCard: React.FC<Props> = () => {
 				toast.warning('error deleting')
 			}
 		}
+		return setDeleteLoader(false)
 	}
 
 	return (<>
@@ -45,11 +49,7 @@ const SimpleResumeHeaderCard: React.FC<Props> = () => {
 			resumeHeaderData && resumeHeaderData.length > 0 ?
 				resumeHeaderData.map((header) =>
 					<Block key={header.id!}
-						className="relative"
-					// className="relative hover:after:content-['x'] after:absolute after:top-0 after:right-0
-					//     after:
-					// "
-					>
+						className="relative">
 						<h1 className='simple-resume-h1'>
 							{header.fullname}
 						</h1>
@@ -66,11 +66,11 @@ const SimpleResumeHeaderCard: React.FC<Props> = () => {
 							It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
 							like Aldus PageMaker including versions of Lorem Ipsum
 						</p>
-						<RemoveDiv
+						{!deleteLoader ?  <RemoveDiv
 							className='absolute right-0 top-0 px-3 rounded-md hidden'>
 							<MdOutlineDelete className={header.id} size={20} cursor="pointer"
 								onClick={() => handleRemove(header?.id)} />
-						</RemoveDiv>
+						</RemoveDiv>: <ClipLoader size={20} className="absolute right-2 top-0" />}
 					</Block>
 				) :
 				<div className='opacity-40'>

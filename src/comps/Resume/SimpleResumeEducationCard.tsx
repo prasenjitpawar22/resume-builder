@@ -7,6 +7,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { ResumeContext } from "../../context/ResumeContext";
 import { ResumeEduDataRequest, ResumeEduDeleteRequest } from "../../api/ResumeApi";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
     // data: IEducation
@@ -14,30 +15,33 @@ interface Props {
 
 const SimpleResumeEducationCard: React.FC<Props> = () => {
     const { setResumeEduData, resumeEduData } = useContext(ResumeContext)
+	const [deleteLoader, setDeleteLoader] = useState<boolean>(false)
 
 
     // handle remove 
     const handleRemove = async (id: string) => {
+		setDeleteLoader(true)
         const token = localStorage.getItem('token')
         if (token) {
             const deleteResponse = await ResumeEduDeleteRequest(id, token)
             if (deleteResponse.status === 200) {
-                // update the resume experience list
+                // update the resume education list
                 const educationResponse = await ResumeEduDataRequest(token)
                 if (educationResponse.status === 200 && educationResponse.data) {
                     setResumeEduData!(educationResponse.data)
                     toast.success("removed", { autoClose: 1000, hideProgressBar: true })
                 }
                 if (educationResponse.error) {
-                    console.log("error getting experience list", educationResponse.error);
+                    console.log("error getting education list", educationResponse.error);
                     toast.warning('error deleting')
                 }
             }
             if (deleteResponse.error) {
-                console.log('error deleting the experience', deleteResponse.error);
+                console.log('error deleting the education', deleteResponse.error);
                 toast.warning('error deleting')
             }
         }
+		setDeleteLoader(false)
     }
 
     return (<>
@@ -54,11 +58,11 @@ const SimpleResumeEducationCard: React.FC<Props> = () => {
                             {moment(education.start).format('MMMM YY')}
                             {education.current ? ' to Present' : ' to ' + moment(education.end).format('MMMM YY')}
                         </h6>
-                        <RemoveDiv
-                            className='absolute right-0 top-0 px-3 rounded-md hidden'>
-                            <MdOutlineDelete className={education.id} size={20} cursor="pointer"
-                                onClick={() => handleRemove(education.id!)} />
-                        </RemoveDiv>
+                        {!deleteLoader ?  <RemoveDiv
+							className='absolute right-0 top-0 px-3 rounded-md hidden'>
+							<MdOutlineDelete className={education.id} size={20} cursor="pointer"
+								onClick={() => handleRemove(education.id!)} />
+						</RemoveDiv>: <ClipLoader size={20} className="absolute right-3 top-0" />}
                     </Block>
                 ) :
                 <div className="opacity-40">

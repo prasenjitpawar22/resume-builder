@@ -43,7 +43,7 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
         setResumeExpData([...resumeExpData, addResumeExpResponse.data])
       }
       if (addResumeExpResponse.error) {
-        toast.warn('unable to add to resume')
+        toast.warn('unable to add to resume', { autoClose: 1000, hideProgressBar: true })
       }
     }
     else {
@@ -64,8 +64,7 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
         }
       }
       if (deleteResponse.error) {
-        console.log('delete request error', deleteResponse.error);
-        toast.warning("error removing item")
+        toast.warning("error removing item",  { autoClose: 1000, hideProgressBar: true })
       }
     }
   }
