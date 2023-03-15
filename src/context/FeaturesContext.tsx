@@ -42,7 +42,7 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     // header 
     const getFeatureHeaderData = async (token: string) => {
       const response = await FeatureHeaderDataRequest(token)
-      
+
       if (response.data) {
         setFeatureHeaderData(response.data)
       }
@@ -55,7 +55,7 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
     // education
     const getFeatureEducationData = async (token: string) => {
       const response = await FeatureEduDataRequest(token)
-      
+
       if (response.status === 200 && response.data) {
         setFeatureEduData(response.data)
       }
@@ -73,8 +73,8 @@ const FeatureProvider = ({ children }: FeatureProviderProps) => {
       if (response.status === 200 && response.data) {
         setFeatureExpData(response.data)
       }
-      else {
-        toast.warning(response.error.error)
+      if (response.error) {
+        toast.warn('unable to get features exp data')
       }
     }
 

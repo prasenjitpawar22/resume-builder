@@ -6,6 +6,7 @@ import { FeatureExpDataRequest, FeatureExpDeleteRequest } from '../../api/Featur
 import { ResumeExpAddRequest, ResumeExpDataRequest } from '../../api/ResumeApi'
 import { FeatureContext } from '../../context/FeaturesContext'
 import { ResumeContext } from '../../context/ResumeContext'
+import { IResumeExperience } from '../../types'
 import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain'
 
 interface Props {
@@ -20,39 +21,34 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
 
   // add to resume
   const handleAddExp = async (id: string) => {
-    // check if already in list
-    const foundInList = resumeExpData?.find(data => data.id === id)
-    if (!foundInList) {
-      //get the data by filter list
-      const expAddRequestToResume = featureExpData?.find((data) => data.id === id)
-      if (!expAddRequestToResume) {
-        return console.log('expAddRequest data not found');
+
+    //get feature header from id
+    let experience = featureExpData?.find(x => x.id === id)
+
+    //check if already added
+    var check = resumeExpData?.filter(d => d.featureExperienceId === id)
+    if (check?.length !== 0) {
+      toast.warn('already added to resume')
+      return
+    }
+
+    //backend add resume header req
+    const token = localStorage.getItem('token')
+
+    if (token && experience) {
+      const resumeExpRequest: IResumeExperience = { ...experience, featureExperienceId: id }
+      const addResumeExpResponse = await ResumeExpAddRequest(resumeExpRequest, token)
+      console.log(addResumeExpResponse, "as");
+
+      if (addResumeExpResponse.data && setResumeExpData && resumeExpData) {
+        setResumeExpData([...resumeExpData, addResumeExpResponse.data])
       }
-      else {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const createRespons = await ResumeExpAddRequest(expAddRequestToResume)
-          if (createRespons.status === 200) {
-            //call get all resume edu list
-            const requestEduList = await ResumeExpDataRequest(token)
-            if (requestEduList.status === 200) {
-              setResumeExpData!(requestEduList.data!)
-            }
-            else {
-              toast.warn("error updating resume exp list")
-            }
-          }
-          //handle error
-          else {
-            console.log(createRespons.error);
-            toast.warning("error add to resume")
-          }
-        }
+      if (addResumeExpResponse.error) {
+        toast.warn('unable to add to resume')
       }
     }
     else {
-      //notify already added to resume
-      toast.warn('Already added to resume',)
+      toast.warn("error adding", { autoClose: 1000, hideProgressBar: true })
     }
   }
 

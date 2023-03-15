@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 
 import { resumeClient } from '../api/axiosClient'
 import { ResumeEduDataRequest, ResumeExpDataRequest, ResumeHeaderDataRequest } from '../api/ResumeApi'
-import { IEducation, IExperience, IHeader, IResumeHeader, ISkill } from '../types'
+import { IEducation, IExperience, IHeader, IResumeExperience, IResumeHeader, ISkill } from '../types'
 import { UserContext } from './UserContext'
 
 export interface ResumeContextInterface {
@@ -12,8 +12,8 @@ export interface ResumeContextInterface {
     setResumeBlockHolderWidth: Dispatch<SetStateAction<number>>
     setResumeHeaderData: React.Dispatch<React.SetStateAction<IResumeHeader[]>>
     resumeHeaderData: IResumeHeader[]
-    resumeExpData: IExperience[]
-    setResumeExpData: React.Dispatch<React.SetStateAction<IExperience[]>>
+    resumeExpData: IResumeExperience[]
+    setResumeExpData: React.Dispatch<React.SetStateAction<IResumeExperience[]>>
     resumeColor: string
     setResumeColor: React.Dispatch<React.SetStateAction<string>>
     resumeEduData: IEducation[]
@@ -41,14 +41,12 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
     const [resumeSkillData, setResumeSkillData] = useState<ISkill[]>(
         [{ data: [''], id: '' }]
     )
-    const [resumeExpData, setResumeExpData] = useState<IExperience[]>(
-        [{ company: '', current: false, description: [''], end: '', id: '', position: '', start: '' }]
-    )
+    const [resumeExpData, setResumeExpData] = useState<IResumeExperience[]>([])
 
-    useEffect(() => {
-        console.log(resumeHeaderData);
+    // useEffect(() => {
+    //     console.log(resumeHeaderData);
 
-    }, [resumeHeaderData])
+    // }, [resumeHeaderData])
 
     useEffect(() => {
         //set header 
@@ -56,7 +54,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
             const resumeHeaderDataRequest = await ResumeHeaderDataRequest(token)
             if (resumeHeaderDataRequest.status === 200 && resumeHeaderDataRequest.data) {
                 setResumeHeaderData(resumeHeaderDataRequest.data)
-                console.log(resumeHeaderDataRequest);
+                // console.log(resumeHeaderDataRequest);
             }
             else {
                 toast.warning('failed to load resume header data')
@@ -81,7 +79,9 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 setResumeExpData(resumeExpDataRequest.data)
             }
             else {
-                // toast.warning("failed loading resume experience data")
+                toast.warning("failed loading resume experience data", {
+                    hideProgressBar: true, autoClose: 1000
+                })
             }
         }
 

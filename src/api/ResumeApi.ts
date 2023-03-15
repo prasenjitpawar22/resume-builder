@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import { v4 as uuid4 } from 'uuid'
 
-import { IEducation, IExperience, IResumeHeader } from "../types"
+import { IEducation, IExperience, IResumeExperience, IResumeHeader } from "../types"
 import { resumeClient } from "./axiosClient"
 
 
@@ -162,12 +162,12 @@ export const ResumeEduDeleteRequest = async (id: string) => {
 
 //  ---------------------------------------exp--------------------------------------------------
 type ResumeExpDeleteResponse = {
-    data?: IExperience[],
+    data?: IResumeExperience[],
     error?: AxiosError,
     status: number
 }
 //delete resume edu
-export const ResumeExpDeleteRequest = async (id: string) => {
+export const ResumeExpDeleteRequest = async (id: string, token: string) => {
 
     let response: ResumeExpDeleteResponse = {
         status: 0,
@@ -175,7 +175,8 @@ export const ResumeExpDeleteRequest = async (id: string) => {
         error: undefined
     }
 
-    await resumeClient.post('delete-resume-experience', { id: id })
+    await resumeClient.post('delete-experience', { id: id },
+        { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
             response.data = res.data
             response.status = res.status
@@ -195,7 +196,7 @@ export const ResumeExpDataRequest = async (token: string) => {
         error: undefined
     }
 
-    await resumeClient.get('get-resume-experience',
+    await resumeClient.get('get-all-experience',
         { headers: { Authorization: 'Bearer ' + token } })
         .then((res) => {
             response.data = res.data
@@ -209,20 +210,24 @@ export const ResumeExpDataRequest = async (token: string) => {
 }
 
 // create
-export const ResumeExpAddRequest = async (data: IExperience) => {
-    let { id, end, company, start, description, position } = data
+type ResumeExpAddResponse = {
+    data?: IResumeExperience,
+    error?: AxiosError,
+    status: number
+}
+export const ResumeExpAddRequest = async (data: IResumeExperience, token: string) => {
+    let { id, end, company, start, description, position, current, featureExperienceId } = data
 
-    let response: ResumeExpDeleteResponse = {
+    let response: ResumeExpAddResponse = {
         status: 0,
         data: undefined,
         error: undefined
     }
 
-    await resumeClient.post('create-resume-experience',
-        { id: id, end, company, start, description, position })
+    await resumeClient.post('add-experience',
+        { id, end, company, start, description, position, current, featureExperienceId },
+        { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
-            console.log(res);
-
             response.data = res.data
             response.status = res.status
         })

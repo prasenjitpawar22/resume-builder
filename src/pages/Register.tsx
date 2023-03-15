@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { FormEvent, useState, useContext} from "react";
+import React, { FormEvent, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUserRequest } from "../api/UserApi";
 import { toast, ToastContainer } from "react-toastify";
@@ -8,7 +8,7 @@ import { UserContext } from "../context/UserContext";
 const Register = () => {
 
   const [registerData, setResgisterData] = useState({
-    'fullname': '', email: '', password: ''
+    fullname: '', email: '', password: ''
   })
 
   const { setUser, user } = useContext(UserContext)

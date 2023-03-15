@@ -65,10 +65,17 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
       const deleteResponse = await FeatureHeaderDeleteRequest(id, token)
 
       if (deleteResponse.status === 200) {
+        //call for all feature headers
         const allHeaders = await FeatureHeaderDataRequest(token)
 
         if (allHeaders.status === 200 && allHeaders.data) {
           setFeatureHeaderData!(allHeaders.data)
+        }
+        //call for all resume headers as cascade is applied
+        const allResumeHeader = await ResumeHeaderDataRequest(token)
+
+        if (allResumeHeader.status === 200 && allResumeHeader.data) {
+          setResumeHeaderData(allResumeHeader.data)
         }
       }
       if (deleteResponse.error) {

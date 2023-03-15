@@ -3,13 +3,14 @@ import React, { useState, useContext } from 'react'
 import styled from 'styled-components';
 
 import './simpleResume.css'
-import ExpCardPlain from './ExpCardPlain'
+import ExpCardPlain from './SimpleResumeExperienceCard'
 import EduCardPlain from './EduCardPlain';
 import { IoIosResize } from 'react-icons/io'
 import HeaderCardPlain from './SimpleResumeHeaderCard';
 import SkillCardPlain from './SkillCardPlain';
 import { ResumeContext } from '../../context/ResumeContext'
 import SimpleResumeHeaderCard from './SimpleResumeHeaderCard';
+import SimpleResumeExperienceCard from './SimpleResumeExperienceCard';
 
 export const Resume: React.FC = () => {
 
@@ -40,24 +41,7 @@ export const Resume: React.FC = () => {
                         </h1>
                     </div>
                     <div className='flex flex-col gap-3 phone:w-2/6 tablet:w-9/12'>
-                        <div>
-                            <h3 className='simple-resume-h3'>Software Engineer</h3>
-                            <h4 className='simple-resume-h4'>New Company</h4>
-                            <h6 className='simple-resume-h6'>January 2018 to Present </h6>
-                            <p className='simple-resume-p'>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                                industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It
-                            </p>
-                        </div>
-                        <div>
-                            <h3 className='simple-resume-h3'>Software Engineer</h3>
-                            <h4 className='simple-resume-h4'>New Company</h4>
-                            <h6 className='simple-resume-h6'>January 2018 to Present </h6>
-                            <p className='simple-resume-p'>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                                industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It
-                            </p>
-                        </div>
+                        <SimpleResumeExperienceCard />
                     </div>
                 </div>
                 <div className='flex phone:gap-2 tablet:gap-6'>

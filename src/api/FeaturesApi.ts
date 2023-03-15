@@ -85,11 +85,11 @@ export const FeatureHeaderCreateRequest = async (data: Omit<IHeader, "id">) => {
     { contact, fullname, github, linkedin, website },
     { headers: { 'Authorization': 'Bearer ' + token } }
   ).then((res) => {
-    console.log(res);
+    // console.log(res);
     response.data = res.data
     response.status = res.status
   }).catch((err: AxiosError) => {
-    console.log(err);
+    // console.log(err);
     response.error = err.response?.data
     response.status = err.response?.status
   })

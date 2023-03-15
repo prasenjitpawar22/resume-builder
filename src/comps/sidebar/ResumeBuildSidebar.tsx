@@ -33,7 +33,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
 
   return (
     <div className='flex'>
-      <div className="tablet:flex phone:hidden flex-col h-screen p-3 shadow tablet:w-70">
+      <div className="tablet:flex phone:hidden flex-col min-h-screen p-3 shadow tablet:w-70">
         <div className="space-y-3">
           <div className="flex p-3 items-center shadow bg-component-secondary rounded-xl">
             <h2 className="font-Lato phone:text-3xl tablet:text-7xl text-primary text-center
@@ -113,36 +113,8 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
 
 
       {/* resume's  */}
-      <div className="container bg-slate-400 h-screen mx-auto overflow-y-scroll">
+      <div className="container bg-slate-400 min-h-screen h-full mx-auto">
         <Resume />
-        {/* <div className="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3"> */}
-        {/* <div className="w-full px-4 py-5 bg-white rounded-lg shadow">
-            <div className="text-sm font-medium text-gray-500 truncate">
-              Total users
-            </div>
-            <div className="mt-1 text-3xl font-semibold text-gray-900">
-              12,00
-            </div>
-          </div>
-          <div className="w-full px-4 py-5 bg-white rounded-lg shadow">
-            <div className="text-sm font-medium text-gray-500 truncate">
-              Total Profit
-            </div>
-            <div className="mt-1 text-3xl font-semibold text-gray-900">
-              $ 450k
-            </div>
-          </div>
-          <div className="w-full px-4 py-5 bg-white rounded-lg shadow">
-            <div className="text-sm font-medium text-gray-500 truncate">
-              Total Orders
-            </div>
-            <div className="mt-1 text-3xl font-semibold text-gray-900">
-              20k
-            </div>
-          </div> */}
-        {/* <div className="w-10/12 px-4 py-5 bg-white rounded-lg shadow"> */}
-        {/* </div> */}
-        {/* </div> */}
       </div>
 
       <ModalCreateHeaderData

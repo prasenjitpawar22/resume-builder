@@ -35,4 +35,7 @@ export interface IExperience {
     current: boolean | undefined
 }
 
+export interface IResumeExperience extends IExperience {
+    featureExperienceId: string | undefined
+}
 // export interface 

@@ -49,13 +49,13 @@ interface RegisterResponse {
   error: string | any
   success: boolean
 }
-type Data = {
+type TRegisterUserData = {
   fullname: string;
   email: string;
   password: string;
 }
 
-export const RegisterUserRequest = async ({ email, fullname, password }: Data) => {
+export const RegisterUserRequest = async ({ email, fullname, password }: TRegisterUserData) => {
   let response: RegisterResponse = {
     data: undefined,
     error: undefined,
