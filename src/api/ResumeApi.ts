@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import { v4 as uuid4 } from 'uuid'
 
-import { IEducation, IExperience, IResumeExperience, IResumeHeader } from "../types"
+import { IEducation, IExperience, IResumeEducation, IResumeExperience, IResumeHeader } from "../types"
 import { resumeClient } from "./axiosClient"
 
 
@@ -85,26 +85,30 @@ export const ResumeHeaderAddRequest =
 
 //---------------------------------------------edu------------------------------------
 type ResumeEduDataResponse = {
-    data?: IEducation[],
+    data?: IResumeEducation[],
     error?: AxiosError,
     status: number
 }
 
 // create
-export const ResumeEduAddRequest = async (data: IEducation) => {
-    let { id, end, location, start, university } = data
+type ResumeEducationAddResponse = {
+    data?: IResumeEducation,
+    error?: AxiosError,
+    status: number
+}
+export const ResumeEduAddRequest = async (data: IResumeEducation, token: string) => {
+    let { end, location, start, university, current, featureEducationId } = data
 
-    let response: ResumeEduDataResponse = {
+    let response: ResumeEducationAddResponse = {
         status: 0,
         data: undefined,
         error: undefined
     }
 
-    await resumeClient.post('add-resume-education',
-        { id: id, end: end, location: location, start: start, university: university })
+    await resumeClient.post('add-education',
+        { end, location, start, university, current, featureEducationId },
+        { headers: { Authorization: 'Bearer ' + token } })
         .then((res) => {
-            console.log(res);
-
             response.data = res.data
             response.status = res.status
         })
@@ -140,7 +144,7 @@ export const ResumeEduDataRequest = async (token: string) => {
 }
 
 //delete resume edu
-export const ResumeEduDeleteRequest = async (id: string) => {
+export const ResumeEduDeleteRequest = async (id: string, token: string) => {
 
     let response: ResumeHeaderDeleteResponse = {
         status: 0,
@@ -148,7 +152,8 @@ export const ResumeEduDeleteRequest = async (id: string) => {
         error: undefined
     }
 
-    await resumeClient.post('delete-resume-education', { id: id })
+    await resumeClient.post('delete-education', { id: id },
+        { headers: { Authorization: 'Bearer ' + token } })
         .then((res) => {
             response.data = res.data
             response.status = res.status

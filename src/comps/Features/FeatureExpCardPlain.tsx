@@ -38,7 +38,6 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
     if (token && experience) {
       const resumeExpRequest: IResumeExperience = { ...experience, featureExperienceId: id }
       const addResumeExpResponse = await ResumeExpAddRequest(resumeExpRequest, token)
-      console.log(addResumeExpResponse, "as");
 
       if (addResumeExpResponse.data && setResumeExpData && resumeExpData) {
         setResumeExpData([...resumeExpData, addResumeExpResponse.data])

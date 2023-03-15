@@ -4,13 +4,14 @@ import styled from 'styled-components';
 
 import './simpleResume.css'
 import ExpCardPlain from './SimpleResumeExperienceCard'
-import EduCardPlain from './EduCardPlain';
+import EduCardPlain from './SimpleResumeEducationCard';
 import { IoIosResize } from 'react-icons/io'
 import HeaderCardPlain from './SimpleResumeHeaderCard';
 import SkillCardPlain from './SkillCardPlain';
 import { ResumeContext } from '../../context/ResumeContext'
 import SimpleResumeHeaderCard from './SimpleResumeHeaderCard';
 import SimpleResumeExperienceCard from './SimpleResumeExperienceCard';
+import SimpleResumeEducationCard from './SimpleResumeEducationCard';
 
 export const Resume: React.FC = () => {
 
@@ -36,7 +37,7 @@ export const Resume: React.FC = () => {
                 </div>
                 <div className='flex phone:gap-2 tablet:gap-6'>
                     <div className='w-2/4  '>
-                        <h1 className='simple-resume-h2'>
+                        <h1 className={`simple-resume-h2 ${resumeExpData && resumeExpData.length === 0 ? 'opacity-40' : ''} `}>
                             Work Experience
                         </h1>
                     </div>
@@ -46,16 +47,12 @@ export const Resume: React.FC = () => {
                 </div>
                 <div className='flex phone:gap-2 tablet:gap-6'>
                     <div className='w-2/4  '>
-                        <h1 className='simple-resume-h2'>
+                        <h1 className={`simple-resume-h2 ${resumeEduData && resumeEduData.length === 0 ? 'opacity-40' : ''} `}>
                             Education
                         </h1>
                     </div>
                     <div className='phone:w-2/6  tablet:w-9/12'>
-                        <div>
-                            <h3 className='simple-resume-h3'>Software Engineer</h3>
-                            <h4 className='simple-resume-h4'>New Company</h4>
-                            <h6 className='simple-resume-h6'>January 2018 to Present </h6>
-                        </div>
+                        <SimpleResumeEducationCard />
                     </div>
                 </div>
                 <div className='flex phone:gap-2 tablet:gap-6'>

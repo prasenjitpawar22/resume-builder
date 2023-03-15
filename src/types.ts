@@ -20,6 +20,10 @@ export interface IEducation {
     current: boolean | undefined
 }
 
+export interface IResumeEducation extends IEducation {
+    featureEducationId: string | undefined
+}
+
 export interface ISkill {
     id: string | undefined;
     data: string[] | undefined;
@@ -38,4 +42,3 @@ export interface IExperience {
 export interface IResumeExperience extends IExperience {
     featureExperienceId: string | undefined
 }
-// export interface 

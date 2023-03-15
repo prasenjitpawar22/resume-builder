@@ -55,6 +55,12 @@ const FeatureHeaderCardPlain: React.FC<Props> = (props: Props) => {
       if (addResumeHeaderResponse.data) {
         setResumeHeaderData([...resumeHeaderData, addResumeHeaderResponse.data])
       }
+      if (addResumeHeaderResponse.error) {
+        toast.warn('unable to add to resume')
+      }
+    }
+    else {
+      toast.warn("error adding", { autoClose: 1000, hideProgressBar: true })
     }
   }
 

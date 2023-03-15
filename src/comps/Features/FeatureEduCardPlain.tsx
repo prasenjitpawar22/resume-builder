@@ -7,6 +7,7 @@ import { ResumeEduAddRequest, ResumeEduDataRequest } from '../../api/ResumeApi';
 import { FeatureContext } from '../../context/FeaturesContext';
 import { ResumeContext } from '../../context/ResumeContext';
 import FeatureEmptyDataCardPlain from './FeatureEmptyDataCardPlain';
+import { IResumeEducation } from '../../types';
 
 
 interface Props {
@@ -19,37 +20,37 @@ export default function FeatureEduCardPlain(props: Props) {
     const { featureEduData, setFeatureEduData, } = useContext(FeatureContext)
     const { resumeEduData, setResumeEduData } = useContext(ResumeContext)
 
-    const handleAdd = async (id: string) => {
-        // check if already in list
-        const foundInList = resumeEduData?.find(data => data.id === id)
-        if (!foundInList) {
-            //get the data by filter list
-            const eduAddRequestToResume = featureEduData?.find((data) => data.id === id)
-            if (!eduAddRequestToResume) {
-                return console.log('eduAddRequest data not found');
+    // add to resume button handle function
+    const handleAdd = async (id: string | undefined) => {
+
+        //get feature header from id
+        let education = featureEduData?.find(x => x?.id === id)
+
+        //check if already added
+        var check = resumeEduData?.filter(d => d?.featureEducationId === id)
+        if (check?.length !== 0) {
+            toast.warn('already added to resume')
+            return
+        }
+
+        //backend add resume education req
+        const token = localStorage.getItem('token')
+        if (token && education && id) {
+            const resumeEducationRequest: IResumeEducation = { ...education, featureEducationId: id }
+            const addResumeEducationResponse = await ResumeEduAddRequest(resumeEducationRequest, token)
+            console.log(addResumeEducationResponse);
+
+            if (addResumeEducationResponse.data && resumeEduData) {
+                setResumeEduData!([...resumeEduData, addResumeEducationResponse.data])
             }
-            else {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const createRespons = await ResumeEduAddRequest(eduAddRequestToResume)
-                    if (createRespons.status === 200) {
-                        //call get all resume edu list
-                        const requestEduList = await ResumeEduDataRequest(token)
-                        if (requestEduList.status === 200) {
-                            setResumeEduData!(requestEduList.data!)
-                        }
-                    }
-                    //handle error
-                    else {
-                        console.log(createRespons.error);
-                    }
-                }
+            if (addResumeEducationResponse.error) {
+                toast.warn('unable to add to resume')
             }
         }
         else {
-            //notify already added to resume
-            toast.warn('Already added to resume',)
+            toast.warn("error adding", { autoClose: 1000, hideProgressBar: true })
         }
+
     }
 
     const handleDelete = async (id: string) => {

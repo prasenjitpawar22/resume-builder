@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 
 import { resumeClient } from '../api/axiosClient'
 import { ResumeEduDataRequest, ResumeExpDataRequest, ResumeHeaderDataRequest } from '../api/ResumeApi'
-import { IEducation, IExperience, IHeader, IResumeExperience, IResumeHeader, ISkill } from '../types'
+import { IResumeEducation, IExperience, IHeader, IResumeExperience, IResumeHeader, ISkill } from '../types'
 import { UserContext } from './UserContext'
 
 export interface ResumeContextInterface {
@@ -16,8 +16,8 @@ export interface ResumeContextInterface {
     setResumeExpData: React.Dispatch<React.SetStateAction<IResumeExperience[]>>
     resumeColor: string
     setResumeColor: React.Dispatch<React.SetStateAction<string>>
-    resumeEduData: IEducation[]
-    setResumeEduData: React.Dispatch<React.SetStateAction<IEducation[]>>
+    resumeEduData: IResumeEducation[]
+    setResumeEduData: React.Dispatch<React.SetStateAction<IResumeEducation[]>>
     resumeSkillData: ISkill[]
     setResumeSkillData: React.Dispatch<React.SetStateAction<ISkill[]>>
 
@@ -35,9 +35,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
     const [resumeBlockHolderWidth, setResumeBlockHolderWidth] = useState<number>(550)
     const [resumeColor, setResumeColor] = useState<string>('#E7E9EC');
     const [resumeHeaderData, setResumeHeaderData] = useState<IResumeHeader[]>([])
-    const [resumeEduData, setResumeEduData] = useState<IEducation[]>(
-        [{ current: false, end: '', id: '', location: '', start: '', university: '' }]
-    )
+    const [resumeEduData, setResumeEduData] = useState<IResumeEducation[]>([])
     const [resumeSkillData, setResumeSkillData] = useState<ISkill[]>(
         [{ data: [''], id: '' }]
     )
@@ -68,7 +66,7 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
                 setResumeEduData(resumeEduDataRequest.data)
             }
             else {
-                // toast.warning("failed loading resume education data")
+                toast.warning("failed loading resume education data")
             }
         }
 

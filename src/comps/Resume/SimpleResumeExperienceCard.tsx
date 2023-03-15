@@ -55,7 +55,7 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
           // "
           >
             <h3 className='simple-resume-h3'>{experience.position}</h3>
-            <h4 className='simple-resume-h4'>{experience.start}</h4>
+            <h4 className='simple-resume-h4'>{experience.company}</h4>
             <h6 className='simple-resume-h6'>
               {moment(experience.start).format('MMMM YY')}
               {experience.current ? ' to Present' : ' to ' + moment(experience.end).format('MMMM YY')}
@@ -71,7 +71,7 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
             </RemoveDiv>
           </Block>
         ) :
-        <div className="opacity-50">
+        <div className="opacity-40">
           <h3 className='simple-resume-h3'>New Position</h3>
           <h4 className='simple-resume-h4'>New Company</h4>
           <h6 className='simple-resume-h6'>January 2018 to Present </h6>
