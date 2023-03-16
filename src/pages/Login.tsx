@@ -79,8 +79,9 @@ const Login = () => {
                 <Link className="font-Lato text-[12px] w-fit 
                   text-primary mb-8" to={'#'}>Forgot Password?</Link>
                 <button
-                  className="bg-component-secondary hover:bg-component-primary rounded py-2 font-Lato
-                text-[#FFFFFF] flex justify-center text-[20px] mb-4"
+                  disabled={loginBtnLoader}
+                  className={`bg-component-secondary rounded py-2 font-Lato
+                text-[#FFFFFF] flex justify-center text-[20px] mb-4 ${!loginBtnLoader && 'hover:bg-component-primary'} `}
                   type="submit"> {!loginBtnLoader ? 'Sign in' :
                     <ClipLoader size={30} color={'white'} />}</button>
                 <p className="text-center text-primary text-[14px] mb-2">Or continue with</p>

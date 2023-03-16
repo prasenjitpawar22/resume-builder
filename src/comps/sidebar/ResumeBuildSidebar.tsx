@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai'
 import { ToastContainer } from 'react-toastify';
+import { FaUserAlt } from 'react-icons/fa'
 
 import DropDownList from '../DropDownList';
 import { ResumeContext } from '../../context/ResumeContext';
@@ -12,6 +14,7 @@ import ModalCreateEduData from '../Models/ModalCreateEduData';
 import ModalCreateHeaderData from '../Models/ModalCreateHeaderData';
 import ModelCreateExpData from '../Models/ModelCreateExpData';
 import { Resume } from '../Resume/Resume';
+import { BiHome, BiUser } from 'react-icons/bi';
 
 type Props = {
 
@@ -31,7 +34,35 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
     resumeExpData, setResumeExpData, setResumeColor, resumeEduData, setResumeEduData,
     resumeSkillData, setResumeSkillData } = useContext(ResumeContext)
 
-  return (
+  const [rightBarState, setRightBarState] = useState(false)
+  const navigate = useNavigate()
+
+  return (<>
+    <div
+      className={`fixed top-2 right-0 bg-component-primary h-12 rounded-l-3xl z-10
+        flex justify-between px-4 items-center ${rightBarState ? 'w-60' : 'w-12'} 
+        transition-all duration-700 shadow-md
+        `}>
+      {rightBarState ?
+        <div className='transition-all duration-100 w-full flex justify-between px-4 items-center'>
+          <AiOutlineDoubleRight cursor={'pointer'}
+            className='text-white hover:text-slate-600'
+            onClick={() => { setRightBarState(!rightBarState) }} />
+          <div className='flex gap-2'>
+            <BiHome cursor={'pointer'} onClick={() => {
+              setRightBarState(false)
+              navigate('/')
+            }}
+              className='bg-component-ternary text-slate-700 hover:bg-component-secondary w-8 h-8 px-2 rounded-full' />
+            <BiUser cursor={'pointer'}
+              className='bg-component-ternary text-slate-700 hover:bg-component-secondary w-8 h-8 px-2 rounded-full' />
+          </div>
+        </div> :
+        <AiOutlineDoubleLeft cursor={'pointer'} className='text-white hover:text-slate-600'
+          onClick={() => { setRightBarState(!rightBarState) }} />
+      }
+    </div>
+
     <div className='flex'>
       <div className="tablet:flex phone:hidden flex-col min-h-screen p-3 shadow tablet:w-70">
         <div className="space-y-3">
@@ -113,7 +144,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
 
 
       {/* resume's  */}
-      <div className="container bg-slate-400 min-h-screen h-full mx-auto">
+      <div className="bg-slate-400 min-h-screen w-full mx-auto">
         <Resume />
       </div>
 
@@ -131,6 +162,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
 
       <ToastContainer />
     </div>
+  </>
   );
 }
 

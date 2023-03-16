@@ -15,12 +15,13 @@ interface Props {
 const SimpleResumeHeaderCard: React.FC<Props> = () => {
 
 	const { resumeHeaderData, setResumeHeaderData } = useContext(ResumeContext)
-	const [deleteLoader, setDeleteLoader] = useState<boolean>(false)
+	const [deleteLoader, setDeleteLoader] =
+		useState<{ state: boolean, index: number }>({ state: false, index: -1 })
 
 	// handle remove 
-	const handleRemove = async (id?: string) => {
+	const handleRemove = async (id: string, index: number) => {
 		if (!id) return
-		setDeleteLoader(true)
+		setDeleteLoader({ state: true, index })
 		const token = localStorage.getItem('token')
 		if (token) {
 			const deleteResponse = await ResumeHeaderDeleteRequest(id, token)
@@ -41,13 +42,13 @@ const SimpleResumeHeaderCard: React.FC<Props> = () => {
 				toast.warning('error deleting')
 			}
 		}
-		return setDeleteLoader(false)
+		setDeleteLoader({ state: false, index: -1 })
 	}
 
 	return (<>
 		{
 			resumeHeaderData && resumeHeaderData.length > 0 ?
-				resumeHeaderData.map((header) =>
+				resumeHeaderData.map((header, index) =>
 					<Block key={header.id!}
 						className="relative">
 						<h1 className='simple-resume-h1'>
@@ -66,11 +67,12 @@ const SimpleResumeHeaderCard: React.FC<Props> = () => {
 							It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
 							like Aldus PageMaker including versions of Lorem Ipsum
 						</p>
-						{!deleteLoader ?  <RemoveDiv
-							className='absolute right-0 top-0 px-3 rounded-md hidden'>
-							<MdOutlineDelete className={header.id} size={20} cursor="pointer"
-								onClick={() => handleRemove(header?.id)} />
-						</RemoveDiv>: <ClipLoader size={20} className="absolute right-2 top-0" />}
+						{deleteLoader.state && deleteLoader.index === index ?
+							<ClipLoader id={header.id} size={20} className={`absolute right-3 top-0`} /> :
+							<RemoveDiv className='absolute right-0 top-0 px-3 rounded-md hidden'>
+								<MdOutlineDelete className={header.id} size={20} cursor="pointer"
+									onClick={() => handleRemove(header.id!, index)} />
+							</RemoveDiv>}
 					</Block>
 				) :
 				<div className='opacity-40'>

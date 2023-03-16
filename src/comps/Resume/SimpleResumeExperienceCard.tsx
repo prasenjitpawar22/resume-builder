@@ -15,15 +15,12 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
   // const { data } = props
   const { resumeExpData, setResumeExpData } = useContext(ResumeContext)
   const [deleteLoader, setDeleteLoader] =
-    useState<{ state: boolean, id: undefined | string }>({ state: false, id: 'bf03610d-922f-4f8a-b745-c722b2fe5de2' })
+    useState<{ state: boolean, index: number }>({ state: false, index: -1 })
 
-  useEffect(() => {
-    console.log(deleteLoader);
-  }, [deleteLoader])
 
   // handle remove 
-  const handleRemove = async (id: string) => {
-    setDeleteLoader({ state: true, id: id })
+  const handleRemove = async (id: string, index: number) => {
+    setDeleteLoader({ state: true, index })
     const token = localStorage.getItem('token')
     if (token) {
       const deleteResponse = await ResumeExpDeleteRequest(id, token)
@@ -44,19 +41,14 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
         toast.warning('error deleting')
       }
     }
-    setDeleteLoader({ state: false, id: id })
+    setDeleteLoader({ state: false, index: -1 })
   }
 
   return (<>
     {
       resumeExpData && resumeExpData.length > 0 ?
-        resumeExpData.map((experience) =>
-          <Block key={experience.id!}
-            className="relative"
-          // className="relative hover:after:content-['x'] after:absolute after:top-0 after:right-0
-          //     after:
-          // "
-          >
+        resumeExpData.map((experience, index) =>
+          <Block key={index} className="relative">
             <h3 className='simple-resume-h3'>{experience.position}</h3>
             <h4 className='simple-resume-h4'>{experience.company}</h4>
             <h6 className='simple-resume-h6'>
@@ -67,11 +59,13 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
               industry's standard dummy text ever since the 1500s, when an unknown
               printer took a galley of type and scrambled it to make a type specimen book. It
             </p>
-            {deleteLoader.state && deleteLoader.id === experience.id ? <RemoveDiv
-              className='absolute right-0 top-0 px-3 rounded-md hidden'>
-              <MdOutlineDelete className={experience.id} size={20} cursor="pointer"
-                onClick={() => handleRemove(experience.id!)} />
-            </RemoveDiv> : <ClipLoader id={experience.id} size={20} className="absolute right-3 top-0" />}
+
+            {deleteLoader.state && deleteLoader.index === index ?
+              <ClipLoader id={experience.id} size={20} className={`absolute right-3 top-0`} /> :
+              <RemoveDiv className='absolute right-0 top-0 px-3 rounded-md hidden'>
+                <MdOutlineDelete className={experience.id} size={20} cursor="pointer"
+                  onClick={() => handleRemove(experience.id!, index)} />
+              </RemoveDiv>}
           </Block>
         ) :
         <div className="opacity-40">
@@ -90,7 +84,7 @@ const SimpleResumeExperienceCard: React.FC<Props> = () => {
 export default SimpleResumeExperienceCard;
 
 type BlockProps = {
-  key: string
+  key: number
 }
 const RemoveDiv = styled.div`
 `

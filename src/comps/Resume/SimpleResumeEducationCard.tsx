@@ -15,12 +15,14 @@ interface Props {
 
 const SimpleResumeEducationCard: React.FC<Props> = () => {
     const { setResumeEduData, resumeEduData } = useContext(ResumeContext)
-	const [deleteLoader, setDeleteLoader] = useState<boolean>(false)
+    const [deleteLoader, setDeleteLoader] =
+        useState<{ state: boolean, index: number }>({ state: false, index: -1 })
+
 
 
     // handle remove 
-    const handleRemove = async (id: string) => {
-		setDeleteLoader(true)
+    const handleRemove = async (id: string, index: number) => {
+        setDeleteLoader({ state: true, index })
         const token = localStorage.getItem('token')
         if (token) {
             const deleteResponse = await ResumeEduDeleteRequest(id, token)
@@ -41,13 +43,13 @@ const SimpleResumeEducationCard: React.FC<Props> = () => {
                 toast.warning('error deleting')
             }
         }
-		setDeleteLoader(false)
+        setDeleteLoader({ state: false, index: -1 })
     }
 
     return (<>
         {
             resumeEduData && resumeEduData.length > 0 ?
-                resumeEduData.map((education) =>
+                resumeEduData.map((education, index) =>
                     <Block key={education.id!} className="relative" >
                         <h3 className='simple-resume-h3'>Degree</h3>
                         <div className="flex items-baseline gap-2">
@@ -58,11 +60,12 @@ const SimpleResumeEducationCard: React.FC<Props> = () => {
                             {moment(education.start).format('MMMM YY')}
                             {education.current ? ' to Present' : ' to ' + moment(education.end).format('MMMM YY')}
                         </h6>
-                        {!deleteLoader ?  <RemoveDiv
-							className='absolute right-0 top-0 px-3 rounded-md hidden'>
-							<MdOutlineDelete className={education.id} size={20} cursor="pointer"
-								onClick={() => handleRemove(education.id!)} />
-						</RemoveDiv>: <ClipLoader size={20} className="absolute right-3 top-0" />}
+                        {deleteLoader.state && deleteLoader.index === index ?
+                            <ClipLoader id={education.id} size={20} className={`absolute right-3 top-0`} /> :
+                            <RemoveDiv className='absolute right-0 top-0 px-3 rounded-md hidden'>
+                                <MdOutlineDelete className={education.id} size={20} cursor="pointer"
+                                    onClick={() => handleRemove(education.id!, index)} />
+                            </RemoveDiv>}
                     </Block>
                 ) :
                 <div className="opacity-40">

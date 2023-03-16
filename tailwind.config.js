@@ -15,7 +15,8 @@ module.exports = {
       },
       backgroundColor: {
         'component-primary': '#8155FF',
-        'component-secondary': '#B49AFF'
+        'component-secondary': '#B49AFF',
+        'component-ternary': '#E4DAFF'
       },
       fontFamily: {
         Lato: "'Lato', sans-serif"

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, redirect } from 'react-router-dom';
 
 
 import FeatureProvider from '../../context/FeaturesContext';
@@ -11,11 +11,11 @@ const AuthRoute = ({ children }) => {
   const { user, userLoader } = useContext(UserContext)
   const navigate = useNavigate()
 
-  useEffect(()=> {
-  if(!user.logedIn && !userLoader){
-    navigate('/login')
-  }
-  },[userLoader])
+  useEffect(() => {
+    if (!user.logedIn && !userLoader) {
+      navigate('/login',)
+    }
+  }, [userLoader])
 
   return (
     userLoader ? <Loader /> :
@@ -24,7 +24,7 @@ const AuthRoute = ({ children }) => {
         <FeatureProvider> <Outlet />
         </FeatureProvider >
       </ResumeProvider>
-        // : navigate('/login'))
+    // : navigate('/login'))
   )
 }
 
