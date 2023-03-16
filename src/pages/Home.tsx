@@ -18,13 +18,13 @@ const Home: React.FC<TProps> = () => {
                 </h2>
                 <button onClick={() => { user?.logedIn ? navigate('/build') : navigate('/login') }}
                     className='bg-component-secondary p-3 rounded text-slate-100
-                font-bold hover:bg-component-primary transition-all duration-300'>
+                font-bold hover:bg-component-primary transition-all duration-300 focus:outline-none'>
                     Build Resume
                 </button>
             </div>
-            <div className='absolute w-full h-full overflow-hidden'>
-                <Blob />
-            </div>
+
+            <Blob />
+
         </div>
     )
 }
