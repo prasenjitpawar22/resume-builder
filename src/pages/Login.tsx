@@ -45,7 +45,8 @@ const Login = () => {
         logedIn: true, name: res.data?.name
       })
       setLoginBtnLoader(false)
-      return navigate('/')
+      // return navigate('/')
+      return navigate('/build')
     }
   }
 
