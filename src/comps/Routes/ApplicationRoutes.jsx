@@ -9,6 +9,7 @@ import Home from '../../pages/Home';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import AuthRoute from './AuthRoute';
+import UnAuthRoute from './UnAuthRout';
 
 export const ApplicationRoutes = (props) => {
     return (
@@ -17,7 +18,7 @@ export const ApplicationRoutes = (props) => {
                 <Route path={'/build'} element={<AuthRoute />}>
                     <Route index element={<App />} />
                 </Route>
-                <Route path='/'>
+                <Route path='/' element={<UnAuthRoute />}>
                     <Route path={'/login'} element={<Login />} />
                     <Route path={'/register'} element={<Register />} />
                     <Route index element={<Home />} />
