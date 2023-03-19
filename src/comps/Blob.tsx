@@ -17,16 +17,16 @@ const Blob: React.FC<TProps> = (props: TProps) => {
           ref={mainConstraintRef}>
 
           <motion.div animate={animationBolobLeft}
-            className='absolute top-0 h-fit w-fit phone:-top-48 phone:-left-20'>
+            className='absolute top-0 h-fit w-fit tablet:-top-48 tablet:-left-20 phone:-top-56 phone: -left-56'>
             <svg viewBox="0 0 200 200"
-              className='tablet:w-[40rem] tablet:h-[50rem] phone:w-[27rem] phone:h-[30rem] ' xmlns="http://www.w3.org/2000/svg" >
+              className='tablet:w-[40rem] tablet:h-[50rem] phone:w-[37rem] phone:h-[45rem] ' xmlns="http://www.w3.org/2000/svg" >
               <path fill="#FF0066" d="M28.1,-38C39.6,-23.8,54.4,-18,54.6,-10.6C54.8,-3.1,40.5,6,32.3,17.4C24.2,28.7,22.3,42.4,15.6,46.5C8.8,50.5,-2.7,44.9,-15.5,41C-28.2,37,-42,34.6,-46.4,26.9C-50.8,19.1,-45.7,6,-40.1,-3.9C-34.6,-13.7,-28.6,-20.3,-21.8,-35.4C-15.1,-50.5,-7.5,-74,0.4,-74.5C8.3,-74.9,16.6,-52.3,28.1,-38Z"
                 transform="translate(100 100)" />
             </svg>
           </motion.div>
 
           <motion.div animate={animationBolobRight}
-            className='absolute bottom-0 right-0 phone:-bottom-48 phone:-right-20 h-fit w-fit'
+            className='absolute bottom-0 right-0 tablet:-bottom-48 tablet:-right-20 phone:-bottom-24 phone:-right-32 h-fit w-fit'
           >
             <svg viewBox="0 0 200 200"
               className='tablet:w-[40rem] tablet:h-[50rem] phone:w-[27rem] phone:h-[30rem]' xmlns="http://www.w3.org/2000/svg">

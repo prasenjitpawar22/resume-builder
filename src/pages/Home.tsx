@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, } from 'react'
+import React, { useContext, useEffect, useState, } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView, } from 'react-intersection-observer'
@@ -13,42 +13,72 @@ const Home: React.FC<TProps> = () => {
     const { user } = useContext(UserContext)
 
     const { ref, inView } = useInView({
-        threshold: .8,
+        threshold: .75,
     })
     const animationBolobLeft = useAnimation()
     const animationBolobRight = useAnimation()
+    const [firstRender, setFirstRender] = useState(true)
 
     const resumeTemplates = [1, 2, 4, 5, 6, 7,]
 
+    //first render animation set
+    useEffect(() => {
+        setFirstRender(false)
+    }, [])
+
     // blob effect 
     useEffect(() => {
-        if (inView) {
+        // firstRender animationBolobLeft && blobRight
+        if (firstRender) {
             animationBolobLeft.start({
-                x: 0,
+                y: [-100, 0],
                 transition: {
-                    type: 'spring', bounce: .3, duration: 1
+                    duration: 1,
                 },
+                opacity: [0, 1]
             })
             animationBolobRight.start({
-                x: 0,
+                y: [100, 0],
                 transition: {
-                    type: 'spring', bounce: .3, duration: 1
-                }
+                    duration: 1,
+                },
+                opacity: [0, 1]
             })
         }
-        if (!inView) {
-            animationBolobLeft.start({
-                x: '-100vw',
-                transition: {
-                    type: 'spring', bounce: .3, duration: .8
-                },
-            })
-            animationBolobRight.start({
-                x: '100vw',
-                transition: {
-                    type: 'spring', bounce: .3, duration: .8
-                }
-            })
+
+        if (!firstRender) {
+            if (inView) {
+                animationBolobLeft.start({
+                    x: 0,
+                    transition: {
+                        type: 'spring', bounce: .3, duration: 1,
+                    },
+                    opacity: 1,
+                })
+                animationBolobRight.start({
+                    x: 0,
+                    transition: {
+                        type: 'spring', bounce: .3, duration: 1,
+                    },
+                    opacity: 1,
+                })
+            }
+            if (!inView) {
+                animationBolobLeft.start({
+                    x: '-100vw',
+                    transition: {
+                        type: 'spring', bounce: .3, duration: .8,
+                    },
+                    opacity: 0
+                })
+                animationBolobRight.start({
+                    x: '100vw',
+                    transition: {
+                        type: 'spring', bounce: .3, duration: .8,
+                    },
+                    opacity: 0
+                })
+            }
         }
     }, [inView])
 
