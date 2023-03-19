@@ -29,6 +29,10 @@ export interface ISkill {
     data: string[] | undefined;
 }
 
+export interface IResumeSkill extends ISkill {
+    featureSkillId: string | undefined
+}
+
 export interface IExperience {
     id: string | undefined
     end: string | undefined,

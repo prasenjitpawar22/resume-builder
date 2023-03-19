@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 
 import { resumeClient } from '../api/axiosClient'
 import { ResumeEduDataRequest, ResumeExpDataRequest, ResumeHeaderDataRequest } from '../api/ResumeApi'
-import { IResumeEducation, IExperience, IHeader, IResumeExperience, IResumeHeader, ISkill } from '../types'
+import { IResumeEducation, IExperience, IHeader, IResumeExperience, IResumeHeader, IResumeSkill } from '../types'
 import { UserContext } from './UserContext'
 
 export interface ResumeContextInterface {
@@ -18,8 +18,8 @@ export interface ResumeContextInterface {
     setResumeColor: React.Dispatch<React.SetStateAction<string>>
     resumeEduData: IResumeEducation[]
     setResumeEduData: React.Dispatch<React.SetStateAction<IResumeEducation[]>>
-    resumeSkillData: ISkill[]
-    setResumeSkillData: React.Dispatch<React.SetStateAction<ISkill[]>>
+    resumeSkillData: IResumeSkill[]
+    setResumeSkillData: React.Dispatch<React.SetStateAction<IResumeSkill[]>>
 
 }
 
@@ -36,9 +36,9 @@ const ResumeProvider = ({ children }: ResumeProviderProps) => {
     const [resumeColor, setResumeColor] = useState<string>('#E7E9EC');
     const [resumeHeaderData, setResumeHeaderData] = useState<IResumeHeader[]>([])
     const [resumeEduData, setResumeEduData] = useState<IResumeEducation[]>([])
-    const [resumeSkillData, setResumeSkillData] = useState<ISkill[]>(
-        [{ data: [''], id: '' }]
-    )
+    const [resumeSkillData, setResumeSkillData] = useState<IResumeSkill[]>([
+        { data: ['.NET', 'JavaScript'], featureSkillId: 'asdadsas', id: 'asdad' }
+    ])
     const [resumeExpData, setResumeExpData] = useState<IResumeExperience[]>([])
 
     // useEffect(() => {

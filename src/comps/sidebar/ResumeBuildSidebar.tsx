@@ -107,6 +107,17 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
                   />
                 }
               </li>
+              <li className="rounded-sm">
+                <DropDownList
+                  // setS={setExpBlockModalState}
+                  setBlockState={setSkillBlockState} blockState={skillBlockState} title={'Skill Block'} />
+                {
+                  // expBlockState &&
+                  <FeatureSkillCardPlain
+                    skillBlockState={skillBlockState}
+                  />
+                }
+              </li>
             </ul>
           </div>
         </div>
