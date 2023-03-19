@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { featureClient } from '../../api/axiosClient'
@@ -15,7 +15,7 @@ type EducationDataPost = Omit<IEducation, "id">
 
 const ModalCreateEduData: React.FC<Props> = (props: Props) => {
   const { eduBlockModalState, setEduBlockModalState } = props
-  const { setFeatureEduData, featureEduData} = useContext(FeatureContext)
+  const { setFeatureEduData, featureEduData } = useContext(FeatureContext)
   const [eduData, seteEduData] = useState<EducationDataPost>({
     current: false, end: '', location: '', start: '', university: ''
   })
@@ -48,6 +48,19 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
     }
   }
 
+  useEffect(() => {
+    const keyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setEduBlockModalState(false)
+      }
+    }
+    window.addEventListener('keydown', keyDown)
+
+    return () => {
+      window.removeEventListener('keydown', keyDown)
+    }
+  }, [])
+
   return (<div>
     {eduBlockModalState &&
       <div
@@ -71,7 +84,7 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
               </button>
             </div>
             {/*body*/}
-            <form onSubmit={handleSubmit} className='bg-white shadow-md rounded px-8 pt-6 pb-2 mb-4'>
+            <form onSubmit={handleSubmit} className='bg-white rounded px-8 pt-6 pb-2 mb-4'>
               <div className="relative p-6 flex-auto w-full">
                 <div className='mb-4 flex gap-4 justify-between'>
                   <div className=''>
@@ -111,31 +124,21 @@ const ModalCreateEduData: React.FC<Props> = (props: Props) => {
                     className={inputStyle}
                     type={'date'} placeholder={'End'} />
                 </div>
-                {/*
-                <div className='mb-4'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2'>
-                    Website Link
-                  </label>
-                  <input value={eduData?.websit} onChange={(e) => seteEduData({ ...eduData!, websit: e.target.value })}
-                    className={inputStyle}
-                    type={'text'} placeholder={'Full Name'} />
-                </div> */}
-
               </div>
               {/*footer*/}
               <div className="flex items-center justify-end p-2 border-t border-solid border-slate-200 rounded-b">
                 <button
-                  className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  className="text-primary background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
                   onClick={() => setEduBlockModalState(false)}
                 >
                   Close
                 </button>
                 <button
-                  className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg 
+                  className="bg-component-secondary text-white active:bg-component-primary hover:bg-component-primary
+                      font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg 
                       outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="submit"
-                // onClick={() => setEduBlockModalState(false)}
                 >
                   Save Changes
                 </button>

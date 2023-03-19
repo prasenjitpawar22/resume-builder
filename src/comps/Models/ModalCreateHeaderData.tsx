@@ -48,6 +48,19 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
     }
   }
 
+  useEffect(() => {
+    const keyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setHeaderBlockModalState(false)
+      }
+    }
+    window.addEventListener('keydown', keyDown)
+
+    return () => {
+      window.removeEventListener('keydown', keyDown)
+    }
+  }, [])
+
   return (<div>
     {headerBlockModalState &&
       <div
@@ -127,14 +140,15 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
               {/*footer*/}
               <div className="flex items-center justify-end p-2 border-t border-solid border-slate-200 rounded-b">
                 <button
-                  className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  className="text-primary background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
                   onClick={() => setHeaderBlockModalState(false)}
                 >
                   Close
                 </button>
                 <button
-                  className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg 
+                  className="bg-component-secondary text-white active:bg-component-primary hover:bg-component-primary
+                   font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg 
                   outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="submit">
                   Save Changes
