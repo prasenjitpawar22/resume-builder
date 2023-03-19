@@ -57,14 +57,21 @@ const FeatureExpCardPlain: React.FC<Props> = (props: Props) => {
     if (token) {
       const deleteResponse = await FeatureExpDeleteRequest(id, token)
 
-      if (deleteResponse.status === 200) {
+      if (deleteResponse.status === 200) { //----**********************backedn bug**********
         const allExp = await FeatureExpDataRequest(token)
+        // console.log(allExp, 'main response');
+
         if (allExp.status === 200 && allExp.data) {
           setFeatureExpData!(allExp.data)
+
+          // now filter resume data != deleted data
+          const data = resumeExpData && resumeExpData.filter(x => x.featureExperienceId !== id)
+          // console.log(data, 'deleteResponse');
+          setResumeExpData!(data!)
         }
       }
       if (deleteResponse.error) {
-        toast.warning("error removing item",  { autoClose: 1000, hideProgressBar: true })
+        toast.warning("error removing item", { autoClose: 1000, hideProgressBar: true })
       }
     }
   }

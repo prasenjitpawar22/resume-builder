@@ -16,13 +16,13 @@ const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
     const { resumeSkillData, setResumeSkillData } = useContext(ResumeContext)
 
     const handleAddSkill = (id: string) => {
-        console.log(id);
+        // console.log(id);
         let foundSkillInFeature = resumeSkillData?.find(x => x.id === id)
 
         if (foundSkillInFeature) {
             //check if already added
             var check = resumeSkillData?.filter(d => d?.id === id)
-            console.log('this check', check);
+            // console.log('this check', check);
             if (check?.length !== 0) {
                 return
             }
@@ -31,7 +31,7 @@ const FeatureSkillCardPlain: React.FC<Props> = (props: Props) => {
     }
 
     useEffect(() => {
-        console.log(resumeSkillData);
+        // console.log(resumeSkillData);
 
     }, [resumeSkillData])
 

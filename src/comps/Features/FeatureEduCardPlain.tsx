@@ -38,13 +38,13 @@ export default function FeatureEduCardPlain(props: Props) {
         if (token && education && id) {
             const resumeEducationRequest: IResumeEducation = { ...education, featureEducationId: id }
             const addResumeEducationResponse = await ResumeEduAddRequest(resumeEducationRequest, token)
-            console.log(addResumeEducationResponse);
+            // console.log(addResumeEducationResponse);
 
             if (addResumeEducationResponse.data && resumeEduData) {
                 setResumeEduData!([...resumeEduData, addResumeEducationResponse.data])
             }
             if (addResumeEducationResponse.error) {
-                toast.warn('unable to add to resume',{ autoClose: 1000, hideProgressBar: true })
+                toast.warn('unable to add to resume', { autoClose: 1000, hideProgressBar: true })
             }
         }
         else {
@@ -58,16 +58,19 @@ export default function FeatureEduCardPlain(props: Props) {
         if (token) {
             const deleteResponse = await FeatureEduDeleteRequest(id, token)
             // handle deleteResponse
-            console.log(deleteResponse);
             if (deleteResponse.status === 200) {
                 const allEdu = await FeatureEduDataRequest(token)
                 if (allEdu.status === 200 && allEdu.data) {
-                    console.log(allEdu.data);
                     setFeatureEduData!(allEdu.data)
+
+                    // now filter resume data != deleted data
+                    const data = resumeEduData && resumeEduData.filter(x => x.featureEducationId !== id)
+                    // console.log(data);
+                    setResumeEduData!(data!)
                 }
             }
             if (deleteResponse.error) {
-                toast.warning("error removing item",  { autoClose: 1000, hideProgressBar: true })
+                toast.warning("error removing item", { autoClose: 1000, hideProgressBar: true })
             }
         }
     }
