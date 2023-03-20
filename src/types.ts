@@ -2,6 +2,7 @@ export interface IHeader {
     id: string | undefined;
     fullname: string | undefined;
     contact: string | undefined;
+    bio: string | undefined
     website: string | undefined;
     github: string | undefined;
     linkedin: string | undefined;

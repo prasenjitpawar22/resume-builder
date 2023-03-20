@@ -37,6 +37,9 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
   const [rightBarState, setRightBarState] = useState(false)
   const navigate = useNavigate()
 
+  const ModalOpenBackground = headerBlockModalState || eduBlockModalState ||
+    expBlockModalState || skillBlockState ? 'opacity-50' : ''
+
   return (<>
     <div
       className={`fixed top-2 right-0 bg-component-primary h-12 rounded-l-3xl z-10
@@ -64,7 +67,8 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
     </div>
 
     <div className='flex'>
-      <div className="tablet:flex phone:hidden flex-col min-h-screen p-3 shadow tablet:w-70 ">
+      <div className={`tablet:flex phone:hidden flex-col min-h-screen p-3 
+        shadow tablet:w-70 ${ModalOpenBackground}`}>
         <div className="space-y-3">
           <div className="flex p-3 items-center shadow bg-component-secondary rounded-xl">
             <h2 className="font-Lato phone:text-3xl tablet:text-7xl text-primary text-center
@@ -125,7 +129,7 @@ const ResumeBuildSidebar: React.FC<Props> = (props: Props) => {
 
 
       {/* resume's  */}
-      <div className="bg-slate-400 min-h-screen w-full mx-auto">
+      <div className={`bg-slate-400 min-h-screen w-full mx-auto ${ModalOpenBackground}`}>
         <Resume />
       </div>
 

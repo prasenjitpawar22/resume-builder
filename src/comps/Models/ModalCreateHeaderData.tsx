@@ -1,4 +1,5 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import { RxCross2 } from 'react-icons/rx'
 
 import { v4 as uuidv4 } from 'uuid';
 import { IHeader } from '../../types';
@@ -6,6 +7,7 @@ import { featureClient } from '../../api/axiosClient';
 import { FeatureHeaderCreateRequest, FeatureHeaderDataRequest } from '../../api/FeaturesApi';
 import { FeatureContext } from '../../context/FeaturesContext';
 import { toast } from 'react-toastify';
+
 
 interface Props {
   headerBlockModalState: boolean,
@@ -21,8 +23,11 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
   const { setFeatureHeaderData, featureHeaderData } = useContext(FeatureContext)
 
   const [headerData, setHeaderData] = useState<HeaderDataPost>({
-    contact: "", fullname: "", github: "", linkedin: "", website: ""
+    contact: "", fullname: "", github: "", linkedin: "", website: "", bio: ""
   })
+
+  const [selectedTag, setSeletedTag] = useState<string[]>([])
+  const [bioTags, setBioTags] = useState(['Software Engineer', 'Engineer', 'Developer',])
 
   const inputStyle = `shadow appearance-none border leading-tight focus:shadow-2xl focus:shadow-blue-600 
   rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:outline-blue-300 focus:shadow-none focus:border-white`
@@ -40,7 +45,7 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
       if (response.status === 200 && response.data) {
         setFeatureHeaderData!([...featureHeaderData!, response.data])
         setHeaderData({
-          contact: '', fullname: '', github: '', linkedin: '', website: ''
+          contact: '', fullname: '', github: '', linkedin: '', website: '', bio: ''
         })
         setHeaderBlockModalState(false)
         toast.success('added feature header successfully')
@@ -48,6 +53,7 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
     }
   }
 
+  //escaping function
   useEffect(() => {
     const keyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -60,6 +66,36 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
       window.removeEventListener('keydown', keyDown)
     }
   }, [])
+
+
+  //handle add to seltected tags list
+  const addSpandTagBio = (text: string) => {
+    const tags = selectedTag.find(tag => tag === text)
+
+    if (tags) {
+      console.log('already added');
+    } else {
+      setSeletedTag([...selectedTag, text]);
+      const updatedTags = bioTags.filter(tag => tag !== text);
+      setBioTags(updatedTags)
+    }
+  }
+
+  // handle remove tag from selected tags list
+  const removeTagFromSelectedTags = (text: string) => {
+    const tag = selectedTag.find(tag => tag === text)
+    if (tag) {
+      setSeletedTag(selectedTag.filter(tag => tag !== text))
+      setBioTags([...bioTags, text])
+    } else {
+      console.log("already removed tag from selected tags list")
+    }
+  }
+
+  ///handle generate bio
+  const generateBio = () => {
+    console.log(selectedTag);
+  }
 
   return (<div>
     {headerBlockModalState &&
@@ -89,47 +125,85 @@ const ModalCreateHeaderData: React.FC<Props> = (props: Props) => {
               <div className="relative p-6 flex-auto w-full">
                 <div className='mb-4 flex gap-4 justify-between'>
                   <div className=''>
-                    <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
+                    {/* <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
                       Full Name
-                    </label>
+                    </label> */}
                     <input required
                       value={headerData?.fullname}
                       onChange={(e) => setHeaderData({ ...headerData!, fullname: e.target.value })}
                       className={inputStyle}
-                      type={'text'} placeholder={'Full  Name'} />
+                      type={'text'} placeholder={'Full  Name*'} />
                   </div>
                   <div>
-                    <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
+                    {/* <label className='after:content-["_*"] block text-gray-700 text-sm font-bold mb-2'>
                       Contact Number
-                    </label>
+                    </label> */}
                     <input required value={headerData?.contact}
                       onChange={(e) => setHeaderData({ ...headerData!, contact: e.target.value })}
                       className={inputStyle}
-                      type={'tel'} placeholder={'Contact Number'} />
+                      type={'tel'} placeholder={'Contact Number*'} />
                   </div>
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2'>
+                  {/* <label className='block text-gray-700 text-sm font-bold mb-2'>
+                    Profile
+                  </label> */}
+                  <textarea value={headerData?.bio}
+                    onChange={(e) => setHeaderData({ ...headerData!, bio: e.target.value })}
+                    className={`${inputStyle} + resize-none`}
+                    placeholder={'Write a Bio or generate one by selecting tags'} />
+                  <div className='gap-2 flex flex-col' >
+                    <div className='flex gap-2 '>
+                      {
+                        bioTags.map((tag, index) =>
+                          <span key={index} onClick={() => addSpandTagBio(tag)}
+                            className='cursor-pointer hover:bg-green-300 text-primary
+                         bg-green-200 rounded-2xl px-2 py-1'>
+                            {tag}</span>
+                        )
+                      }
+                    </div>
+                    <div className='relative flex gap-2 '>
+                      {
+                        selectedTag.map((tag, index) =>
+                          <span key={index}
+                            onClick={() => removeTagFromSelectedTags(tag)}
+                            className={`cursor-pointer hover:bg-slate-300 text-primary
+                         bg-slate-200 rounded-2xl px-2 py-1 hover:line-through
+                          hover:after:
+                         `}>
+                            {tag}</span>
+                        )
+                      }
+                    </div>
+                  </div>
+                  <span onClick={generateBio}
+                    className='bg-slate-300 float-right m-2 w-fit cursor-pointer hover:text-white
+                      rounded hover:bg-slate-400 px-2'>
+                    Generate</span>
+                </div>
+                <div className='mb-4'>
+                  {/* <label className='block text-gray-700 text-sm font-bold mb-2'>
                     Linkedin Profile
-                  </label>
+                  </label> */}
                   <input value={headerData?.linkedin}
                     onChange={(e) => setHeaderData({ ...headerData!, linkedin: e.target.value })}
                     className={inputStyle}
                     type={'text'} placeholder={'Linkedin Profile'} />
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2'>
+                  {/* <label className='block text-gray-700 text-sm font-bold mb-2'>
                     Github Profile
-                  </label>
+                  </label> */}
                   <input value={headerData?.github}
                     onChange={(e) => setHeaderData({ ...headerData!, github: e.target.value })}
                     className={inputStyle}
                     type={'text'} placeholder={'Github Profile'} />
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2'>
+                  {/* <label className='block text-gray-700 text-sm font-bold mb-2'>
                     Website Link
-                  </label>
+                  </label> */}
                   <input value={headerData?.website}
                     onChange={(e) => setHeaderData({ ...headerData!, website: e.target.value })}
                     className={inputStyle}
