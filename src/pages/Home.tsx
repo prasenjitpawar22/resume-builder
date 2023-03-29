@@ -92,7 +92,7 @@ const Home: React.FC<TProps> = () => {
                     font-extrabold z-10" style={{ textShadow: 'rgb(0 0 0 / 25%) -2px 4px 5px' }}>
                             Resume Builder
                         </h2>
-                        <button onClick={() => { user?.logedIn ? navigate('/build') : navigate('/login') }}
+                        <button onClick={() => { !user?.logedIn ? navigate('/new-build') : navigate('/login') }}
                             className='bg-component-secondary p-3 rounded text-slate-100 z-10
                         font-bold hover:bg-component-primary transition-all duration-300 focus:outline-none'>
                             Build Resume

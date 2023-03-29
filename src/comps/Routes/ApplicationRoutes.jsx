@@ -7,6 +7,7 @@ import ResumeProvider from '../../context/ResumeContext';
 import { UserProvider } from '../../context/UserContext';
 import Home from '../../pages/Home';
 import Login from '../../pages/Login';
+import NewBuild from '../../pages/NewBuild';
 import Register from '../../pages/Register';
 import AuthRoute from './AuthRoute';
 import UnAuthRoute from './UnAuthRout';
@@ -21,6 +22,7 @@ export const ApplicationRoutes = (props) => {
                 <Route path='/' element={<UnAuthRoute />}>
                     <Route path={'/login'} element={<Login />} />
                     <Route path={'/register'} element={<Register />} />
+                    <Route path={'/new-build'} element={<NewBuild />} />
                     <Route index element={<Home />} />
                 </Route>
             </Routes>

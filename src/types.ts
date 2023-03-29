@@ -47,3 +47,12 @@ export interface IExperience {
 export interface IResumeExperience extends IExperience {
     featureExperienceId: string | undefined
 }
+
+export enum FormsTypes {
+    contact = 'contact',
+    experience = 'experience',
+    education = 'education',
+    skill = 'skill',
+    certifications = 'certifications',
+    buildup = 'buildup',
+}
