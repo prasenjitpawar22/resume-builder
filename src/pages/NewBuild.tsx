@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import BuildNavbar from '../comps/Navbar/BuildNavbar'
-import ContactForm from '../comps/Forms/ContactForm'
-import ExperienceForm from '../comps/Forms/ExperienceForm'
 import { FormsTypes } from '../types'
+import EducationForm from '../comps/Wrapper/EducationForm'
+import ContactForm from '../comps/Wrapper/ContactForm'
+import ExperienceForm from '../comps/Wrapper/ExperienceForm'
 
 
 const NewBuild = () => {
@@ -17,11 +18,10 @@ const NewBuild = () => {
   return (
     <>
       <BuildNavbar currentForm={currentForm} setCurrentForm={setCurrentForm} />
-      {currentForm === FormsTypes.contact ?
-        <ContactForm />
-        : currentForm === FormsTypes.experience ?
-          <ExperienceForm />
-          : <h1>asda</h1>}
+      {currentForm === FormsTypes.contact ? <ContactForm />
+        : currentForm === FormsTypes.education ? <EducationForm />
+          : currentForm === FormsTypes.experience ? <ExperienceForm />
+            : <h1>asda</h1>}
     </>
   )
 }

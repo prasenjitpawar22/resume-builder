@@ -3,7 +3,8 @@ import { motion } from 'framer-motion'
 
 const ContactForm = () => {
     return (
-        <motion.div animate={{ opacity: [0, 1], transition: { duration: .8 } }}
+        <motion.div
+            animate={{ opacity: [0, 1], transition: { duration: .8 } }}
             className='grid grid-cols-1 font-Lato px-8 py-12 bg-slate-50'>
             <form className=''>
                 <div className='flex gap-6 phone:flex-col desktop:flex-row mb-3'>
