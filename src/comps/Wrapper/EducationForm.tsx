@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
+import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
+import './calender.css'
 import ResumeFormDataCard from '../Cards/ResumeFormDataCard'
 import { FormsTypes } from '../../types'
+
+interface Data {
+    date: undefined | Date
+}
 
 const EducationForm = () => {
     const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb-3 placeholder:opacity-50`
     const formLableStyle = `font-extrabold text-xs text-primary uppercase`
+
+    const [formData, setFormData] = useState<Data>({
+        date: undefined
+    })
 
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
@@ -45,8 +57,14 @@ const EducationForm = () => {
                             <label className='text-slate-500 font-normal'>when did you earn qualification/degree?</label>
                         </label>
                         {/* react date picker */}
-                        <input type="date" className={`${formInputStyle}`}
-                            placeholder='2023' />
+                        <DatePicker selected={formData.date}
+                            // calendarContainer={MyContainer}
+                            dateFormat={'yyyy'} showYearPicker
+                            onChange={(date) => { if (date) setFormData({ ...formData, date: date }) }}
+                            placeholderText='2023' className={`${formInputStyle} w-full`}
+                        />
+                        {/* <input type="date" className={`${formInputStyle} `}
+                            placeholder='2023' /> */}
                     </div>
                     <div className='flex flex-col gap-2'>
                         <label className={`text-slate-500 font-normal ${formLableStyle}`}>did you
