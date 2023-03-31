@@ -56,7 +56,7 @@ const PreviewResume = () => {
                                         <span className='font-bold text-[.8em] '>March 2023 - April 2023, Bangalore, India</span>
                                     </div>
                                 </div>
-                                <div className='px-3 mb-3'>
+                                <div className='phone:px-[10px] desktop:px-4 mb-3'>
                                     <ul className='list-disc text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
                                         <li>Designed and implemented responsive mobile applications for both user android and iOS using React Native and Expo technologies.</li>
                                         <li>Added functionalities for web users by making them more user-friendly and responsive using React and CSS Frameworks.</li>
@@ -74,7 +74,7 @@ const PreviewResume = () => {
                                         <span className='font-bold text-[.8em] '>April 2022 - Present, Mumbai, India</span>
                                     </div>
                                 </div>
-                                <div className='px-3 mb-4'>
+                                <div className='phone:px-[10px] desktop:px-4 mb-4'>
                                     <ul className='list-disc text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
                                         <li>Implemented scalable REST APIs on enterprise-level microservices and created workflows using Uber Cadence while working as a backend developer.</li>
                                         <li> Became AWS Certified Cloud Practitioner and added unit/integration test cases which increased the code coverage up to 70%, CI/CD, pull  request, and code review.</li>
