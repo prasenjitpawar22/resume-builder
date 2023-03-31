@@ -9,6 +9,7 @@ import Home from '../../pages/Home';
 import Login from '../../pages/Login';
 import NewBuild from '../../pages/NewBuild';
 import Register from '../../pages/Register';
+import ResumeDownload from '../Resume/ResumeDownload';
 import AuthRoute from './AuthRoute';
 import UnAuthRoute from './UnAuthRout';
 
@@ -23,6 +24,7 @@ export const ApplicationRoutes = (props) => {
                     <Route path={'/login'} element={<Login />} />
                     <Route path={'/register'} element={<Register />} />
                     <Route path={'/new-build'} element={<NewBuild />} />
+                    <Route path={'/download'} element={<ResumeDownload />} />
                     <Route index element={<Home />} />
                 </Route>
             </Routes>
