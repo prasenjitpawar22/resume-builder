@@ -55,4 +55,6 @@ export enum FormsTypes {
     skill = 'skill',
     certifications = 'certifications',
     buildup = 'buildup',
+    summary = 'summary',
+    project = 'project',
 }

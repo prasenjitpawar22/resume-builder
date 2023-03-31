@@ -8,6 +8,8 @@ import ContactForm from '../comps/Forms/ContactForm'
 import EducationForm from '../comps/Forms/EducationForm'
 import ExperienceForm from '../comps/Forms/ExperienceForm'
 import PreviewResume from '../comps/Resume/PreviewResume'
+import ProjectForm from '../comps/Forms/ProjectForm'
+import SummaryForm from '../comps/Forms/SummaryForm'
 
 
 const NewBuild = () => {
@@ -27,7 +29,9 @@ const NewBuild = () => {
           : currentForm === FormsTypes.experience ? <ExperienceForm />
             : currentForm === FormsTypes.skill ? <SkillForm />
               : currentForm === FormsTypes.certifications ? <CertificationForm />
-                : <PreviewResume />}
+                : currentForm === FormsTypes.project ? <ProjectForm />
+                  : currentForm === FormsTypes.summary ? <SummaryForm />
+                    : <PreviewResume />}
     </>
   )
 }
