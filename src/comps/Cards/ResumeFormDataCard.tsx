@@ -19,9 +19,11 @@ const ResumeFormDataCard = (props: Props) => {
                 <h1 className='text-primary capitalize font-extrabold'>{title}</h1>
                 <BiChevronDown />
             </div>
-            {cardDataType === FormsTypes.education ?
-                <h1> edu </h1>
-                : ''}
+            {cardDataType === FormsTypes.education ? <h1> edu </h1>
+                : cardDataType === FormsTypes.education ? <h1>skills</h1>
+                    : cardDataType === FormsTypes.certifications ? <h1>certication</h1>
+                        : cardDataType === FormsTypes.experience ? <h1>experince</h1>
+                            : ''}
         </div>
     )
 }

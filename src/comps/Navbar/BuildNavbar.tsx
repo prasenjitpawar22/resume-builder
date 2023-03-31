@@ -49,22 +49,40 @@ const BuildNavbar = (props: Props) => {
           </div>
           <div className={`desktop:flex phone:hidden tablet:hidden `}>
             <ul className='flex gap-8 items-center'>
-              <li onClick={() => setCurrentForm(FormsTypes.contact)}
+              <li onClick={() => {
+                setCurrentForm(FormsTypes.contact)
+                setNavbar(false)
+              }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.contact && 'bg-component-primary text-white rounded'}`}>Contact</li>
-              <li onClick={() => setCurrentForm(FormsTypes.education)}
+              <li onClick={() => {
+                setCurrentForm(FormsTypes.education)
+                setNavbar(false)
+              }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.education && 'bg-component-primary text-white rounded'}`}>Education</li>
-              <li onClick={() => setCurrentForm(FormsTypes.skill)}
+              <li onClick={() => {
+                setCurrentForm(FormsTypes.skill)
+                setNavbar(false)
+              }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.skill && 'bg-component-primary text-white rounded'}`}>Skills</li>
-              <li onClick={() => setCurrentForm(FormsTypes.certifications)}
+              <li onClick={() => {
+                setCurrentForm(FormsTypes.certifications)
+                setNavbar(false)
+              }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.certifications && 'bg-component-primary text-white rounded'}`}>Certification</li>
-              <li onClick={() => setCurrentForm(FormsTypes.experience)}
+              <li onClick={() => {
+                setCurrentForm(FormsTypes.experience)
+                setNavbar(false)
+              }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.experience && 'bg-component-primary text-white rounded'}`}>Experience</li>
-              <li onClick={() => setCurrentForm(FormsTypes.buildup)}
+              <li onClick={() => {
+                setCurrentForm(FormsTypes.buildup)
+                setNavbar(false)
+              }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.buildup && 'bg-component-primary text-white rounded'}`}>Build up</li>
             </ul>
@@ -72,19 +90,38 @@ const BuildNavbar = (props: Props) => {
         </div>
       </nav>
       <motion.ul
+        initial={variants.close}
         animate={navbar ? 'open' : 'close'} variants={variants}
         className={`w-full bg-white shadow desktop:!hidden overflow-hidden z-10`}>
-        <li onClick={() => setCurrentForm(FormsTypes.contact)}
+        <li onClick={() => {
+          setCurrentForm(FormsTypes.contact)
+          setNavbar(false)
+        }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.contact && 'bg-slate-100'}`}>Contact</li>
-        <li onClick={() => setCurrentForm(FormsTypes.education)}
+        <li onClick={() => {
+          setCurrentForm(FormsTypes.education)
+          setNavbar(false)
+        }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.education && 'bg-slate-100'}`}>Education</li>
-        <li onClick={() => setCurrentForm(FormsTypes.skill)}
+        <li onClick={() => {
+          setCurrentForm(FormsTypes.skill)
+          setNavbar(false)
+        }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.skill && 'bg-slate-100'}`}>Skills</li>
-        <li onClick={() => setCurrentForm(FormsTypes.certifications)}
+        <li onClick={() => {
+          setCurrentForm(FormsTypes.certifications)
+          setNavbar(false)
+        }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.certifications && 'bg-slate-100'}`}>Certification</li>
-        <li onClick={() => setCurrentForm(FormsTypes.experience)}
+        <li onClick={() => {
+          setCurrentForm(FormsTypes.experience)
+          setNavbar(false)
+        }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.experience && 'bg-slate-100'}`}>Experience</li>
-        <li onClick={() => setCurrentForm(FormsTypes.buildup)}
+        <li onClick={() => {
+          setCurrentForm(FormsTypes.buildup)
+          setNavbar(false)
+        }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.buildup && 'bg-slate-100'}`}>Build up</li>
       </motion.ul>
       {/* <QuickNavbar
