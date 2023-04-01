@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
 import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import './calender.css'
 import ResumeFormDataCard from '../Cards/ResumeFormDataCard'
-import { FormsTypes } from '../../types'
+import { Experience, FormsTypes } from '../../types'
 
 interface Data {
     startDate: undefined | Date
@@ -20,21 +20,16 @@ const ExperienceForm = () => {
     const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb-3 placeholder:opacity-50`
     const formLableStyle = `font-extrabold text-xs text-primary uppercase`
 
-    const [formData, setFormData] = useState<Data>({
-        startDate: undefined,
-        endDate: undefined,
+    const [formData, setFormData] = useState<Experience>({
+        yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
+        yearEnd: undefined,
     })
 
-    const MyContainer = ({ className, children }: CalendarContainerProps) => {
-        return (
-            <CalendarContainer className={`${className} ${formInputStyle}`}>
-                <div style={{ position: "relative" }}>{children}</div>
-                {/* <div style={{ background: "" }}>
-                    What is your favorite day?
-                </div> */}
-            </CalendarContainer>
-        );
-    };
+    const handleSubmitForm = (e: FormEvent) => {
+        e.preventDefault();
+        console.log(formData);
+
+    }
 
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
@@ -44,7 +39,7 @@ const ExperienceForm = () => {
                 cardDataType={FormsTypes.experience}
                 title={'your experince'} />
 
-            <form className='col-span-2'>
+            <form className='col-span-2' onSubmit={handleSubmitForm}>
                 <div className='flex flex-col gap-2 w-full'>
                     <div className='flex flex-col gap-2'>
                         <label className={`${formLableStyle} text-slate-500 font-normal`}>
@@ -53,7 +48,9 @@ const ExperienceForm = () => {
                             at the company? *
                         </label>
                         <input type="text" className={`${formInputStyle}`}
-                            placeholder={'Data Analyist'} />
+                            placeholder={'Data Analyist'}
+                            value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        />
                     </div>
                     <div className='flex flex-col gap-2'>
                         <label className={`${formLableStyle} text-slate-500 font-normal`}>
@@ -62,7 +59,9 @@ const ExperienceForm = () => {
                             did you work? *
                         </label>
                         <input type="tel" className={`${formInputStyle}`}
-                            placeholder={'Amazon'} />
+                            placeholder={'Amazon'}
+                            value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        />
                     </div>
 
 
@@ -73,8 +72,8 @@ const ExperienceForm = () => {
                             </label>
                             <div className='flex flex-row items-center'>
                                 <div className='relative w-full'>
-                                    <DatePicker selected={formData.startDate}
-                                        onChange={(date) => { if (date) setFormData({ ...formData, startDate: date }) }}
+                                    <DatePicker selected={formData.yearStart}
+                                        onChange={(date) => { if (date) setFormData({ ...formData, yearStart: date }) }}
                                         dateFormat={'MM-yyyy'} showMonthYearPicker
                                         placeholderText={'March 2023'}
                                         className={`${formInputStyle} relative phone:w-[100%]`}
@@ -89,9 +88,9 @@ const ExperienceForm = () => {
                                         type={'text'} value='Present' />
 
                                     <DatePicker
-                                        selected={formData.endDate}
+                                        selected={formData.yearEnd}
                                         onChange={(date) => {
-                                            if (date) setFormData({ ...formData, endDate: date })
+                                            if (date) setFormData({ ...formData, yearEnd: date })
                                             if (presentWorkDate) setPresentWorkDate(false)
                                         }}
                                         dateFormat={'MM-yyyy'} showMonthYearPicker
@@ -102,8 +101,8 @@ const ExperienceForm = () => {
                                             <div className={`h-4 w-10 flex items-center transition duration-300 ${presentWorkDate ? 'justify-end !bg-component-primary' : 'justify-start'} rounded-xl bg-slate-200 overflow-hidden cursor-pointer`}
                                                 onClick={() => {
                                                     setPresentWorkDate(!presentWorkDate)
-                                                    setFormData({ ...formData, endDate: undefined })
-                                                    if (presentWorkDate) setFormData({ ...formData, endDate: new Date() })
+                                                    setFormData({ ...formData, yearEnd: undefined })
+                                                    if (presentWorkDate) setFormData({ ...formData, yearEnd: new Date() })
                                                 }}
                                             >
                                                 <motion.div layout className='w-3 h-3 bg-white shadow rounded-full mx-[0.1rem]'></motion.div>
@@ -120,7 +119,9 @@ const ExperienceForm = () => {
                                 <label className='text-slate-500 font-normal'> was the company located?</label>
                             </label>
                             <input type="text" className={`${formInputStyle}`}
-                                placeholder='LA' />
+                                placeholder='LA'
+                                value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                            />
                         </div>
                     </div>
                     <div className='flex flex-col gap-2'>
@@ -129,7 +130,9 @@ const ExperienceForm = () => {
                             </label>
                         </label>
                         <textarea className={`${formInputStyle} resize-none min-h-[222px]`}
-                            placeholder={`• Help bridge the gap between data and the decision-making process. Typical data analyst roles at Amazon include data analysis, dashboard/report building, and metric definitions and reviews. Data analysts at Amazon also design systems for data collection, compiling, analysis, and reporting.`} />
+                            placeholder={`• Help bridge the gap between data and the decision-making process. Typical data analyst roles at Amazon include data analysis, dashboard/report building, and metric definitions and reviews. Data analysts at Amazon also design systems for data collection, compiling, analysis, and reporting.`}
+                            value={formData.achivements} onChange={(e) => setFormData({ ...formData, achivements: e.target.value })}
+                        />
                     </div>
                     <div className=''>
                         <button type='submit'

@@ -24,19 +24,19 @@ const BuildNavbar = (props: Props) => {
   }
 
   const dropdownNavLiStyle = `px-2 py-1 cursor-pointer hover:bg-slate-100 text-primary uppercase text-sm font-bold`
-  const simpleNavLiStyle = `font-extrabold text-primary cursor-pointer uppercase text-sm px-2 py-1`
+  const simpleNavLiStyle = `font-extrabold text-primary cursor-pointer uppercase text-sm px-4 py-1`
 
   return (
     <>
       <nav className="w-full bg-white font-Lato shadow flex phone:gap-6 tablet:gap-8 px-2 py-3
         transition-all duration-500
       ">
-        <div className='flex items-center gap-8'>
+        <div className='flex items-center gap-8 justify-between px-4 w-full'>
           <h2 className="font-Lato phone:text-3xl tablet:text-4xl text-primary text-center cursor-pointer
-                font-extrabold " style={{ textShadow: 'rgb(0 0 0 / 25%) -2px 4px 5px' }}
+                font-extrabold desktop:block phone:flex flex-col gap-2 " style={{ textShadow: 'rgb(0 0 0 / 25%) -2px 4px 5px' }}
             onClick={() => navigate('/')}
           >
-            Resume Builder
+            Resume<span className='w-full'> Builder</span>
           </h2>
           <div className={`phone:flex desktop:hidden tablet:flex`}>
             <span className={`${simpleNavLiStyle} flex items-center gap-1 bg-component-primary text-white rounded`}
@@ -48,7 +48,7 @@ const BuildNavbar = (props: Props) => {
             </span>
           </div>
           <div className={`desktop:flex phone:hidden tablet:hidden `}>
-            <ul className='flex gap-8 items-center'>
+            <ul className='flex phone:gap-3 desktop:gap-3 items-center flex-wrap'>
               <li onClick={() => {
                 setCurrentForm(FormsTypes.contact)
                 setNavbar(false)

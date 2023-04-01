@@ -48,6 +48,9 @@ export interface IResumeExperience extends IExperience {
     featureExperienceId: string | undefined
 }
 
+
+
+//------------------------------------
 export enum FormsTypes {
     contact = 'contact',
     experience = 'experience',
@@ -57,4 +60,49 @@ export enum FormsTypes {
     buildup = 'buildup',
     summary = 'summary',
     project = 'project',
+}
+
+export interface Contact {
+    fullname: string,
+    emailaddress: string
+    phone: string
+    linkedinurl: string
+    personalwebsite: string
+    country: string
+    state: string
+    city: string
+}
+
+export interface Education {
+    degree: string
+    university: string
+    location: string
+    year: Date | undefined
+    minor: string
+    gpa: string
+}
+
+export interface Skills {
+    skill: string
+}
+
+export interface Certification {
+    name: string
+    location: string
+    year: Date | undefined
+    helpful: string
+}
+
+export interface Experience {
+    role: string
+    company: string
+    yearStart: Date | undefined
+    yearEnd: Date | undefined
+    present: Boolean
+    location: string
+    achivements: string
+}
+
+export interface Summary {
+    summary: string
 }
