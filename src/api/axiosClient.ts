@@ -21,3 +21,7 @@ export const featureClient = axios.create({
 export const userClient = axios.create({
     baseURL: beUrl + "user/"
 })
+
+export const formClient = axios.create({
+    baseURL: beUrl + "build/"
+})

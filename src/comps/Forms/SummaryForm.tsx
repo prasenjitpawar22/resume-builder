@@ -1,26 +1,75 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Summary } from '../../types'
+import { formClient } from '../../api/axiosClient'
 
 const SummaryForm = () => {
     const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb-3 placeholder:opacity-50`
     const formLableStyle = `font-extrabold text-xs text-primary uppercase`
 
+    const [foundSummary, setFoundSummary] = useState(false)
     const [formData, setFormData] = useState<Summary>({
-        summary: ''
+        summary: '', id: ''
     })
 
-    const handleFormSubmit = (e: FormEvent) => {
+    const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        console.log(formData);
+        // console.log(formData);
+        const { summary } = formData;
+        const token = localStorage.getItem('token');
+        if (!token) return
+        await formClient.post('add-summary', { summary }, {
+            headers: { Authorization: `bearer ${token}` }
+        })
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((e) => console.log(e))
     }
+
+    const handleFormUpdate = async (e: FormEvent) => {
+        e.preventDefault()
+        // console.log(formData);
+        const { summary, id } = formData;
+        const token = localStorage.getItem('token');
+        if (!token) return
+        await formClient.post('update-summary', { summary, id }, {
+            headers: { Authorization: `bearer ${token}` }
+        })
+            .then((res) => {
+                if (res.data.summary === null) {
+                    return
+                }
+                setFormData({ ...formData, summary: res.data.summary })
+            })
+            .catch((e) => console.log(e))
+    }
+
+    useEffect(() => {
+        (async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return
+
+            await formClient.get('get-summary', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then((response) => {
+                if (response.data.summary === null) {
+                    return
+                }
+                setFormData({ ...formData, summary: response.data.summary, id: response.data.id })
+                setFoundSummary(true)
+            }).catch((e) => console.log(e))
+        })()
+    }, [])
 
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
         >
             <div>AI summary generate</div>
-            <form className='col-span-2' onSubmit={handleFormSubmit}>
+            <form className='col-span-2' onSubmit={!foundSummary ? handleFormSubmit : handleFormUpdate}>
                 <div className='flex flex-col gap-2 w-full'>
                     <div className='flex flex-col gap-2'>
                         <label className={`${formLableStyle} text-slate-500 font-normal`}>write your

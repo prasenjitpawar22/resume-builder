@@ -105,4 +105,5 @@ export interface Experience {
 
 export interface Summary {
     summary: string
+    id: String
 }

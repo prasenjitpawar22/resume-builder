@@ -72,7 +72,8 @@ const ExperienceForm = () => {
                             </label>
                             <div className='flex flex-row items-center'>
                                 <div className='relative w-full'>
-                                    <DatePicker selected={formData.yearStart}
+                                    <DatePicker
+                                        selected={formData.yearStart}
                                         onChange={(date) => { if (date) setFormData({ ...formData, yearStart: date }) }}
                                         dateFormat={'MM-yyyy'} showMonthYearPicker
                                         placeholderText={'March 2023'}
@@ -85,7 +86,7 @@ const ExperienceForm = () => {
 
                                 <div className='relative w-full'>
                                     <input className={`absolute ${formInputStyle} w-full`}
-                                        type={'text'} value='Present' />
+                                        type={'text'} onChange={() => null} value='Present' />
 
                                     <DatePicker
                                         selected={formData.yearEnd}
@@ -131,7 +132,8 @@ const ExperienceForm = () => {
                         </label>
                         <textarea className={`${formInputStyle} resize-none min-h-[222px]`}
                             placeholder={`• Help bridge the gap between data and the decision-making process. Typical data analyst roles at Amazon include data analysis, dashboard/report building, and metric definitions and reviews. Data analysts at Amazon also design systems for data collection, compiling, analysis, and reporting.`}
-                            value={formData.achivements} onChange={(e) => setFormData({ ...formData, achivements: e.target.value })}
+                            value={formData.achivements}
+                            onChange={(e) => setFormData({ ...formData, achivements: e.target.value })}
                         />
                     </div>
                     <div className=''>
