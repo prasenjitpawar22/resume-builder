@@ -36,6 +36,7 @@ const ExperienceForm = () => {
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
         >
             <ResumeFormDataCard
+
                 cardDataType={FormsTypes.experience}
                 title={'your experince'} />
 

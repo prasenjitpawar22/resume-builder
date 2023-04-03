@@ -83,7 +83,10 @@ export interface Education {
 }
 
 export interface Skills {
+    id: String
+    show: Boolean
     skill: string
+    userId: String
 }
 
 export interface Certification {

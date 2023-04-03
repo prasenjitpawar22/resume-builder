@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import App from '../../App';
 import FeatureProvider from '../../context/FeaturesContext';
+import FormsDataProvider from '../../context/FormsDataContext';
 import ResumeProvider from '../../context/ResumeContext';
 import { UserProvider } from '../../context/UserContext';
 import Home from '../../pages/Home';
@@ -17,13 +18,15 @@ export const ApplicationRoutes = (props) => {
     return (
         <UserProvider>
             <Routes>
-                <Route path={'/build'} element={<AuthRoute />}>
-                    <Route index element={<App />} />
+                <Route path={'/new-build'} element={<AuthRoute />}>
+                    {/* <Route index element={<App />} /> */}
+
+                    <Route index element={<NewBuild />} />
+
                 </Route>
                 <Route path='/' element={<UnAuthRoute />}>
                     <Route path={'/login'} element={<Login />} />
                     <Route path={'/register'} element={<Register />} />
-                    <Route path={'/new-build'} element={<NewBuild />} />
                     <Route path={'/download'} element={<ResumeDownload />} />
                     <Route index element={<Home />} />
                 </Route>
