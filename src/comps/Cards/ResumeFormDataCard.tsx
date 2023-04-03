@@ -86,7 +86,7 @@ const ResumeFormDataCard = (props: Props) => {
                         animate={toggle ? 'visible' : 'hidden'}
 
                         className={` transition duration-700 w-full flex flex-col gap-2`}>
-                        {!skills === undefined && skills?.map((skill, index) =>
+                        {skills!?.length > 0 && skills?.map((skill, index) =>
                             <div className='flex gap-2 flex-col shadow  overflow-hidden' key={index}>
                                 <p className='p-2' style={{ textOverflow: 'ellipsis' }}>
                                     {skill.skill}
