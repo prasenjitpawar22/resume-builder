@@ -74,9 +74,9 @@ const ResumeFormDataCard = (props: Props) => {
             <div className='py-6 border-b flex items-center gap-1'>
                 <h1 className='text-primary capitalize font-extrabold px-2'>{title}</h1>
                 {toggle ?
-                    <BiChevronDown className='cursor-pointer hover:opacity-50' onClick={() => setToggle(!toggle)} />
-                    :
                     <BiChevronUp className='cursor-pointer hover:opacity-50' onClick={() => setToggle(!toggle)} />
+                    :
+                    <BiChevronDown className='cursor-pointer hover:opacity-50' onClick={() => setToggle(!toggle)} />
                 }
             </div>
             {cardDataType === FormsTypes.education ? <h1> edu </h1>
