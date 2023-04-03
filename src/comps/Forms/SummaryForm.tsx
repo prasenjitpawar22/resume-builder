@@ -8,6 +8,7 @@ const SummaryForm = () => {
     const formLableStyle = `font-extrabold text-xs text-primary uppercase`
 
     const [foundSummary, setFoundSummary] = useState(false)
+    const [loadbtn, setLoadbtn] = useState(false)
     const [formData, setFormData] = useState<Summary>({
         summary: '', id: ''
     })
@@ -15,6 +16,7 @@ const SummaryForm = () => {
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault()
         // console.log(formData);
+        setLoadbtn(true);
         const { summary } = formData;
         const token = localStorage.getItem('token');
         if (!token) return
@@ -24,12 +26,14 @@ const SummaryForm = () => {
             .then((res) => {
                 console.log(res)
             })
-            .catch((e) => console.log(e))
+            .catch((e) => { console.log(e) })
+        setLoadbtn(false);
     }
 
     const handleFormUpdate = async (e: FormEvent) => {
         e.preventDefault()
         // console.log(formData);
+        setLoadbtn(true);
         const { summary, id } = formData;
         const token = localStorage.getItem('token');
         if (!token) return
@@ -43,6 +47,7 @@ const SummaryForm = () => {
                 setFormData({ ...formData, summary: res.data.summary })
             })
             .catch((e) => console.log(e))
+        setLoadbtn(false);
     }
 
     useEffect(() => {
@@ -80,9 +85,9 @@ const SummaryForm = () => {
                             value={formData.summary} onChange={(e) => setFormData({ ...formData, summary: e.target.value })} />
                     </div>
                     <div className=''>
-                        <button type='submit'
-                            className='bg-component-primary w-full p-4 text-slate-200 hover:text-white rounded uppercase 
-                                text-xs font-bold'>
+                        <button type='submit' disabled={loadbtn}
+                            className={`${loadbtn ? 'bg-component-secondary' : 'bg-component-primary'} w-full p-4 text-slate-200 hover:text-white rounded uppercase 
+                                text-xs font-bold`}>
                             save to summary info</button>
                     </div>
                 </div>
