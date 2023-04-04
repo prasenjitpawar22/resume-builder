@@ -47,7 +47,8 @@ interface Props {
 
 const ResumeFormDataCard = (props: Props) => {
     const { title, cardDataType, setSkillFormData, setUpdateSkillFormState,
-        disablebtnCard, setDisablebtnCard, setEducationFormData, setUpdateEducationFormState
+        disablebtnCard, setDisablebtnCard, setEducationFormData, setUpdateEducationFormState,
+        disableEducationbtnCard, setDisableEducationbtnCard
     } = props
 
     const { skills, education, setSkills, setEducation } = useContext(FormsDataContext)
@@ -77,7 +78,13 @@ const ResumeFormDataCard = (props: Props) => {
     }
 
     const handleEdit = async (data: any, type: String, index: number) => {
-        setDisablebtnCard!({ type: { skill: true }, index: index })
+        if (type === 'skill') {
+            setDisablebtnCard!({ type: { skill: true }, index: index })
+        }
+        if (type === 'education') {
+            setDisableEducationbtnCard!({ type: { education: true }, index: index })
+        }
+
         const token = localStorage.getItem('token')
         if (!token) return toast.error(`Could not retrieve token`)
 
@@ -87,6 +94,8 @@ const ResumeFormDataCard = (props: Props) => {
         }
 
         if (type === 'education') {
+            data.year = new Date(data.year)
+
             setEducationFormData!(data)
             setUpdateEducationFormState!(true)
         }
@@ -98,7 +107,7 @@ const ResumeFormDataCard = (props: Props) => {
     }
 
     return (
-        <div className='flex flex-col gap-2 w-full bg-white rounded shadow px-6 py-4 h-fit'>
+        <div className='flex flex-col gap-2 w-full bg-white rounded shadow px-6 py-4 h-fit text-primary font-Lato'>
             <div className='py-6 border-b flex items-center gap-1'>
                 <h1 className='text-primary capitalize font-extrabold px-2'>{title}</h1>
                 {toggle ?
@@ -112,22 +121,24 @@ const ResumeFormDataCard = (props: Props) => {
                 <motion.div
                     variants={variants}
                     animate={toggle ? 'visible' : 'hidden'}
-                    className={` transition duration-700 w-full flex flex-col gap-2`}>
-                    {education!?.length > 0 && education?.map((education, index) =>
+                    className={` w-full flex flex-col gap-2`}>
+                    {education && education.length > 0 && education.map((education, index) =>
                         <div className='flex gap-2 flex-col shadow  overflow-hidden' key={index}>
-                            <p className='p-2' style={{ textOverflow: 'ellipsis' }}>
+                            <p className='p-2 font-bold' style={{ textOverflow: 'ellipsis' }}>
                                 {education.degree}
                             </p>
                             <div className='flex gap-2 p-2'>
-                                <button disabled={disablebtnCard!.type.skill && disablebtnCard!.index === index}
-                                    className={`uppercase text-xs px-2 py-1 text-white rounded font-bold ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-not-allowed' : 'bg-yellow-400 hover:bg-yellow-500'}`}
+                                <button
+                                    disabled={disableEducationbtnCard && disableEducationbtnCard.type.education && disableEducationbtnCard.index === index}
+                                    className={`uppercase text-xs px-2 py-1 text-white rounded font-bold
+                                     ${disableEducationbtnCard && disableEducationbtnCard.type.education && disableEducationbtnCard.index === index ? 'bg-slate-200 cursor-default' : 'bg-yellow-400 hover:bg-yellow-500'}`}
                                     onClick={() => handleEdit(education, 'education', index)}>
                                     edit</button>
                                 <button
-                                    disabled={disablebtnCard!.type.skill && disablebtnCard!.index === index || removebtnState}
+                                    disabled={disableEducationbtnCard && disableEducationbtnCard.type.education && disableEducationbtnCard.index === index || removebtnState}
                                     className={`uppercase text-xs px-2 py-1 text-white rounded font-bold
                                 ${removebtnState ? 'bg-red-300 cursor-default' : 'bg-red-400'}
-                                ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-not-allowed' : ' bg-red-400 hover:bg-red-500'}`}
+                                ${disableEducationbtnCard && disableEducationbtnCard.type.education && disableEducationbtnCard.index === index ? 'bg-slate-200 cursor-default' : ' bg-red-400 hover:bg-red-500'}`}
                                     onClick={() => handleRemove(education.id, 'education')}>
                                     remove</button>
                             </div>
@@ -147,14 +158,14 @@ const ResumeFormDataCard = (props: Props) => {
                                 </p>
                                 <div className='flex gap-2 p-2'>
                                     <button disabled={disablebtnCard!.type.skill && disablebtnCard!.index === index}
-                                        className={`uppercase text-xs px-2 py-1 text-white rounded font-bold ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-not-allowed' : 'bg-yellow-400 hover:bg-yellow-500'}`}
+                                        className={`uppercase text-xs px-2 py-1 text-white rounded font-bold ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-default' : 'bg-yellow-400 hover:bg-yellow-500'}`}
                                         onClick={() => handleEdit(skill, 'skill', index)}>
                                         edit</button>
                                     <button
                                         disabled={disablebtnCard!.type.skill && disablebtnCard!.index === index || removebtnState}
                                         className={`uppercase text-xs px-2 py-1 text-white rounded font-bold
                                         ${removebtnState ? 'bg-red-300 cursor-default' : 'bg-red-400'}
-                                        ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-not-allowed' : ' bg-red-400 hover:bg-red-500'}`}
+                                        ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-default' : ' bg-red-400 hover:bg-red-500'}`}
                                         onClick={() => handleRemove(skill.id, 'skill')}>
                                         remove</button>
                                 </div>

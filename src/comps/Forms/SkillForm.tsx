@@ -81,7 +81,7 @@ const SkillForm = () => {
     }
 
     return (
-        <motion.div className='flex gap-4 flex-wrap phone:flex-col desktop:flex-row font-Lato px-8 py-12 bg-slate-50'
+        <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
         >
             <ResumeFormDataCard
@@ -92,7 +92,7 @@ const SkillForm = () => {
                 cardDataType={FormsTypes.skill}
                 title={'your skills'} />
 
-            <form className='w-full' onSubmit={!updateFormState ? handleFormSubmit : handleFormUpdate}>
+            <form className='col-span-2' onSubmit={!updateFormState ? handleFormSubmit : handleFormUpdate}>
                 <div className='flex flex-col gap-2 w-full'>
                     <div className='flex flex-col gap-2'>
                         <label className={`${formLableStyle} text-slate-500 font-normal`}>

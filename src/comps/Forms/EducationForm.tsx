@@ -61,6 +61,31 @@ const EducationForm = () => {
         setSubmitbtnState(false)
     }
 
+    const handleFormUpdate = async (e: FormEvent) => {
+        e.preventDefault()
+        // console.log(formData)
+        setSubmitbtnState(true)
+        const token = localStorage.getItem('token')
+        if (!token) return
+
+        const { degree, gpa, id, location, minor, show, university, userId, year } = formData
+
+        await formClient.post('update-education',
+            { degree, gpa, id, location, minor, show, university, userId, year },
+            { headers: { Authorization: 'Bearer ' + token } })
+            .then(async () => {
+                const data = await getAllEducations(token, 'educations')
+                setEducation!(data)
+                toast.success('success')
+            })
+        setUpdateFormState(false)
+        setSubmitbtnState(false)
+        setDisablebtnCard({ type: { education: false }, index: -1 })
+
+        setFormData({ id: '', show: true, userId: '', degree: '', gpa: '', location: '', minor: '', university: '', year: undefined })
+    }
+
+
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
@@ -73,14 +98,14 @@ const EducationForm = () => {
                 cardDataType={FormsTypes.education}
                 title={'your education'} />
 
-            <form className='col-span-2' onSubmit={handleFormSubmit}>
+            <form className='col-span-2' onSubmit={!updateFormState ? handleFormSubmit : handleFormUpdate}>
                 <div className='flex flex-col gap-2 w-full'>
                     <div className='flex flex-col gap-2'>
                         <label className={`${formLableStyle}`}>degree
                             <label className='text-slate-500 font-normal'> or other qualification and </label>
                             <label>Major? *</label>
                         </label>
-                        <input type="text" className={`${formInputStyle}`} placeholder={'Bachelor of science in economics'}
+                        <input required type="text" className={`${formInputStyle}`} placeholder={'Bachelor of science in economics'}
                             onChange={(e) => setFormData({ ...formData, degree: e.target.value })} value={formData.degree}
                         />
                     </div>
@@ -89,7 +114,7 @@ const EducationForm = () => {
                              after:text-slate-500 after:font-normal
                              `}>Where</label>
                         <input type="tel" className={`${formInputStyle}`}
-                            placeholder={'University of London'}
+                            placeholder={'University of London'} required
                             value={formData.university} onChange={(e) => setFormData({ ...formData, university: e.target.value })}
                         />
                     </div>
@@ -99,7 +124,7 @@ const EducationForm = () => {
                         </label>
                         <input type="text" className={`${formInputStyle}`}
                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                            value={formData.location}
+                            value={formData.location} required
                             placeholder={'London, UK'} />
                     </div>
                     <div className='flex flex-col gap-2'>
@@ -107,7 +132,7 @@ const EducationForm = () => {
                             <label className='text-slate-500 font-normal'> did you earn qualification/degree?</label>
                         </label>
                         <DatePicker selected={formData.year}
-                            dateFormat={'yyyy'} showYearPicker
+                            dateFormat={'yyyy'} showYearPicker required
                             onChange={(date) => { if (date) setFormData({ ...formData, year: date }) }}
                             placeholderText='2023' className={`${formInputStyle} w-full`}
                         />
@@ -134,8 +159,8 @@ const EducationForm = () => {
                     </div>
                     <div className=''>
                         <button type='submit'
-                            className='bg-component-primary w-full p-4 text-slate-200 hover:text-white rounded uppercase 
-                                text-xs font-bold'>
+                            className={`w-full p-4 text-slate-200 hover:text-white rounded uppercase 
+                                text-xs font-bold ${submitbtnState ? 'bg-component-secondary cursor-default' : 'bg-component-primary'} `}>
                             save to education list</button>
                     </div>
                 </div>

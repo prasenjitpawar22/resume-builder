@@ -46,7 +46,7 @@ const Login = () => {
       })
       setLoginBtnLoader(false)
       // return navigate('/')
-      return navigate('/build')
+      return navigate('/new-build')
     }
   }
 
