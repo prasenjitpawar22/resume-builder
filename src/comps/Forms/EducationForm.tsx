@@ -113,7 +113,7 @@ const EducationForm = () => {
                         <label className={`${formLableStyle} after:content-['_did_you_earn_your_qualification/degree?']
                              after:text-slate-500 after:font-normal
                              `}>Where</label>
-                        <input type="tel" className={`${formInputStyle}`}
+                        <input type="text" className={`${formInputStyle}`}
                             placeholder={'University of London'} required
                             value={formData.university} onChange={(e) => setFormData({ ...formData, university: e.target.value })}
                         />
