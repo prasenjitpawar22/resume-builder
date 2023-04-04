@@ -36,7 +36,7 @@ const ResumeFormDataCard = (props: Props) => {
 
     const { skills, setSkills } = useContext(FormsDataContext)
 
-    const [toggle, setToggle] = useState(true)
+    const [toggle, setToggle] = useState(false)
 
     const handleRemove = async (id: String, type: String) => {
         const token = localStorage.getItem('token')
