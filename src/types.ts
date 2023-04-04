@@ -63,11 +63,14 @@ export enum FormsTypes {
 }
 
 export interface Contact {
+    id: String
+    show: Boolean
+    userId: String
     fullname: string,
-    emailaddress: string
+    email: string
     phone: string
-    linkedinurl: string
-    personalwebsite: string
+    linkedin: string
+    website: string
     country: string
     state: string
     city: string

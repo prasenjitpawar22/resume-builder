@@ -18,11 +18,6 @@ const NewBuild = () => {
 
   const [currentForm, setCurrentForm] = useState<FormsTypes>(FormsTypes.contact)
 
-  useEffect(() => {
-    console.log(currentForm);
-
-  }, [currentForm])
-
   return (
     <>
       <FormsDataProvider>

@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { formClient } from "../api/axiosClient";
-import { getAllEducations, getAllSkills } from "../api/FormsApi";
+import { getAllContacts, getAllEducations, getAllSkills } from "../api/FormsApi";
 import { Certification, Contact, Education, Experience, Skills, Summary } from "../types";
 
 
@@ -40,6 +40,11 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
     const [certification, setCertification] = useState<Certification[]>([])
     const [contact, setContact] = useState<Contact[]>([])
 
+    // useEffect(() => {
+    //     console.log(contact, 'incontext');
+
+    // }, [contact])
+
     useEffect(() => {
         (async () => {
             const token = localStorage.getItem('token')
@@ -52,6 +57,10 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
                 await getAllEducations(token, 'educations')
                     .then((educations) => setEducation(educations))
                     .catch((error) => toast.error(error))
+
+                // await getAllContacts(token, 'contacts')
+                //     .then((contacts) => setContact(contacts))
+                //     .catch((error) => toast.error(error))
             }
         })()
     }, [])
