@@ -37,8 +37,10 @@ const ResumeFormDataCard = (props: Props) => {
     const { skills, setSkills } = useContext(FormsDataContext)
 
     const [toggle, setToggle] = useState(false)
+    const [removebtnState, setRemovebtnState] = useState(false)
 
     const handleRemove = async (id: String, type: String) => {
+        setRemovebtnState(true)
         const token = localStorage.getItem('token')
         if (!token) return toast.warn(`Invalid token`)
 
@@ -51,6 +53,7 @@ const ResumeFormDataCard = (props: Props) => {
                 }
             })
             .catch(() => toast.error(`Could not remove`))
+        setRemovebtnState(false)
     }
 
     const handleEdit = async (data: any, type: String, index: number) => {
@@ -97,7 +100,9 @@ const ResumeFormDataCard = (props: Props) => {
                                         onClick={() => handleEdit(skill, 'skill', index)}>
                                         edit</button>
                                     <button disabled={disablebtnCard!.type.skill && disablebtnCard!.index === index}
-                                        className={`uppercase text-xs px-2 py-1 text-white rounded font-bold  ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-not-allowed' : ' bg-red-400 hover:bg-red-500'}`}
+                                        className={`uppercase text-xs px-2 py-1 text-white rounded font-bold
+                                        ${removebtnState ? 'bg-red-300 cursor-default' : 'bg-red-400'}
+                                        ${disablebtnCard!.type.skill && disablebtnCard!.index === index ? 'bg-slate-200 cursor-not-allowed' : ' bg-red-400 hover:bg-red-500'}`}
                                         onClick={() => handleRemove(skill.id, 'skill')}>
                                         remove</button>
                                 </div>

@@ -107,8 +107,9 @@ const SkillForm = () => {
                     </div>
                     <div className=''>
                         <button type='submit'
+                            disabled={buttonLoad}
                             className={`w-full p-4 text-slate-200 hover:text-white rounded uppercase 
-                                text-xs font-bold ${buttonLoad ? 'bg-component-secondary' : 'bg-component-primary'}`}>
+                                text-xs font-bold ${buttonLoad ? 'bg-component-secondary cursor-default' : 'bg-component-primary'}`}>
                             save to skills list</button>
                     </div>
                 </div>
