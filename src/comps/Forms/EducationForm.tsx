@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useContext, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
 import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
@@ -7,28 +7,69 @@ import "react-datepicker/dist/react-datepicker.css";
 import './calender.css'
 import ResumeFormDataCard from '../Cards/ResumeFormDataCard'
 import { Education, FormsTypes } from '../../types'
+import { formClient } from '../../api/axiosClient';
+import { toast } from 'react-toastify';
+import { getAllEducations, getAllSkills } from '../../api/FormsApi';
+import { FormsDataContext } from '../../context/FormsDataContext';
 
 const EducationForm = () => {
-    const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb 
-    
-    onChange={(e)=> setFormData({...formData, degree: e.target.value})}
-    placeholder:opacity-50`
-    const formLableStyle = `font-extrabold text-xs text-primary uppercase`
 
+    const { education, setEducation } = useContext(FormsDataContext)
     const [formData, setFormData] = useState<Education>({
         degree: '', gpa: '', location: '', minor: '', university: '', year: undefined,
+        id: '', show: true, userId: '',
+    })
+    const [disablebtnCard, setDisablebtnCard] = useState({
+        type: { education: false },
+        index: -1
     })
 
-    const handleFormSubmit = (e: FormEvent) => {
+    const [updateFormState, setUpdateFormState] = useState(false)
+    const [submitbtnState, setSubmitbtnState] = useState(false)
+
+    const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb placeholder:opacity-50`
+    const formLableStyle = `font-extrabold text-xs text-primary uppercase`
+
+    const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault();
         console.log(formData);
 
+        // console.log(formData);
+        setSubmitbtnState(true)
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const { degree, gpa, location, minor, university, year } = formData
+
+        await formClient.post('add-education', { degree, gpa, location, minor, university, year },
+            { headers: { Authorization: 'Bearer ' + token } })
+            .then(async (response) => {
+                console.log(response.data);
+
+                toast.success('education added successfully')
+                const data = await getAllEducations(token, 'educations')
+                setEducation!(data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        setFormData({
+            id: '', show: true, userId: '', degree: '',
+            gpa: '', location: '', minor: '', university: '', year: undefined
+        })
+        setSubmitbtnState(false)
     }
+
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
         >
             <ResumeFormDataCard
+                disableEducationbtnCard={disablebtnCard}
+                setDisableEducationbtnCard={setDisablebtnCard}
+                setUpdateEducationFormState={setUpdateFormState}
+                setEducationFormData={setFormData}
                 cardDataType={FormsTypes.education}
                 title={'your education'} />
 

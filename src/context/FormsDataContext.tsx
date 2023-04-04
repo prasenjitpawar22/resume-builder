@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { formClient } from "../api/axiosClient";
+import { getAllEducations, getAllSkills } from "../api/FormsApi";
 import { Certification, Contact, Education, Experience, Skills, Summary } from "../types";
 
 
@@ -39,33 +40,21 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
     const [certification, setCertification] = useState<Certification[]>([])
     const [contact, setContact] = useState<Contact[]>([])
 
-
-    const getAllSkills = async (token: string) => {
-        await formClient.get('get-all-skills', { headers: { Authorization: 'Bearer ' + token } })
-            .then((response) => {
-                console.log(response);
-                setSkills(response.data)
-                toast.success('got all skills ')
-            })
-            .catch(() => {
-                toast.warn('error getting skills')
-            })
-    }
-
-    useEffect(() => console.log(skills), [skills])
-
-
     useEffect(() => {
-        console.log('inn provider');
         (async () => {
             const token = localStorage.getItem('token')
             if (!token) toast.warn('Token not found')
             else {
-                await getAllSkills(token)
+                await getAllSkills(token, 'skills')
+                    .then((skills) => setSkills(skills))
+                    .catch((error) => toast.error(error))
+
+                await getAllEducations(token, 'educations')
+                    .then((educations) => setEducation(educations))
+                    .catch((error) => toast.error(error))
             }
         })()
     }, [])
-
 
     return <FormsDataContext.Provider value={{
         skills, setSkills, experience, setExperience, education, setEducation,

@@ -74,6 +74,9 @@ export interface Contact {
 }
 
 export interface Education {
+    id: String
+    show: Boolean
+    userId: String
     degree: string
     university: string
     location: string
