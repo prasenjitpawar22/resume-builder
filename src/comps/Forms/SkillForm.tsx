@@ -46,7 +46,7 @@ const SkillForm = () => {
                 console.log(response.data);
 
                 toast.success('skill added successfully')
-                const data = await getAllSkills(token, 'skills')
+                const data: Skills[] = await getAllSkills(token, 'skills')
                 setSkills!(data)
             })
             .catch((error) => {
