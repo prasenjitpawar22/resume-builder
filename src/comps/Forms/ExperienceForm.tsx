@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import React, { FormEvent, HtmlHTMLAttributes, KeyboardEvent, useContext, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
 import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
@@ -110,8 +110,31 @@ const ExperienceForm = () => {
         })
     }
 
-    // useEffect(() => { console.log(experience, presentWorkDate) }, [experience, presentWorkDate])
+    const handleTextAreaKeyUp = (e: KeyboardEvent) => {
+        let { key, target } = e
 
+        let { value, selectionStart } = (target as HTMLInputElement)
+
+        const bulletWithSpace = `• `
+        console.log(selectionStart);
+
+        if (key === 'Enter') {
+            (target as HTMLInputElement).value = [...value].map((c, i) =>
+                i === selectionStart! - 1
+                    ? `\n• ` : c)
+                .join('');
+
+            console.log(formData.achivements);
+
+            (target as HTMLInputElement).selectionStart = selectionStart! + bulletWithSpace.length;
+            (target as HTMLInputElement).selectionEnd = selectionStart! + bulletWithSpace.length;
+        }
+
+        if (selectionStart !== 0 && value[0] !== '•') {
+            (target as HTMLInputElement).value = `• ${value}`;
+        }
+
+    }
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
@@ -218,8 +241,15 @@ const ExperienceForm = () => {
                         </label>
                         <textarea className={`${formInputStyle} resize-none min-h-[222px] list-disc`}
                             placeholder={`• Help bridge the gap between data and the decision-making process. Typical data analyst roles at Amazon include data analysis, dashboard/report building, and metric definitions and reviews. Data analysts at Amazon also design systems for data collection, compiling, analysis, and reporting.`}
+                            onKeyUp={handleTextAreaKeyUp}
                             value={formData.achivements}
-                            onChange={(e) => setFormData({ ...formData, achivements: e.target.value })}
+                            onChange={(e) => {
+                                // if (e.target.value[0] !== '•') {
+                                //     console.log('innnnnnnnnnnnnn');
+                                //     e.target.value = `• ${e.target.value}`
+                                // }
+                                setFormData({ ...formData, achivements: e.target.value })
+                            }}
                         />
                     </div>
                     <div className=''>
