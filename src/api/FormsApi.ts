@@ -1,4 +1,4 @@
-import { Contact, Education, Skills } from "../types"
+import { Certification, Contact, Education, Skills } from "../types"
 import { formClient } from "./axiosClient"
 
 
@@ -32,6 +32,20 @@ export const getAllEducations = async (token: String, type: String) => {
 
 export const getAllContacts = async (token: String, type: String) => {
     let response: Contact[] = []
+
+    await formClient.get(`get-all-${type}`, { headers: { Authorization: 'Bearer ' + token } })
+        .then((res) => {
+            response = res.data;
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    return response
+}
+
+
+export const getAllCertifications = async (token: String, type: String) => {
+    let response: Certification[] = []
 
     await formClient.get(`get-all-${type}`, { headers: { Authorization: 'Bearer ' + token } })
         .then((res) => {

@@ -96,6 +96,9 @@ export interface Skills {
 }
 
 export interface Certification {
+    id: String
+    show: Boolean
+    userId: String
     name: string
     location: string
     year: Date | undefined
