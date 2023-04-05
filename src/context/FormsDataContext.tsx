@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { formClient } from "../api/axiosClient";
-import { getAllCertifications, getAllContacts, getAllEducations, getAllSkills } from "../api/FormsApi";
+import { getAllCertifications, getAllContacts, getAllEducations, getAllExperiences, getAllSkills } from "../api/FormsApi";
 import { Certification, Contact, Education, Experience, Skills, Summary } from "../types";
 
 
@@ -55,6 +55,9 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
 
                 await getAllCertifications(token, 'certifications')
                     .then((certification) => setCertification(certification))
+                    .catch((error) => toast.error(error))
+                await getAllExperiences(token, 'experiences')
+                    .then((experiences) => setExperience(experiences))
                     .catch((error) => toast.error(error))
             }
         })()

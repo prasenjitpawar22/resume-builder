@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
 import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
@@ -7,6 +7,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import './calender.css'
 import ResumeFormDataCard from '../Cards/ResumeFormDataCard'
 import { Experience, FormsTypes } from '../../types'
+import { formClient } from '../../api/axiosClient';
+import { toast } from 'react-toastify';
+import { FormsDataContext } from '../../context/FormsDataContext';
+import { getAllExperiences } from '../../api/FormsApi';
 
 interface Data {
     startDate: undefined | Date
@@ -15,32 +19,113 @@ interface Data {
 
 const ExperienceForm = () => {
 
-    const [presentWorkDate, setPresentWorkDate] = useState(false)
+    const { experience, setExperience } = useContext(FormsDataContext)
 
     const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb-3 placeholder:opacity-50`
     const formLableStyle = `font-extrabold text-xs text-primary uppercase`
 
+    const [presentWorkDate, setPresentWorkDate] = useState(false)
     const [formData, setFormData] = useState<Experience>({
         yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
-        yearEnd: undefined,
+        yearEnd: undefined, id: '', show: true, userId: ''
     })
 
-    const handleSubmitForm = (e: FormEvent) => {
-        e.preventDefault();
-        console.log(formData);
+    const [disablebtnCard, setDisablebtnCard] = useState({
+        type: { experience: false },
+        index: -1
+    })
 
+    const [updateFormState, setUpdateFormState] = useState(false)
+    const [submitbtnState, setSubmitbtnState] = useState(false)
+
+    const handleFormSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        setSubmitbtnState(true)
+
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const { achivements, company, id, location, role, show,
+            userId, yearEnd, yearStart } = formData
+
+        // if present then set end date to current
+        if (presentWorkDate) setFormData({ ...formData, yearEnd: new Date() })
+
+        // console.log(formData);
+
+        await formClient.post('add-experience', {
+            achivements, company, id, location, present: presentWorkDate, role, show,
+            userId, endYear: yearEnd, startYear: yearStart
+        },
+            { headers: { Authorization: 'Bearer ' + token } })
+            .then(async () => {
+                // console.log(response.data);
+                // console.log(response);
+
+                toast.success('experience added successfully')
+                const data = await getAllExperiences(token, 'experiences')
+                setExperience!(data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        // setFormData({
+        //     yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
+        //     yearEnd: undefined, id: '', show: true, userId: ''
+        // })
+        setPresentWorkDate(false)
+        setSubmitbtnState(false)
     }
+
+    const handleFormUpdate = async (e: FormEvent) => {
+        e.preventDefault()
+        // console.log(formData)
+        setSubmitbtnState(true)
+        const token = localStorage.getItem('token')
+        if (!token) return
+
+        const { achivements, company, id, location, role, show, userId, yearEnd, yearStart } = formData
+
+        if (presentWorkDate) setFormData({ ...formData, yearEnd: new Date() })
+        await formClient.post('update-experience',
+            {
+                achivements, company, id, location, present: presentWorkDate, role, show, userId,
+                endYear: yearEnd, startYear: yearStart
+            },
+            { headers: { Authorization: 'Bearer ' + token } })
+            .then(async () => {
+                const data = await getAllExperiences(token, 'experiences')
+                setExperience!(data)
+                toast.success('success')
+            })
+        setUpdateFormState(false)
+        setSubmitbtnState(false)
+        setDisablebtnCard({ type: { experience: false }, index: -1 })
+
+        setPresentWorkDate(false)
+        setFormData({
+            yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
+            yearEnd: undefined, id: '', show: true, userId: ''
+        })
+    }
+
+    // useEffect(() => { console.log(experience, presentWorkDate) }, [experience, presentWorkDate])
 
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
         >
             <ResumeFormDataCard
-
+                setExperienceEndDatePresentState={setPresentWorkDate}
+                disableExperiencebtnCard={disablebtnCard}
+                setDisableExperiencebtnCard={setDisablebtnCard}
+                setUpdateExperienceFormState={setUpdateFormState}
+                setExperienceFormData={setFormData}
                 cardDataType={FormsTypes.experience}
                 title={'your experince'} />
 
-            <form className='col-span-2' onSubmit={handleSubmitForm}>
+            <form className='col-span-2' onSubmit={!updateFormState ? handleFormSubmit : handleFormUpdate}>
                 <div className='flex flex-col gap-2 w-full'>
                     <div className='flex flex-col gap-2'>
                         <label className={`${formLableStyle} text-slate-500 font-normal`}>
@@ -131,7 +216,7 @@ const ExperienceForm = () => {
                             <label className={`text-slate-500 font-normal ${formLableStyle}`}> at the company?
                             </label>
                         </label>
-                        <textarea className={`${formInputStyle} resize-none min-h-[222px]`}
+                        <textarea className={`${formInputStyle} resize-none min-h-[222px] list-disc`}
                             placeholder={`• Help bridge the gap between data and the decision-making process. Typical data analyst roles at Amazon include data analysis, dashboard/report building, and metric definitions and reviews. Data analysts at Amazon also design systems for data collection, compiling, analysis, and reporting.`}
                             value={formData.achivements}
                             onChange={(e) => setFormData({ ...formData, achivements: e.target.value })}
@@ -139,9 +224,9 @@ const ExperienceForm = () => {
                     </div>
                     <div className=''>
                         <button type='submit'
-                            className='bg-component-primary w-full p-4 text-slate-200 hover:text-white rounded uppercase 
-                                text-xs font-bold'>
-                            save to education list</button>
+                            className={`w-full p-4 text-slate-200 hover:text-white rounded uppercase 
+                                text-xs font-bold ${submitbtnState ? 'bg-component-secondary cursor-default' : 'bg-component-primary'} `}>
+                            save to experience list</button>
                     </div>
                 </div>
             </form>

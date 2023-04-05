@@ -2,23 +2,27 @@ import React, { useContext, useState } from 'react'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
 import { toast } from 'react-toastify'
 import { formClient } from '../../api/axiosClient'
-import { getAllCertifications, getAllEducations, getAllSkills } from '../../api/FormsApi'
+import { getAllCertifications, getAllEducations, getAllExperiences, getAllSkills } from '../../api/FormsApi'
 import { FormsDataContext } from '../../context/FormsDataContext'
 import { ResumeContext } from '../../context/ResumeContext'
-import { Certification, Education, FormsTypes, Skills } from '../../types'
+import { Certification, Education, Experience, FormsTypes, Skills } from '../../types'
 import { motion } from 'framer-motion'
 
 interface Props {
     title: string
     cardDataType: string
 
+    setExperienceEndDatePresentState?: React.Dispatch<React.SetStateAction<boolean>>
+
     setUpdateSkillFormState?: React.Dispatch<React.SetStateAction<boolean>>
     setUpdateEducationFormState?: React.Dispatch<React.SetStateAction<boolean>>
     setUpdateCertificationFormState?: React.Dispatch<React.SetStateAction<boolean>>
+    setUpdateExperienceFormState?: React.Dispatch<React.SetStateAction<boolean>>
 
     setSkillFormData?: React.Dispatch<React.SetStateAction<Skills>>
     setEducationFormData?: React.Dispatch<React.SetStateAction<Education>>
     setCertificationFormData?: React.Dispatch<React.SetStateAction<Certification>>
+    setExperienceFormData?: React.Dispatch<React.SetStateAction<Experience>>
 
     disableEducationbtnCard?: {
         type: {
@@ -56,6 +60,18 @@ interface Props {
         };
         index: number;
     }>>
+    disableExperiencebtnCard?: {
+        type: {
+            experience: boolean;
+        };
+        index: number;
+    }
+    setDisableExperiencebtnCard?: React.Dispatch<React.SetStateAction<{
+        type: {
+            experience: boolean;
+        };
+        index: number;
+    }>>
 }
 
 const ResumeFormDataCard = (props: Props) => {
@@ -63,9 +79,10 @@ const ResumeFormDataCard = (props: Props) => {
         disablebtnCard, setDisablebtnCard, setEducationFormData, setUpdateEducationFormState,
         disableEducationbtnCard, setDisableEducationbtnCard, setDisableCertificationbtnCard,
         disableCertificationbtnCard, setCertificationFormData, setUpdateCertificationFormState,
+        disableExperiencebtnCard, setDisableExperiencebtnCard, setExperienceFormData, setUpdateExperienceFormState, setExperienceEndDatePresentState
     } = props
 
-    const { skills, education, certification, setSkills, setEducation, setCertification }
+    const { skills, education, certification, experience, setSkills, setEducation, setCertification, setExperience }
         = useContext(FormsDataContext)
 
     const [toggle, setToggle] = useState(false)
@@ -91,6 +108,10 @@ const ResumeFormDataCard = (props: Props) => {
                     const data = await getAllCertifications(token, 'certifications')
                     setCertification!(data)
                 }
+                if (type === 'experience') {
+                    const data = await getAllExperiences(token, 'experiences')
+                    setExperience!(data)
+                }
             })
             .catch(() => toast.error(`Could not remove`))
         setRemovebtnState(false)
@@ -106,6 +127,10 @@ const ResumeFormDataCard = (props: Props) => {
 
         if (type === 'certification') {
             setDisableCertificationbtnCard!({ type: { certification: true }, index: index })
+        }
+
+        if (type === 'experience') {
+            setDisableExperiencebtnCard!({ type: { experience: true }, index: index })
         }
 
         const token = localStorage.getItem('token')
@@ -127,6 +152,24 @@ const ResumeFormDataCard = (props: Props) => {
             data.year = new Date(data.year)
             setCertificationFormData!(data)
             setUpdateCertificationFormState!(true)
+        }
+
+        if (type === 'experience') {
+            // const ndata: Experience = data
+            // ndata.yearStart = new Date(data.startYear)
+            // ndata.yearEnd = new Date(data.endYear)
+            // console.log(ndata, 'in if stat');
+            let tdata: Experience = data
+            tdata.yearStart = new Date(data.startYear)
+            tdata.yearEnd = new Date(data.endYear)
+
+            //if present then state presntdate true and undefined end date
+            if (data.present) {
+                setExperienceEndDatePresentState!(true)
+                tdata.yearEnd = undefined
+            }
+            setExperienceFormData!(tdata)
+            setUpdateExperienceFormState!(true)
         }
     }
 
@@ -229,7 +272,32 @@ const ResumeFormDataCard = (props: Props) => {
                                 </div>
                             )}
                         </motion.div>
-                        : cardDataType === FormsTypes.experience ? <h1>experince</h1>
+                        : cardDataType === FormsTypes.experience ?
+                            <motion.div
+                                variants={variants}
+                                animate={toggle ? 'visible' : 'hidden'}
+                                className={` transition duration-700 w-full flex flex-col gap-2`}>
+                                {experience!?.length > 0 && experience?.map((experience, index) =>
+                                    <div className='flex gap-2 flex-col shadow  overflow-hidden' key={index}>
+                                        <p className='p-2 font-bold' style={{ textOverflow: 'ellipsis' }}>
+                                            {experience.role}
+                                        </p>
+                                        <div className='flex gap-2 p-2'>
+                                            <button disabled={disableExperiencebtnCard!.type.experience && disableExperiencebtnCard!.index === index}
+                                                className={`uppercase text-xs px-2 py-1 text-white rounded font-bold ${disableExperiencebtnCard!.type.experience && disableExperiencebtnCard!.index === index ? 'bg-slate-200 cursor-default' : 'bg-yellow-400 hover:bg-yellow-500'}`}
+                                                onClick={() => handleEdit(experience, 'experience', index)}>
+                                                edit</button>
+                                            <button
+                                                disabled={disableExperiencebtnCard!.type.experience && disableExperiencebtnCard!.index === index || removebtnState}
+                                                className={`uppercase text-xs px-2 py-1 text-white rounded font-bold
+                                        ${removebtnState ? 'bg-red-100 cursor-default' : 'bg-red-400'}
+                                        ${disableExperiencebtnCard!.type.experience && disableExperiencebtnCard!.index === index ? 'bg-slate-200 cursor-default' : ' bg-red-400 hover:bg-red-500'}`}
+                                                onClick={() => handleRemove(experience.id, 'experience')}>
+                                                remove</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </motion.div>
                             : ''}
         </div >
     )

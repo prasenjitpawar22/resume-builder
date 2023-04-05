@@ -106,6 +106,9 @@ export interface Certification {
 }
 
 export interface Experience {
+    id: String
+    show: Boolean
+    userId: String
     role: string
     company: string
     yearStart: Date | undefined
