@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
 import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
@@ -36,7 +36,7 @@ const CertificationForm = () => {
 
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log(formData);
+        // console.log(formData);
 
         // console.log(formData);
         setSubmitbtnState(true)
@@ -47,8 +47,8 @@ const CertificationForm = () => {
 
         await formClient.post('add-certification', { helpful, id, location, name, show, userId, year },
             { headers: { Authorization: 'Bearer ' + token } })
-            .then(async (response) => {
-                console.log(response.data);
+            .then(async () => {
+                // console.log(response.data);
 
                 toast.success('education added successfully')
                 const data = await getAllCertifications(token, 'certifications')
@@ -74,7 +74,7 @@ const CertificationForm = () => {
 
         const { helpful, id, location, name, show, userId, year } = formData
 
-        await formClient.post('update-education',
+        await formClient.post('update-certification',
             { helpful, id, location, name, show, userId, year },
             { headers: { Authorization: 'Bearer ' + token } })
             .then(async () => {
