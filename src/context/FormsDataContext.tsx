@@ -18,11 +18,11 @@ interface FormDataContext {
     certification: Certification[]
     setCertification: React.Dispatch<React.SetStateAction<Certification[]>>
 
-    contact: Contact[]
-    setContact: React.Dispatch<React.SetStateAction<Contact[]>>
+    contact: Contact
+    setContact: React.Dispatch<React.SetStateAction<Contact>>
 
-    summary: Summary[]
-    setSummary: React.Dispatch<React.SetStateAction<Summary[]>>
+    summary: Summary
+    setSummary: React.Dispatch<React.SetStateAction<Summary>>
 
 }
 
@@ -36,9 +36,46 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
     const [skills, setSkills] = useState<Skills[]>([])
     const [experience, setExperience] = useState<Experience[]>([])
     const [education, setEducation] = useState<Education[]>([])
-    const [summary, setSummary] = useState<Summary[]>([])
+    const [summary, setSummary] = useState<Summary>({ id: '', summary: '', show: true, userId: '' })
     const [certification, setCertification] = useState<Certification[]>([])
-    const [contact, setContact] = useState<Contact[]>([])
+    const [contact, setContact] = useState<Contact>({
+        city: '', state: '', country: '', email: '', fullname: '',
+        id: '', linkedin: '', phone: '', show: true, userId: '', website: ''
+    })
+
+
+    const getSummary = async (token: string) => {
+        await formClient.get('get-summary', {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.data) {
+                setSummary({ ...summary, summary: response.data.summary, id: response.data.id })
+            }
+        }).catch((e) => console.log(e))
+    }
+
+    const getContact = async (token: string) => {
+        await formClient.get('get-all-contacts', {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.data) {
+                // console.log(response.data);
+                let data: Contact = response.data[0]
+
+                setContact({
+                    ...contact,
+                    city: data.city, country: data.country, email: data.email,
+                    fullname: data.fullname, phone: data.phone,
+                    id: data.id, linkedin: data.linkedin, show: data.show, state: data.state,
+                    userId: data.userId, website: data.website
+                })
+            }
+        }).catch((e) => console.log(e))
+    }
 
     useEffect(() => {
         (async () => {
@@ -59,6 +96,8 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
                 await getAllExperiences(token, 'experiences')
                     .then((experiences) => setExperience(experiences))
                     .catch((error) => toast.error(error))
+                await getSummary(token)
+                await getContact(token)
             }
         })()
     }, [])

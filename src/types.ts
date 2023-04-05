@@ -121,4 +121,6 @@ export interface Experience {
 export interface Summary {
     summary: string
     id: String
+    userId: String
+    show: Boolean
 }

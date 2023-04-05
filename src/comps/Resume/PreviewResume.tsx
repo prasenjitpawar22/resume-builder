@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { MdEmail, MdLocationPin, MdPhone, MdPhoneAndroid } from 'react-icons/md'
 import { BsDownload, BsLinkedin } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
+import { FormsDataContext } from '../../context/FormsDataContext'
 
 
 const PreviewResume = () => {
     const navigate = useNavigate()
+
+    const { summary, contact } = useContext(FormsDataContext)
+
+    useEffect(() => {
+        console.log(summary);
+        console.log(contact);
+    })
+
     return (
         <motion.div className='grid grid-cols-1 gap-6 font-Lato phone:px-4 desktop:px-14 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
@@ -20,27 +29,28 @@ const PreviewResume = () => {
             <div className='bg-slate-200 h-full w-full rounded-md font-Lato'>
                 <div className='flex justify-center items-center h-full p-12 bg-white'>
                     <article className='relative w-full phone:text-[10px] desktop:text-[20px] text-primary'>
-                        <h1 className='text-center text-[1.72em] mb-4'>Prasenjit Pawar</h1>
+                        {contact && contact.fullname ? <h1 className='text-center text-[1.72em] mb-4'>{contact.fullname} </h1> : ''}
                         <div className='flex flex-wrap justify-center items-center phone:gap-1  phone:text-[10px] desktop:text-[20px] phone:mb-4 desktop:mb-8 '>
-                            <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><MdLocationPin color='#434343' /> Maharashtra, India</span>
-                            <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><MdEmail color='#434343' /> prasenjitpawar@gmail.com</span>
-                            <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><MdPhoneAndroid color='#434343' /> 9981291231</span>
-                            <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><BsLinkedin color='#434343' /> https://www.linkedin.com/in/prasenjit-pawar-2b378b77</span>
+                            {contact && contact.state ? <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><MdLocationPin color='#434343' />
+                                {contact.state}{contact && contact.country ? `, ${contact.country}` : ''} </span> : ''}
+                            {contact && contact.email ? <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><MdEmail color='#434343' />
+                                {contact.email} </span> : ''}
+                            {contact && contact.phone ? <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><MdPhoneAndroid color='#434343' />
+                                {contact.phone}</span> : ''}
+                            {contact && contact.linkedin ? <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><BsLinkedin color='#434343' />
+                                {contact.linkedin}</span> : ''}
                         </div>
 
-                        <section className='mb-4'>
+                        {summary && summary.summary ? <section className='mb-4'>
                             <hr className='' />
                             <div className='phone:text-[10px] desktop:text-[20px]'>
                                 <span className='uppercase text-[1em] font-bold w-full'>summary</span>
                                 <hr className='phone:border-t-[0.2px] desktop:border-[1.2px] border-black' />
                                 <p className='text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
-                                    Experienced software engineer with 1 year of experience in
-                                    frontend and backend development. Proficient in multiple programming
-                                    languages and able to quickly learn new technologies. Demonstrated ability to
-                                    solve technical problems and develop software solutions
+                                    {summary.summary}
                                 </p>
                             </div>
-                        </section>
+                        </section> : ''}
 
                         <section className=''>
                             <hr className='' />

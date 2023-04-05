@@ -1,10 +1,12 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Contact } from '../../types'
 import { formClient } from '../../api/axiosClient'
 import { toast } from 'react-toastify'
+import { FormsDataContext } from '../../context/FormsDataContext'
 
 const ContactForm = () => {
+    const { setContact } = useContext(FormsDataContext)
 
     const [formData, setFormData] = useState<Contact>({
         city: '', country: '', email: '', fullname: '', linkedin: '', website: '',
@@ -63,6 +65,7 @@ const ContactForm = () => {
         })
             .then((res) => {
                 setFormData(res.data)
+                setContact!(res.data)
                 toast.success('saved successfully')
             })
             .catch((e) => console.log(e))

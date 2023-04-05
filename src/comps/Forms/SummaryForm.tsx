@@ -1,17 +1,21 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Summary } from '../../types'
 import { formClient } from '../../api/axiosClient'
+import { FormsDataContext } from '../../context/FormsDataContext'
+import { toast } from 'react-toastify'
 
 const SummaryForm = () => {
-    const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb-3 placeholder:opacity-50`
-    const formLableStyle = `font-extrabold text-xs text-primary uppercase`
+    const { setSummary } = useContext(FormsDataContext)
 
     const [foundSummary, setFoundSummary] = useState(false)
     const [loadbtn, setLoadbtn] = useState(false)
     const [formData, setFormData] = useState<Summary>({
-        summary: '', id: ''
+        summary: '', id: '', show: true, userId: ''
     })
+
+    const formInputStyle = `border-slate-100 border-2 shadow rounded font-semibold text-primary py-3 mb-3 placeholder:opacity-50`
+    const formLableStyle = `font-extrabold text-xs text-primary uppercase`
 
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -25,6 +29,8 @@ const SummaryForm = () => {
         })
             .then((res) => {
                 console.log(res)
+                setSummary!(res.data)
+                toast.success('Summary saved successfully')
             })
             .catch((e) => { console.log(e) })
         setLoadbtn(false);
@@ -45,6 +51,8 @@ const SummaryForm = () => {
                     return
                 }
                 setFormData({ ...formData, summary: res.data.summary })
+                setSummary!(res.data)
+                toast.success('Summary saved successfully')
             })
             .catch((e) => console.log(e))
         setLoadbtn(false);
