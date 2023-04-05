@@ -132,6 +132,7 @@ const ExperienceForm = () => {
 
         if (selectionStart !== 0 && value[0] !== '•') {
             (target as HTMLInputElement).value = `• ${value}`;
+            setFormData({ ...formData, achivements: (target as HTMLInputElement).value })
         }
 
     }
