@@ -92,8 +92,6 @@ const CertificationForm = () => {
         })
     }
 
-
-
     return (
         <motion.div className='grid phone:grid-cols-1 gap-6 desktop:grid-cols-3 font-Lato px-8 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
@@ -154,8 +152,8 @@ const CertificationForm = () => {
                     </div>
                     <div className=''>
                         <button type='submit'
-                            className='bg-component-primary w-full p-4 text-slate-200 hover:text-white rounded uppercase 
-                                text-xs font-bold'>
+                            className={`w-full p-4 text-slate-200 hover:text-white rounded uppercase 
+                                text-xs font-bold ${submitbtnState ? 'bg-component-secondary cursor-default' : 'bg-component-primary'} `}>
                             save to certification list</button>
                     </div>
                 </div>
