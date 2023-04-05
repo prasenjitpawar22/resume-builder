@@ -124,6 +124,7 @@ const ResumeFormDataCard = (props: Props) => {
         }
 
         if (type === 'certification') {
+            data.year = new Date(data.year)
             setCertificationFormData!(data)
             setUpdateCertificationFormState!(true)
         }
