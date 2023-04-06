@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
+import Cookies from 'js-cookie';
+import { motion } from 'framer-motion'
+
 import { toast } from 'react-toastify'
 import { formClient } from '../../api/axiosClient'
 import { getAllCertifications, getAllEducations, getAllExperiences, getAllSkills } from '../../api/FormsApi'
 import { FormsDataContext } from '../../context/FormsDataContext'
 import { ResumeContext } from '../../context/ResumeContext'
 import { Certification, Education, Experience, FormsTypes, Skills } from '../../types'
-import { motion } from 'framer-motion'
 
 interface Props {
     title: string
@@ -90,8 +92,12 @@ const ResumeFormDataCard = (props: Props) => {
 
     const handleRemove = async (id: String, type: String) => {
         setRemovebtnState(true)
-        const token = localStorage.getItem('token')
-        if (!token) return toast.warn(`Invalid token`)
+        const token = Cookies.get('__session')
+        if (!token) {
+            setRemovebtnState(false)
+            toast.warn(`Invalid token`)
+            return
+        }
 
         await formClient.post(`remove-${type}`, { id }, { headers: { Authorization: 'Bearer ' + token } })
             .then(async () => {
@@ -132,9 +138,6 @@ const ResumeFormDataCard = (props: Props) => {
         if (type === 'experience') {
             setDisableExperiencebtnCard!({ type: { experience: true }, index: index })
         }
-
-        const token = localStorage.getItem('token')
-        if (!token) return toast.error(`Could not retrieve token`)
 
         if (type === 'skill') {
             setSkillFormData!(data)

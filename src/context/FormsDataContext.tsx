@@ -1,8 +1,13 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useUser, useClerk } from '@clerk/clerk-react'
+import Cookies from 'js-cookie'
+
 import { formClient } from "../api/axiosClient";
 import { getAllCertifications, getAllContacts, getAllEducations, getAllExperiences, getAllSkills } from "../api/FormsApi";
 import { Certification, Contact, Education, Experience, Skills, Summary } from "../types";
+import axios from "axios";
 
 
 interface FormDataContext {
@@ -33,6 +38,11 @@ type FormsDataProviderProps = {
 }
 
 const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
+    const navigate = useNavigate()
+
+    const { user, isSignedIn } = useUser()
+    const { signOut } = useClerk()
+
     const [skills, setSkills] = useState<Skills[]>([])
     const [experience, setExperience] = useState<Experience[]>([])
     const [education, setEducation] = useState<Education[]>([])
@@ -62,28 +72,48 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
                 Authorization: 'Bearer ' + token
             }
         }).then((response) => {
-            if (response.data) {
-                // console.log(response.data);
-                let data: Contact = response.data[0]
+            // console.log(response);
 
-                setContact({
-                    ...contact,
-                    city: data.city, country: data.country, email: data.email,
-                    fullname: data.fullname, phone: data.phone,
-                    id: data.id, linkedin: data.linkedin, show: data.show, state: data.state,
-                    userId: data.userId, website: data.website
-                })
-            }
-        }).catch((e) => console.log(e))
+            if (response.data.length <= 0) return
+
+            let data: Contact = response.data[0]
+            // console.log(data, 'incontext contact');
+
+            setContact({
+                ...contact,
+                city: data.city, country: data.country, email: data.email,
+                fullname: data.fullname, phone: data.phone,
+                id: data.id, linkedin: data.linkedin, show: data.show, state: data.state,
+                userId: data.userId, website: data.website
+            })
+        }).catch((e) =>
+            console.log(e))
     }
+
+    // useEffect(() => {
+    //     console.log(contact, skills, experience, certification)
+
+    // }, [contact, skills, experience, certification])
 
     useEffect(() => {
         (async () => {
-            const token = localStorage.getItem('token')
-            if (!token) toast.warn('Token not found')
+
+            // const token = localStorage.getItem('token')
+            const token = Cookies.get('__session')
+            // console.log(user, isSignedIn, 'context user check');
+
+            // console.log(token);
+
+            if (token === undefined) {
+                toast.warn('Token not found')
+                signOut()
+            }
             else {
+
                 await getAllSkills(token, 'skills')
-                    .then((skills) => setSkills(skills))
+                    .then((skills) => {
+                        setSkills(skills)
+                    })
                     .catch((error) => toast.error(error))
 
                 await getAllEducations(token, 'educations')

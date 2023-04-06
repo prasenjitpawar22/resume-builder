@@ -41,16 +41,17 @@ const PreviewResume = () => {
                                 {contact.linkedin}</span> : ''}
                         </div>
 
-                        {summary && summary.summary ? <section className='mb-4'>
+                        <section className='mb-4'>
                             <hr className='' />
                             <div className='phone:text-[10px] desktop:text-[20px]'>
                                 <span className='uppercase text-[1em] font-bold w-full'>summary</span>
                                 <hr className='phone:border-t-[0.2px] desktop:border-[1.2px] border-black' />
                                 <p className='text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
-                                    {summary.summary}
+                                    {summary && summary.summary ? summary.summary :
+                                        <p className='text-center opacity-20 text-3xl w-full'>Blank</p>}
                                 </p>
                             </div>
-                        </section> : ''}
+                        </section>
 
                         <section className=''>
                             <hr className='' />

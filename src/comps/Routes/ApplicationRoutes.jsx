@@ -1,5 +1,6 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { SignIn, SignUp, SignedIn, ClerkProvider } from '@clerk/clerk-react'
 
 import App from '../../App';
 import FeatureProvider from '../../context/FeaturesContext';
@@ -14,23 +15,45 @@ import ResumeDownload from '../Resume/ResumeDownload';
 import AuthRoute from './AuthRoute';
 import UnAuthRoute from './UnAuthRout';
 
+const clerk_pub_key = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
 export const ApplicationRoutes = (props) => {
+    const navigate = useNavigate();
+
     return (
-        <UserProvider>
+        <ClerkProvider publishableKey={clerk_pub_key}
+            navigate={(to) => navigate(to)}
+        >
             <Routes>
-                <Route path={'/new-build'} element={<AuthRoute />}>
-                    {/* <Route index element={<App />} /> */}
-
-                    <Route index element={<NewBuild />} />
-
-                </Route>
-                <Route path='/' element={<UnAuthRoute />}>
-                    <Route path={'/login'} element={<Login />} />
-                    <Route path={'/register'} element={<Register />} />
-                    <Route path={'/download'} element={<ResumeDownload />} />
-                    <Route index element={<Home />} />
+                <Route path="/" element={<Home />} />
+                <Route
+                    path="/login"
+                    element={
+                        <div className='flex min-h-screen justify-center items-center'>
+                            <SignIn signUpUrl='/register' />
+                        </div>
+                    }
+                />
+                <Route
+                    path="register"
+                    element={
+                        <div className='flex min-h-screen justify-center items-center'>
+                            <SignUp signInUrl='/login' />
+                        </div>
+                    }
+                />
+                <Route path="/new-build" element={<AuthRoute />}>
+                    <Route
+                        index
+                        element={
+                            <SignedIn>
+                                <NewBuild />
+                            </SignedIn>
+                        }
+                    />
                 </Route>
             </Routes>
-        </UserProvider>
+
+        </ClerkProvider>
     );
 }

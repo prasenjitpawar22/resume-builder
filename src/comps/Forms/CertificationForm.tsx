@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { BiChevronDown } from 'react-icons/bi'
 import DatePicker, { CalendarContainer, CalendarContainerProps } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Cookies from 'js-cookie';
 
 import './calender.css'
 import ResumeFormDataCard from '../Cards/ResumeFormDataCard'
@@ -40,7 +41,9 @@ const CertificationForm = () => {
 
         // console.log(formData);
         setSubmitbtnState(true)
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
+
         if (!token) return;
 
         const { helpful, id, location, name, show, userId, year } = formData
@@ -69,7 +72,8 @@ const CertificationForm = () => {
         e.preventDefault()
         // console.log(formData)
         setSubmitbtnState(true)
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token') 
+        const token = Cookies.get('__session')
         if (!token) return
 
         const { helpful, id, location, name, show, userId, year } = formData

@@ -11,6 +11,7 @@ import { formClient } from '../../api/axiosClient';
 import { toast } from 'react-toastify';
 import { getAllEducations, getAllSkills } from '../../api/FormsApi';
 import { FormsDataContext } from '../../context/FormsDataContext';
+import Cookies from 'js-cookie';
 
 const EducationForm = () => {
 
@@ -32,19 +33,21 @@ const EducationForm = () => {
 
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log(formData);
+        // console.log(formData);
 
         // console.log(formData);
         setSubmitbtnState(true)
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
+
         if (!token) return;
 
         const { degree, gpa, location, minor, university, year } = formData
 
         await formClient.post('add-education', { degree, gpa, location, minor, university, year },
             { headers: { Authorization: 'Bearer ' + token } })
-            .then(async (response) => {
-                console.log(response.data);
+            .then(async () => {
+                // console.log(response.data);
 
                 toast.success('education added successfully')
                 const data = await getAllEducations(token, 'educations')
@@ -65,7 +68,9 @@ const EducationForm = () => {
         e.preventDefault()
         // console.log(formData)
         setSubmitbtnState(true)
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+        const token = Cookies.get('__session')
+
         if (!token) return
 
         const { degree, gpa, id, location, minor, show, university, userId, year } = formData

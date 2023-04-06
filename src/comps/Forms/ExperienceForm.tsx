@@ -11,6 +11,7 @@ import { formClient } from '../../api/axiosClient';
 import { toast } from 'react-toastify';
 import { FormsDataContext } from '../../context/FormsDataContext';
 import { getAllExperiences } from '../../api/FormsApi';
+import Cookies from 'js-cookie';
 
 interface Data {
     startDate: undefined | Date
@@ -42,7 +43,9 @@ const ExperienceForm = () => {
         e.preventDefault();
         setSubmitbtnState(true)
 
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
+
         if (!token) return;
 
         const { achivements, company, id, location, role, show,
@@ -70,10 +73,10 @@ const ExperienceForm = () => {
                 console.log(error);
             })
 
-        // setFormData({
-        //     yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
-        //     yearEnd: undefined, id: '', show: true, userId: ''
-        // })
+        setFormData({
+            yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
+            yearEnd: undefined, id: '', show: true, userId: ''
+        })
         setPresentWorkDate(false)
         setSubmitbtnState(false)
     }
@@ -82,7 +85,8 @@ const ExperienceForm = () => {
         e.preventDefault()
         // console.log(formData)
         setSubmitbtnState(true)
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+        const token = Cookies.get('__session')
         if (!token) return
 
         const { achivements, company, id, location, role, show, userId, yearEnd, yearStart } = formData
@@ -116,7 +120,7 @@ const ExperienceForm = () => {
         let { value, selectionStart } = (target as HTMLInputElement)
 
         const bulletWithSpace = `• `
-        console.log(selectionStart);
+        // console.log(selectionStart);
 
         if (key === 'Enter') {
             (target as HTMLInputElement).value = [...value].map((c, i) =>
@@ -124,7 +128,7 @@ const ExperienceForm = () => {
                     ? `\n• ` : c)
                 .join('');
 
-            console.log(formData.achivements);
+            // console.log(formData.achivements);
 
             (target as HTMLInputElement).selectionStart = selectionStart! + bulletWithSpace.length;
             (target as HTMLInputElement).selectionEnd = selectionStart! + bulletWithSpace.length;

@@ -11,6 +11,7 @@ import { FormsTypes, Skills } from '../../types'
 import { formClient } from '../../api/axiosClient';
 import { toast } from 'react-toastify';
 import { getAllSkills } from '../../api/FormsApi';
+import Cookies from 'js-cookie';
 
 
 const SkillForm = () => {
@@ -37,13 +38,14 @@ const SkillForm = () => {
         e.preventDefault();
         // console.log(formData);
         setButtonLoad(true)
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
         if (!token) return;
 
         const { skill } = formData
         formClient.post('add-skill', { skill }, { headers: { Authorization: 'Bearer ' + token } })
-            .then(async (response) => {
-                console.log(response.data);
+            .then(async () => {
+                // console.log(response.data);
 
                 toast.success('skill added successfully')
                 const data: Skills[] = await getAllSkills(token, 'skills')
@@ -61,7 +63,9 @@ const SkillForm = () => {
         e.preventDefault()
         // console.log(formData)
         setButtonLoad(true)
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+        const token = Cookies.get('__session')
+
         if (!token) return
 
         await formClient.post('update-skill', {

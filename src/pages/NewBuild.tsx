@@ -18,6 +18,7 @@ const NewBuild = () => {
 
   const [currentForm, setCurrentForm] = useState<FormsTypes>(FormsTypes.contact)
 
+
   return (
     <>
       <FormsDataProvider>
@@ -30,7 +31,7 @@ const NewBuild = () => {
                   : currentForm === FormsTypes.project ? <ProjectForm />
                     : currentForm === FormsTypes.summary ? <SummaryForm />
                       : <PreviewResume />}
-        <ToastContainer hideProgressBar autoClose={20} />
+        <ToastContainer hideProgressBar autoClose={50} />
       </FormsDataProvider>
     </>
   )

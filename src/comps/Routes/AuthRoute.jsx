@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate, Outlet, redirect } from 'react-router-dom';
-
+import { useClerk, useUser } from '@clerk/clerk-react'
+import Cookies from 'js-cookie'
 
 import FeatureProvider from '../../context/FeaturesContext';
 import ResumeProvider from '../../context/ResumeContext';
@@ -8,19 +9,24 @@ import { UserContext } from '../../context/UserContext';
 import { Loader } from '../Loader';
 
 const AuthRoute = ({ children }) => {
-  const { user, userLoader } = useContext(UserContext)
   const navigate = useNavigate()
 
+  const { isLoaded, isSignedIn, user } = useUser()
+  const { signOut } = useClerk()
+
   useEffect(() => {
-    if (!user.logedIn && !userLoader) {
-      navigate('/login',)
+    // console.log('isLoading', isLoaded);
+    const token = Cookies.get('__session')
+    if (!token) {
+      console.log('inn');
+      navigate('/login')
     }
-  }, [userLoader])
+  }, [isSignedIn])
 
   return (
-    userLoader ? <Loader /> :
+    !isLoaded ? <Loader /> :
       // if userlogedIn outlet, else render login page
-      user.logedIn && <ResumeProvider>
+      isSignedIn && <ResumeProvider>
         <FeatureProvider> <Outlet />
         </FeatureProvider >
       </ResumeProvider>

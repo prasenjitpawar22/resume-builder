@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView, } from 'react-intersection-observer'
 import { Parallax, } from 'react-scroll-parallax'
+import { useUser } from '@clerk/clerk-react'
 
 import { UserContext } from '../context/UserContext'
 import Blob from '../comps/Blob'
@@ -10,7 +11,9 @@ import Blob from '../comps/Blob'
 type TProps = {}
 const Home: React.FC<TProps> = () => {
     const navigate = useNavigate()
-    const { user } = useContext(UserContext)
+    // const { user } = useContext(UserContext)
+
+    const { user, isSignedIn, isLoaded } = useUser()
 
     const { ref, inView } = useInView({
         threshold: .75,
@@ -82,6 +85,10 @@ const Home: React.FC<TProps> = () => {
         }
     }, [inView])
 
+    // useEffect(() => {
+    //     console.log(user, isSignedIn, isLoaded)
+    // }, [user, isSignedIn, isLoaded])
+
     return (
         // <div className='grid grid-cols-1 w-full h-full gap-0'>
         <>
@@ -92,7 +99,7 @@ const Home: React.FC<TProps> = () => {
                     font-extrabold z-10" style={{ textShadow: 'rgb(0 0 0 / 25%) -2px 4px 5px' }}>
                             Resume Builder
                         </h2>
-                        <button onClick={() => { user?.logedIn ? navigate('/new-build') : navigate('/login') }}
+                        <button onClick={() => { user && isSignedIn ? navigate('/new-build') : navigate('/login') }}
                             className='bg-component-secondary p-3 rounded text-slate-100 z-10
                         font-bold hover:bg-component-primary transition-all duration-300 focus:outline-none'>
                             Build Resume

@@ -4,6 +4,7 @@ import { Contact } from '../../types'
 import { formClient } from '../../api/axiosClient'
 import { toast } from 'react-toastify'
 import { FormsDataContext } from '../../context/FormsDataContext'
+import Cookies from 'js-cookie'
 
 const ContactForm = () => {
     const { setContact } = useContext(FormsDataContext)
@@ -27,7 +28,9 @@ const ContactForm = () => {
         const { city, country, email,
             fullname, id, linkedin, website,
             phone, show, state, userId } = formData;
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
+
         if (!token) return
         await formClient.post('add-contact', {
             city, country, email,
@@ -37,7 +40,7 @@ const ContactForm = () => {
             headers: { Authorization: `bearer ${token}` }
         })
             .then((res) => {
-                console.log(res)
+                // console.log(res)
                 setFormData(res.data)
                 setFoundContact(true);
                 toast.success('saved successfully')
@@ -54,7 +57,8 @@ const ContactForm = () => {
             fullname, id, linkedin, website,
             phone, show, state, userId } = formData;
 
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
         if (!token) return
         await formClient.post('update-contact', {
             city, country, email,
@@ -74,7 +78,8 @@ const ContactForm = () => {
 
     useEffect(() => {
         (async () => {
-            const token = localStorage.getItem('token');
+            // const token = localStorage.getItem('token');
+            const token = Cookies.get('__session')
             if (!token) return
 
             await formClient.get('get-all-contacts', {

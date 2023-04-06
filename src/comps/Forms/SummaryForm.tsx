@@ -4,6 +4,7 @@ import { Summary } from '../../types'
 import { formClient } from '../../api/axiosClient'
 import { FormsDataContext } from '../../context/FormsDataContext'
 import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
 
 const SummaryForm = () => {
     const { setSummary } = useContext(FormsDataContext)
@@ -22,13 +23,14 @@ const SummaryForm = () => {
         // console.log(formData);
         setLoadbtn(true);
         const { summary } = formData;
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
         if (!token) return
         await formClient.post('add-summary', { summary }, {
             headers: { Authorization: `bearer ${token}` }
         })
             .then((res) => {
-                console.log(res)
+                // console.log(res)
                 setSummary!(res.data)
                 toast.success('Summary saved successfully')
             })
@@ -41,7 +43,8 @@ const SummaryForm = () => {
         // console.log(formData);
         setLoadbtn(true);
         const { summary, id } = formData;
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        const token = Cookies.get('__session')
         if (!token) return
         await formClient.post('update-summary', { summary, id }, {
             headers: { Authorization: `bearer ${token}` }
@@ -60,7 +63,8 @@ const SummaryForm = () => {
 
     useEffect(() => {
         (async () => {
-            const token = localStorage.getItem('token');
+            // const token = localStorage.getItem('token');
+            const token = Cookies.get('__session')
             if (!token) return
 
             await formClient.get('get-summary', {
