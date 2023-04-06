@@ -21,11 +21,15 @@ const SummaryForm = () => {
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault()
         // console.log(formData);
+        console.log('in create');
         setLoadbtn(true);
         const { summary } = formData;
         // const token = localStorage.getItem('token');
         const token = Cookies.get('__session')
-        if (!token) return
+        if (!token) {
+            setLoadbtn(false);
+            return
+        }
         await formClient.post('add-summary', { summary }, {
             headers: { Authorization: `bearer ${token}` }
         })
@@ -40,12 +44,17 @@ const SummaryForm = () => {
 
     const handleFormUpdate = async (e: FormEvent) => {
         e.preventDefault()
+        console.log('in update');
+
         // console.log(formData);
         setLoadbtn(true);
         const { summary, id } = formData;
         // const token = localStorage.getItem('token');
         const token = Cookies.get('__session')
-        if (!token) return
+        if (!token) {
+            setLoadbtn(false);
+            return
+        }
         await formClient.post('update-summary', { summary, id }, {
             headers: { Authorization: `bearer ${token}` }
         })
@@ -72,9 +81,13 @@ const SummaryForm = () => {
                     Authorization: 'Bearer ' + token
                 }
             }).then((response) => {
-                if (response.data.summary === null) {
+                if (!response.data) {
+                    console.log('summary not found, ""');
+
+                    setFoundSummary(false)
                     return
                 }
+
                 setFormData({ ...formData, summary: response.data.summary, id: response.data.id })
                 setFoundSummary(true)
             }).catch((e) => console.log(e))

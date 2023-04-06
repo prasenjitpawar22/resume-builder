@@ -104,19 +104,46 @@ const ResumeFormDataCard = (props: Props) => {
                 toast.success('removed successfully')
                 if (type === 'skill') {
                     const data = await getAllSkills(token, 'skills')
+                    setSkillFormData!({ id: '', show: true, skill: '', userId: '' })
                     setSkills!(data)
+                    setUpdateSkillFormState!(false)
+                    setDisablebtnCard!({ type: { skill: false }, index: -1 })
                 }
                 if (type === 'education') {
                     const data = await getAllEducations(token, 'educations')
+                    setCertificationFormData!({
+                        id: '', show: true, helpful: '', location: '', name: '',
+                        userId: '', year: undefined
+                    })
                     setEducation!(data)
+                    setUpdateEducationFormState!(false)
+                    setDisableEducationbtnCard!({ index: -1, type: { education: false } })
                 }
                 if (type === 'certification') {
                     const data = await getAllCertifications(token, 'certifications')
+                    setCertificationFormData!({
+                        helpful: '', id: '', location: '',
+                        name: '', show: true, userId: '', year: undefined
+                    })
                     setCertification!(data)
+                    setUpdateCertificationFormState!(false)
+                    setDisableCertificationbtnCard!({
+                        index: -1, type: { certification: false }
+                    })
                 }
                 if (type === 'experience') {
                     const data = await getAllExperiences(token, 'experiences')
+                    setExperienceFormData!({
+                        yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
+                        yearEnd: undefined, id: '', show: true, userId: ''
+                    })
+                    setUpdateExperienceFormState!(false)
                     setExperience!(data)
+                    setDisableExperiencebtnCard!({
+                        index: -1, type: {
+                            experience: false
+                        }
+                    })
                 }
             })
             .catch(() => toast.error(`Could not remove`))
@@ -152,19 +179,15 @@ const ResumeFormDataCard = (props: Props) => {
         }
 
         if (type === 'certification') {
-            data.year = new Date(data.year)
+            data.year = data.year ? new Date(data.year) : undefined
             setCertificationFormData!(data)
             setUpdateCertificationFormState!(true)
         }
 
         if (type === 'experience') {
-            // const ndata: Experience = data
-            // ndata.yearStart = new Date(data.startYear)
-            // ndata.yearEnd = new Date(data.endYear)
-            // console.log(ndata, 'in if stat');
             let tdata: Experience = data
-            tdata.yearStart = new Date(data.startYear)
-            tdata.yearEnd = new Date(data.endYear)
+            tdata.yearStart = data.startYear ? new Date(data.startYear) : undefined
+            tdata.yearEnd = data.endYear ? new Date(data.endYear) : undefined
 
             //if present then state presntdate true and undefined end date
             if (data.present) {

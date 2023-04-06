@@ -11,10 +11,10 @@ const PreviewResume = () => {
 
     const { summary, contact } = useContext(FormsDataContext)
 
-    useEffect(() => {
-        console.log(summary);
-        console.log(contact);
-    })
+    // useEffect(() => {
+    //     console.log(summary);
+    //     console.log(contact);
+    // })
 
     return (
         <motion.div className='grid grid-cols-1 gap-6 font-Lato phone:px-4 desktop:px-14 py-12 bg-slate-50'
