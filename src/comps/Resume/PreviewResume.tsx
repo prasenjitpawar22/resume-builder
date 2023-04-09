@@ -9,12 +9,13 @@ import { FormsDataContext } from '../../context/FormsDataContext'
 const PreviewResume = () => {
     const navigate = useNavigate()
 
-    const { summary, contact } = useContext(FormsDataContext)
+    const { summary, contact, experience, education, skills, certification } = useContext(FormsDataContext)
 
-    // useEffect(() => {
-    //     console.log(summary);
-    //     console.log(contact);
-    // })
+    useEffect(() => {
+        // console.log(summary);
+        // console.log(contact);
+        console.log(experience);
+    })
 
     return (
         <motion.div className='grid grid-cols-1 gap-6 font-Lato phone:px-4 desktop:px-14 py-12 bg-slate-50'
@@ -58,7 +59,37 @@ const PreviewResume = () => {
                             <div className='phone:text-[10px] desktop:text-[20px]'>
                                 <span className='uppercase text-[1em] font-bold w-full'>experience</span>
                                 <hr className='phone:border-t-[0.2px] desktop:border-[1.2px] border-black' />
-                                <div className='flex justify-between items-end'>
+                                {experience && experience.length > 0 ? experience.map((exp, index) => {
+                                    return <>
+                                        <div key={index} className='flex justify-between items-end'>
+                                            <div className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
+                                                <span className='font-bold text-[.8em]'>{exp.role} </span>
+                                                <span className='font-bold text-[.7em]'>{exp.company}</span>
+                                            </div>
+                                            <div className='phone:text-[10px] desktop:text-[20px]'>
+                                                <span className='font-bold text-[.8em] '>
+                                                    {exp.yearStart !== undefined ? exp.yearStart.toString() : ''}
+                                                    {exp.yearStart && exp.yearEnd && '-'}
+                                                    {exp.yearEnd !== undefined ? exp.yearEnd.toString() : ''}
+                                                    {exp.yearEnd && exp.location && ", "} {exp.location ? exp.location : ''}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className=' mb-3'>
+                                            {/* <ul className='list-disc text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
+                                                <li>Designed and implemented responsive mobile applications for both user android and iOS using React Native and Expo technologies.</li>
+                                                <li>Added functionalities for web users by making them more user-friendly and responsive using React and CSS Frameworks.</li>
+                                                <li>Tech Stack – React, React Native, Bootstrap, Tailwind CSS, MongoDB, Nodejs.</li>
+                                            </ul> */}
+                                            <p className='text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
+                                                {/* {exp.achivements.split("•").join("\t")} */}
+                                                {exp.achivements}
+                                            </p>
+                                        </div>
+                                    </>
+                                }) :
+                                    <p className='text-center opacity-20 text-3xl w-full'>Blank</p>}
+                                {/* <div className='flex justify-between items-end'>
                                     <div className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
                                         <span className='font-bold text-[.8em]'>MERN Stack Intern</span>
                                         <span className='font-bold text-[.7em]'>Bano Tech</span>
@@ -73,10 +104,10 @@ const PreviewResume = () => {
                                         <li>Added functionalities for web users by making them more user-friendly and responsive using React and CSS Frameworks.</li>
                                         <li>Tech Stack – React, React Native, Bootstrap, Tailwind CSS, MongoDB, Nodejs.</li>
                                     </ul>
-                                </div>
+                                </div> */}
 
 
-                                <div className='flex justify-between items-end'>
+                                {/* <div className='flex justify-between items-end'>
                                     <div className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
                                         <span className='font-bold text-[.8em]'>Software Engineer</span>
                                         <span className='font-bold text-[.7em]'>Capgemini</span>
@@ -91,7 +122,7 @@ const PreviewResume = () => {
                                         <li> Became AWS Certified Cloud Practitioner and added unit/integration test cases which increased the code coverage up to 70%, CI/CD, pull  request, and code review.</li>
                                         <li>Tech Stack – C#, .NET, Azure, MSSQL, Jira, Git, Docker.</li>
                                     </ul>
-                                </div>
+                                </div> */}
                             </div>
                         </section>
 
@@ -103,14 +134,26 @@ const PreviewResume = () => {
                                 <hr className='phone:border-t-[0.2px] desktop:border-[1.2px] border-black' />
 
                                 <div className='flex flex-col desktop:gap-2 phone:gap-1 mb-4'>
-                                    <div className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
-                                        <span className='font-bold text-[.8em]'>Bachelor of Technology in Computer Science and Engineering</span>
-                                        <span className='text-[.7em]'>Dr. Babasaheb Ambedkar Marathwada Technological University - Maharashtra, India - 2021 - 7.8</span>
-                                    </div>
+                                    {education && education.length > 0 ? education.map((edu, index) => {
+                                        return <div key={index} className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
+                                            <span className='font-bold text-[.8em]'>{edu.degree && edu.degree}</span>
+                                            <span className='text-[.7em]'>
+                                                {edu.university && edu.university}
+                                                {edu.location && edu.university && '-'}
+                                                {edu.location && edu.location}
+                                                {edu.location && edu.year && '-'}
+                                                {edu.year && edu.year.toString()}
+                                                {edu.year && edu.gpa && '-'}
+                                                {edu.gpa && edu.gpa}
+                                            </span>
+                                        </div>
+                                    }) :
+                                        <p className='text-center opacity-20 text-3xl w-full'>Blank</p>}
+                                    {/*                                     
                                     <div className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
                                         <span className='font-bold text-[.8em]'>Diploma in Computer Engineering</span>
                                         <span className='text-[.7em]'>Maharashtra State Board of Technical Education - Maharashtra, India - 2018 - 7.3</span>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </section>
@@ -122,6 +165,7 @@ const PreviewResume = () => {
                                 <hr className='phone:border-t-[0.2px] desktop:border-[1.2px] border-black' />
 
                                 <div className='flex flex-col desktop:gap-2 phone:gap-1 mb-4'>
+                                    {/* {certification.} */}
                                     <div className='flex flex-col phone:text-[10px] desktop:text-[20px]'>
                                         <span className='font-bold text-[.8em]'>AWS Certified Cloud Practitioner</span>
                                         <span className='text-[.7em]'>Dr. Babasaheb Ambedkar Marathwada Technological University - Maharashtra, India - 2021 - 7.8</span>

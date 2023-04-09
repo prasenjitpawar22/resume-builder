@@ -4,6 +4,7 @@ import { motion, useAnimation } from 'framer-motion'
 import { useInView, } from 'react-intersection-observer'
 import { Parallax, } from 'react-scroll-parallax'
 import { useUser } from '@clerk/clerk-react'
+import { GoLinkExternal } from 'react-icons/go'
 
 import { UserContext } from '../context/UserContext'
 import Blob from '../comps/Blob'
@@ -110,14 +111,23 @@ const Home: React.FC<TProps> = () => {
             </Parallax>
             <Parallax speed={5}
                 className='relative col-span-1 p-8 items-center justify-center min-h-screen 
-                    w-full h-full bg-gray-50'>
+                    w-full h-full bg-gray-50 flex'>
                 <div className='p-4'>
                     <div className='mb-8'>
-                        <h1 className='text-primary phone:text-3xl tablet:text-5xl'>
-                            Templates
-                        </h1>
+                        <div className='text-primary flex flex-col gap-2 justify-center phone:text-3xl tablet:text-5xl'>
+                            <h1 className='capitalize text-center 
+                             text-primary '>
+                                inspired from
+                            </h1>
+                            <a target="_blank" rel="noopener noreferrer"
+                                href='https://www.rezi.ai/'
+                                className='text-[40px] hover:text-violet-500 justify-center leading-loose w-full items-center flex'>Rezi.ai
+                                <GoLinkExternal size={25} />
+                            </a>
+                        </div>
                     </div>
-                    <div className='flex flex-wrap gap-4 justify-center'>
+
+                    {/* <div className='flex flex-wrap gap-4 justify-center'>
                         {resumeTemplates.map((resumeTemplate, index) =>
                             <motion.div key={index} className="max-w-sm rounded overflow-hidden shadow-lg">
                                 <div className="px-6 py-4 bg-slate-50">
@@ -133,7 +143,7 @@ const Home: React.FC<TProps> = () => {
                                 </div>
                             </motion.div>
                         )}
-                    </div>
+                    </div> */}
                 </div>
             </Parallax>
         </>
