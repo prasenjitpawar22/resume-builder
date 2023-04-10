@@ -1,16 +1,32 @@
 import React, { useContext, useEffect } from 'react'
 import { MdEmail, MdLocationPin, MdPhone, MdPhoneAndroid } from 'react-icons/md'
 import { AiFillCloud } from 'react-icons/ai'
+import Cookies from 'js-cookie'
 
 import { BsLinkedin } from 'react-icons/bs'
-import { FormsDataContext } from '../../context/FormsDataContext'
 import Moment from 'moment'
+import { FormsDataContext } from '../../context/FormsDataContext'
+
+interface Props {
+}
 
 const ResumeDownload = () => {
     const { summary, contact, experience, education, skills, certification } = useContext(FormsDataContext)
 
+    // useEffect(() => {
+    //     console.log(summary);
+    // })
+
+
     useEffect(() => {
-        console.log(summary);
+        const token = Cookies.get('__session')
+        console.log(token, 'sa');
+
+        // // console.log(summary);
+        // // console.log(contact);
+        // if (experience && experience[0]) {
+        //     console.log(experience[0]);
+        // }
     })
 
     return (
@@ -29,7 +45,6 @@ const ResumeDownload = () => {
                             {contact.linkedin}</span> : ''}
                         {contact && contact.website ? <span className='flex items-center gap-[1.2px] text-[0.75em] phone:px-[0.1px] desktop:px-2'><AiFillCloud color='#434343' />
                             {contact.website}</span> : ''}
-
                     </div>
 
                     <section className='mb-4'>

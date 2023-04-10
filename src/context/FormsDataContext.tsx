@@ -90,11 +90,6 @@ const FormsDataProvider = ({ children }: FormsDataProviderProps) => {
             console.log(e))
     }
 
-    // useEffect(() => {
-    //     console.log(contact, skills, experience, certification)
-
-    // }, [contact, skills, experience, certification])
-
     useEffect(() => {
         (async () => {
 

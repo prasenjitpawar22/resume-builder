@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { MdEmail, MdLocationPin, MdPhone, MdPhoneAndroid } from 'react-icons/md'
 import { BsDownload, BsLinkedin } from 'react-icons/bs'
@@ -6,6 +6,9 @@ import { AiFillCloud } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { FormsDataContext } from '../../context/FormsDataContext'
 import Moment from 'moment'
+import { toast } from 'react-toastify'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 
 
 const PreviewResume = () => {
@@ -13,26 +16,46 @@ const PreviewResume = () => {
 
     const { summary, contact, experience, education, skills, certification } = useContext(FormsDataContext)
 
-    useEffect(() => {
-        // // console.log(summary);
-        // // console.log(contact);
-        // if (experience && experience[0]) {
-        //     console.log(experience[0]);
-        // }
-    })
+    const [disableDownload, setDisableDownload] = useState(false)
+
+
+    const handleDownlaod = async () => {
+        setDisableDownload(true)
+        const input = document.getElementById('rootElementId');
+
+        if (!input) {
+            setDisableDownload(false)
+            toast.error('error downloading')
+            return
+        }
+        html2canvas(input)
+            .then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                pdf.addImage(imgData, 'JPEG', 0, 0, 200, 200);
+                pdf.save("download.pdf");
+            })
+
+        setDisableDownload(false)
+    }
 
     return (
         <motion.div className='grid grid-cols-1 gap-6 font-Lato phone:px-4 desktop:px-14 py-12 bg-slate-50'
             animate={{ opacity: [0, 1], transition: { duration: .8 } }}
         >
             <div className='flex justify-between items-center w-full px-4 h-20 mb-12 bg-white rounded-md shadow'>
-                <button onClick={() => navigate('download')}
-                    className='capitalize flex items-center gap-2 bg-component-secondary hover:bg-component-primary h-fit text-white p-2 rounded transition-all duration-200'>
+                <button onClick={() => {
+                    handleDownlaod()
+                    // navigate('/download')
+                }}
+                    className={`capitalize flex items-center gap-2 h-fit text-white p-2 rounded transition-all duration-200
+                    ${disableDownload ? 'bg-component-secondary cursor-default' : 'bg-component-secondary hover:bg-component-primary'}
+                    `}>
                     <BsDownload /> download</button>
             </div>
 
-            <div className='bg-slate-200 h-full w-full rounded-md font-Lato'>
-                <div className='flex justify-center items-center h-full p-12 bg-white'>
+            <div className='bg-slate-200 h-full w-full rounded-md font-Lato pdf'>
+                <div id='rootElementId' className='flex justify-center items-center h-full p-12 bg-white'>
                     <article className='relative w-full phone:text-[10px] desktop:text-[20px] text-primary'>
                         {contact && contact.fullname ? <h1 className='text-center text-[1.72em] mb-4'>{contact.fullname} </h1> : ''}
                         <div className='flex flex-wrap justify-center items-center phone:gap-1  phone:text-[10px] desktop:text-[20px] phone:mb-4 desktop:mb-8 '>
