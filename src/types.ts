@@ -111,8 +111,8 @@ export interface Experience {
     userId: String
     role: string
     company: string
-    yearStart: Date | undefined
-    yearEnd: Date | undefined
+    startYear: Date | undefined
+    endYear: Date | undefined
     present: Boolean
     location: string
     achivements: string

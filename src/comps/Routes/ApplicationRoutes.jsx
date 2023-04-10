@@ -14,6 +14,7 @@ import Register from '../../pages/Register';
 import ResumeDownload from '../Resume/ResumeDownload';
 import AuthRoute from './AuthRoute';
 import UnAuthRoute from './UnAuthRout';
+import PreviewResume from '../Resume/PreviewResume';
 
 const clerk_pub_key = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
@@ -30,7 +31,7 @@ export const ApplicationRoutes = (props) => {
                     path="/login"
                     element={
                         <div className='flex min-h-screen justify-center items-center'>
-                            <SignIn signUpUrl='/register' />
+                            <SignIn redirectUrl={'new-build'} signUpUrl='/register' />
                         </div>
                     }
                 />
@@ -38,19 +39,13 @@ export const ApplicationRoutes = (props) => {
                     path="register"
                     element={
                         <div className='flex min-h-screen justify-center items-center'>
-                            <SignUp signInUrl='/login' />
+                            <SignUp redirectUrl={'new-build'} signInUrl='/login' />
                         </div>
                     }
                 />
                 <Route path="/new-build" element={<AuthRoute />}>
-                    <Route
-                        index
-                        element={
-                            <SignedIn>
-                                <NewBuild />
-                            </SignedIn>
-                        }
-                    />
+                    <Route path='download' element={<ResumeDownload />} />
+                    <Route index element={<NewBuild />} />
                 </Route>
             </Routes>
 

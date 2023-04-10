@@ -79,12 +79,12 @@ const BuildNavbar = (props: Props) => {
               }}
                 className={`${simpleNavLiStyle} 
                 ${currentForm === FormsTypes.experience && 'bg-component-primary text-white rounded'}`}>Experience</li>
-              <li onClick={() => {
+              {/* <li onClick={() => {
                 setCurrentForm(FormsTypes.project)
                 setNavbar(false)
               }}
                 className={`${simpleNavLiStyle} 
-                ${currentForm === FormsTypes.project && 'bg-component-primary text-white rounded'}`}>Project</li>
+                ${currentForm === FormsTypes.project && 'bg-component-primary text-white rounded'}`}>Project</li> */}
               <li onClick={() => {
                 setCurrentForm(FormsTypes.summary)
                 setNavbar(false)
@@ -130,11 +130,11 @@ const BuildNavbar = (props: Props) => {
           setNavbar(false)
         }}
           className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.experience && 'bg-slate-100'}`}>Experience</li>
-        <li onClick={() => {
+        {/* <li onClick={() => {
           setCurrentForm(FormsTypes.project)
           setNavbar(false)
         }}
-          className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.project && 'bg-slate-100'}`}>project</li>
+          className={`${dropdownNavLiStyle} ${currentForm === FormsTypes.project && 'bg-slate-100'}`}>project</li> */}
         <li onClick={() => {
           setCurrentForm(FormsTypes.summary)
           setNavbar(false)

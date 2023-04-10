@@ -27,8 +27,8 @@ const ExperienceForm = () => {
 
     const [presentWorkDate, setPresentWorkDate] = useState(false)
     const [formData, setFormData] = useState<Experience>({
-        yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
-        yearEnd: undefined, id: '', show: true, userId: ''
+        startYear: undefined, achivements: '', company: '', location: '', present: false, role: '',
+        endYear: undefined, id: '', show: true, userId: ''
     })
 
     const [disablebtnCard, setDisablebtnCard] = useState({
@@ -49,16 +49,16 @@ const ExperienceForm = () => {
         if (!token) return;
 
         const { achivements, company, id, location, role, show,
-            userId, yearEnd, yearStart } = formData
+            userId, startYear, endYear } = formData
 
         // if present then set end date to current
-        if (presentWorkDate) setFormData({ ...formData, yearEnd: new Date() })
+        if (presentWorkDate) setFormData({ ...formData, startYear: new Date() })
 
         // console.log(formData);
 
         await formClient.post('add-experience', {
             achivements, company, id, location, present: presentWorkDate, role, show,
-            userId, endYear: yearEnd, startYear: yearStart
+            userId, endYear: startYear, startYear: endYear
         },
             { headers: { Authorization: 'Bearer ' + token } })
             .then(async () => {
@@ -74,8 +74,8 @@ const ExperienceForm = () => {
             })
 
         setFormData({
-            yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
-            yearEnd: undefined, id: '', show: true, userId: ''
+            endYear: undefined, achivements: '', company: '', location: '', present: false, role: '',
+            startYear: undefined, id: '', show: true, userId: ''
         })
         setPresentWorkDate(false)
         setSubmitbtnState(false)
@@ -89,13 +89,13 @@ const ExperienceForm = () => {
         const token = Cookies.get('__session')
         if (!token) return
 
-        const { achivements, company, id, location, role, show, userId, yearEnd, yearStart } = formData
+        const { achivements, company, id, location, role, show, userId, startYear, endYear } = formData
 
-        if (presentWorkDate) setFormData({ ...formData, yearEnd: new Date() })
+        if (presentWorkDate) setFormData({ ...formData, startYear: new Date() })
         await formClient.post('update-experience',
             {
                 achivements, company, id, location, present: presentWorkDate, role, show, userId,
-                endYear: yearEnd, startYear: yearStart
+                endYear: startYear, startYear: endYear
             },
             { headers: { Authorization: 'Bearer ' + token } })
             .then(async () => {
@@ -109,8 +109,8 @@ const ExperienceForm = () => {
 
         setPresentWorkDate(false)
         setFormData({
-            yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
-            yearEnd: undefined, id: '', show: true, userId: ''
+            endYear: undefined, achivements: '', company: '', location: '', present: false, role: '',
+            startYear: undefined, id: '', show: true, userId: ''
         })
     }
 
@@ -187,8 +187,8 @@ const ExperienceForm = () => {
                             <div className='flex flex-row items-center'>
                                 <div className='relative w-full'>
                                     <DatePicker
-                                        selected={formData.yearStart}
-                                        onChange={(date) => { if (date) setFormData({ ...formData, yearStart: date }) }}
+                                        selected={formData.endYear}
+                                        onChange={(date) => { if (date) setFormData({ ...formData, endYear: date }) }}
                                         dateFormat={'MM-yyyy'} showMonthYearPicker
                                         placeholderText={'March 2023'}
                                         className={`${formInputStyle} relative phone:w-[100%]`}
@@ -203,9 +203,9 @@ const ExperienceForm = () => {
                                         type={'text'} onChange={() => null} value='Present' />
 
                                     <DatePicker
-                                        selected={formData.yearEnd}
+                                        selected={formData.startYear}
                                         onChange={(date) => {
-                                            if (date) setFormData({ ...formData, yearEnd: date })
+                                            if (date) setFormData({ ...formData, startYear: date })
                                             if (presentWorkDate) setPresentWorkDate(false)
                                         }}
                                         dateFormat={'MM-yyyy'} showMonthYearPicker
@@ -216,8 +216,8 @@ const ExperienceForm = () => {
                                             <div className={`h-4 w-10 flex items-center transition duration-300 ${presentWorkDate ? 'justify-end !bg-component-primary' : 'justify-start'} rounded-xl bg-slate-200 overflow-hidden cursor-pointer`}
                                                 onClick={() => {
                                                     setPresentWorkDate(!presentWorkDate)
-                                                    setFormData({ ...formData, yearEnd: undefined })
-                                                    if (presentWorkDate) setFormData({ ...formData, yearEnd: new Date() })
+                                                    setFormData({ ...formData, startYear: undefined })
+                                                    if (presentWorkDate) setFormData({ ...formData, startYear: new Date() })
                                                 }}
                                             >
                                                 <motion.div layout className='w-3 h-3 bg-white shadow rounded-full mx-[0.1rem]'></motion.div>

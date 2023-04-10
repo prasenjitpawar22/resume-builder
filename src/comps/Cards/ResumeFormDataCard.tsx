@@ -134,8 +134,8 @@ const ResumeFormDataCard = (props: Props) => {
                 if (type === 'experience') {
                     const data = await getAllExperiences(token, 'experiences')
                     setExperienceFormData!({
-                        yearStart: undefined, achivements: '', company: '', location: '', present: false, role: '',
-                        yearEnd: undefined, id: '', show: true, userId: ''
+                        startYear: undefined, achivements: '', company: '', location: '', present: false, role: '',
+                        endYear: undefined, id: '', show: true, userId: ''
                     })
                     setUpdateExperienceFormState!(false)
                     setExperience!(data)
@@ -186,13 +186,13 @@ const ResumeFormDataCard = (props: Props) => {
 
         if (type === 'experience') {
             let tdata: Experience = data
-            tdata.yearStart = data.startYear ? new Date(data.startYear) : undefined
-            tdata.yearEnd = data.endYear ? new Date(data.endYear) : undefined
+            tdata.startYear = data.startYear ? new Date(data.startYear) : undefined
+            tdata.endYear = data.endYear ? new Date(data.endYear) : undefined
 
             //if present then state presntdate true and undefined end date
             if (data.present) {
                 setExperienceEndDatePresentState!(true)
-                tdata.yearEnd = undefined
+                tdata.endYear = undefined
             }
             setExperienceFormData!(tdata)
             setUpdateExperienceFormState!(true)

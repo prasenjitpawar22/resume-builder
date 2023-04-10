@@ -21,18 +21,18 @@ const NewBuild = () => {
 
   return (
     <>
-      <FormsDataProvider>
-        <BuildNavbar currentForm={currentForm} setCurrentForm={setCurrentForm} />
-        {currentForm === FormsTypes.contact ? <ContactForm />
-          : currentForm === FormsTypes.education ? <EducationForm />
-            : currentForm === FormsTypes.experience ? <ExperienceForm />
-              : currentForm === FormsTypes.skill ? <SkillForm />
-                : currentForm === FormsTypes.certifications ? <CertificationForm />
-                  : currentForm === FormsTypes.project ? <ProjectForm />
-                    : currentForm === FormsTypes.summary ? <SummaryForm />
-                      : <PreviewResume />}
-        <ToastContainer hideProgressBar autoClose={50} />
-      </FormsDataProvider>
+      {/* <FormsDataProvider> */}
+      <BuildNavbar currentForm={currentForm} setCurrentForm={setCurrentForm} />
+      {currentForm === FormsTypes.contact ? <ContactForm />
+        : currentForm === FormsTypes.education ? <EducationForm />
+          : currentForm === FormsTypes.experience ? <ExperienceForm />
+            : currentForm === FormsTypes.skill ? <SkillForm />
+              : currentForm === FormsTypes.certifications ? <CertificationForm />
+                // : currentForm === FormsTypes.project ? <ProjectForm />
+                : currentForm === FormsTypes.summary ? <SummaryForm />
+                  : <PreviewResume />}
+      <ToastContainer hideProgressBar autoClose={50} />
+      {/* </FormsDataProvider> */}
     </>
   )
 }
