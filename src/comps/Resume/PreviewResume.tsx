@@ -9,7 +9,9 @@ import Moment from 'moment'
 import { toast } from 'react-toastify'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
-
+import { formClient } from '../../api/axiosClient'
+import Cookies from 'js-cookie'
+import FileSaver from 'file-saver';
 
 const PreviewResume = () => {
     const navigate = useNavigate()
@@ -21,19 +23,25 @@ const PreviewResume = () => {
 
     const handleDownlaod = async () => {
         setDisableDownload(true)
-        const input = document.getElementById('rootElementId');
 
-        if (!input) {
-            setDisableDownload(false)
-            toast.error('error downloading')
-            return
-        }
-        html2canvas(input)
-            .then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-                pdf.addImage(imgData, 'JPEG', 0, 0, 200, 200);
-                pdf.save("download.pdf");
+        const token = Cookies.get('__session')
+        if (!token) return;
+
+        await formClient.get('get-pdf',
+            {
+                responseType: 'arraybuffer',
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                    Accept: 'application/pdf',
+                },
+            })
+            .then((res) => {
+                console.log(res)
+                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+                FileSaver.saveAs(pdfBlob, 'firstResume.pdf');
+            })
+            .catch((err) => {
+                console.log(err)
             })
 
         setDisableDownload(false)
