@@ -36,7 +36,6 @@ const PreviewResume = () => {
                 },
             })
             .then((res) => {
-                console.log(res)
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
                 FileSaver.saveAs(pdfBlob, 'firstResume.pdf');
             })
