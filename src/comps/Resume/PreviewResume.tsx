@@ -116,7 +116,12 @@ const PreviewResume = () => {
                                         <div className=' mb-3'>
                                             <p className='text-left text-[0.85em] desktop:leading-6 phone:leading-3'>
                                                 {/* {exp.achivements.split("•").join("\t")} */}
-                                                {exp.achivements}
+                                                {exp.achivements.split("•").map((achivement, index) =>
+                                                    index !== 0 &&
+                                                    <ul key={index} className='' >
+                                                        <li className=''>• {achivement} </li>
+                                                    </ul>
+                                                )}
                                             </p>
                                         </div>
                                     </>
